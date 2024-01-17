@@ -1,0 +1,18 @@
+.swiper-button-next,
+.swiper-button-prev {
+  background-position: center;
+  background-size: 40px;
+  background-repeat: no-repeat;
+  padding: 8px 16px;
+  color: #eab308;
+}
+.swiper-button-next {
+  right: -6px;
+}
+.swiper-button-prev {
+  left: -6px;
+}
+
+.swiper-pagination-bullet-active {
+  background: #eab308;
+}
