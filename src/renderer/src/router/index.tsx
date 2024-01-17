@@ -3,6 +3,7 @@ import Login from '../pages/login'
 import { useRoutes } from 'react-router-dom'
 import TopBar from '@renderer/components/TopBar'
 import SellerWorkSpace from '@renderer/pages/SellerWorkpace'
+import CategoriesManagement from '@renderer/pages/category-management'
 
 export type TPath =
   | '/'
@@ -33,6 +34,10 @@ function Router() {
         {
           path: '/work-space',
           element: <SellerWorkSpace />
+        },
+        {
+          path: '/work-space/categories-management',
+          element: <CategoriesManagement />
         }
       ]
     }

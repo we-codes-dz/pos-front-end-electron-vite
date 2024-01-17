@@ -5,6 +5,7 @@ import _ from "lodash";
 import { SwiperSlide } from "swiper/react";
 import CarouselWrapper from "../carousel/carousel-wrapper";
 import SliderElement from "../carousel/slider";
+import { useBoundStore } from "@renderer/stores/store";
 
 type TContentSlider = {
   name: string;
@@ -20,10 +21,25 @@ const Categories = () => {
   const axiosInstance = useAxiosPrivate();
 
   const { data: categories, isLoading } = useCategories(axiosInstance);
+  //const { adCategory } = useBoundStore((set) => set);
   console.log(categories);
   if (isLoading) {
     return <div>Loading...</div>;
   }
+  /*
+    const getSafeProductList =
+      (data: any): TCategory[] => {
+        if (Array.isArray(data)) {
+          return data;
+        } else if (data && 'data' in data) {
+          return data.data.data || [];
+        } else {
+          return [];
+        }
+      };
+  
+    addCategory(getSafeProductList(categories))*/
+
   const organizeDataIntoSlider = (categories: any): TSlider[] => {
     const chunkSize = 6;
     const chunkedCategories: TCategory[][] = _.chunk(

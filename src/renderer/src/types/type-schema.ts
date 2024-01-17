@@ -76,3 +76,8 @@ export type TTable = {
 }
 
 export type TAuth = {}
+
+export type TCategoryColumn = {
+  key: number
+  label: string
+}
