@@ -9,13 +9,13 @@ import CRUDDeleteCategoryModal from "../../modal/category/delete/crud-modal";
 import CRUDAddCategoryModal from "../../modal/category/add/crud-modal";
 import CRUDEditCategoryModal from "../../modal/category/edit/edit-modal";
 import { Pagination } from "../common/pagination/pagination";
-import { TCategory, TCategoryColumn } from '@renderer/types/type-schema';
+import { TCategory, TColumn } from '@renderer/types/type-schema';
 import { cn } from '@renderer/utils/helper';
 import { CategoryOrderBy, orderCategories } from "@renderer/utils/filter";
 
 
 interface Props {
-    categoryColumns: TCategoryColumn[];
+    categoryColumns: TColumn[];
     categories: TCategory[];
 }
 const FilterParameter = CategoryOrderBy;

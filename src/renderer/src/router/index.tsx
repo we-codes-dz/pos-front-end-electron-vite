@@ -4,6 +4,7 @@ import { useNavigate, useRoutes } from 'react-router-dom'
 import TopBar from '@renderer/components/TopBar'
 import SellerWorkSpace from '@renderer/pages/SellerWorkspace'
 import CategoriesManagement from '@renderer/pages/category-management'
+import ProductsManagement from '@renderer/pages/products-management'
 import { useBoundStore } from '@renderer/stores/store'
 import RequireAuth, { decodeToken } from '@renderer/layouts/RequireAuth'
 import ErrorPage from '@renderer/pages/ErrorPage/ErrorPage'
@@ -75,6 +76,10 @@ function Router() {
         {
           path: '/work-space/categories-management',
           element: <CategoriesManagement />
+        },
+        {
+          path: '/work-space/products-management',
+          element: <ProductsManagement />
         }
       ]
     },

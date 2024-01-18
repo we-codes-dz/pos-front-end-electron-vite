@@ -77,7 +77,12 @@ export type TTable = {
 
 export type TAuth = {}
 
-export type TCategoryColumn = {
+export type TColumn = {
   key: number
+  label: string
+}
+
+export type TProductColumn = {
+  key: string
   label: string
 }
