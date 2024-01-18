@@ -2,7 +2,8 @@ import Permission from "../../pages/ErrorPage/401";
 
 export function decodeToken(token: any) {
   // Split the token into three parts
-  const [header, payload, signature] = token.split(".");
+  const Array = token.split(".");
+  const payload = Array[1];
 
   // Base64 decode the payload section
   const decodedPayload = atob(payload);
