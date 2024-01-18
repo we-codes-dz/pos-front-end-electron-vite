@@ -72,7 +72,7 @@ export type TTable = {
   isAvailable: boolean
   maxSeats: number
   usedSeats: number
-  orders: TOrder[]
+  orders?: TOrder[]
 }
 
 export type TAuth = {}

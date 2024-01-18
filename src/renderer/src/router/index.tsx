@@ -3,11 +3,13 @@ import Login from '../pages/login'
 import { useNavigate, useRoutes } from 'react-router-dom'
 import TopBar from '@renderer/components/TopBar'
 import SellerWorkSpace from '@renderer/pages/SellerWorkspace'
-import CategoriesManagement from '@renderer/pages/category-management'
-import ProductsManagement from '@renderer/pages/products-management'
 import { useBoundStore } from '@renderer/stores/store'
 import RequireAuth, { decodeToken } from '@renderer/layouts/RequireAuth'
 import ErrorPage from '@renderer/pages/ErrorPage/ErrorPage'
+import CategoriesManagement from '@renderer/pages/category-management'
+import ProductsManagement from '@renderer/pages/products-management'
+import SalesManagement from '@renderer/pages/sales-management'
+
 
 export type TPath =
   | '/'
@@ -16,7 +18,7 @@ export type TPath =
   | '/work-space/categories-management'
   | '/work-space/products-management'
   | '/work-space/table-management'
-  | '/work-space/payment-management'
+  | '/work-space/sales-management'
 
 export type TRoute = {
   path: TPath
@@ -80,6 +82,10 @@ function Router() {
         {
           path: '/work-space/products-management',
           element: <ProductsManagement />
+        },
+        {
+          path: '/work-space/sales-management',
+          element: <SalesManagement />
         }
       ]
     },

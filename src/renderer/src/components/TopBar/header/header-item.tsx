@@ -4,7 +4,7 @@ export type TPath = '/' | '*' | '/work-space' |
     '/work-space/categories-management' |
     '/work-space/products-management' |
     '/work-space/table-management' |
-    '/work-space/payment-management';
+    '/work-space/sales-management';
 
 export type THeaderItemIn = {
     id: number;

@@ -6,6 +6,6 @@ export const manageHeaderList: THeaderItemIn[] = [
     { id: 2, label: 'Table', icon: <RiCustomerService2Line />, href: "/work-space/table-management" },
     { id: 3, label: 'Product', icon: <RiCustomerService2Line />, href: "/work-space/products-management" },
     { id: 4, label: 'Category', icon: <RiCustomerService2Line />, href: "/work-space/categories-management" },
-    { id: 5, label: 'Payment', icon: <RiCustomerService2Line />, href: "/work-space/payment-management" },
+    { id: 5, label: 'Payment', icon: <RiCustomerService2Line />, href: "/work-space/sales-management" },
     { id: 6, label: 'Analytics', icon: <RiCustomerService2Line />, href: "/work-space" },
 ]

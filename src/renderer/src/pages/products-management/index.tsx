@@ -1,5 +1,5 @@
 import useProducts from "@renderer/api/hooks/useProducts";
-import ProductTable from "@renderer/components/table/Product/productTable";
+import ProductTable from "@renderer/components/table/Product/product-table";
 import useAxiosPrivate from "@renderer/hooks/useAxiosPrivate";
 import { TProduct, TProductColumn } from "@renderer/types/type-schema";
 

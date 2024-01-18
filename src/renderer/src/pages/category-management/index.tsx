@@ -1,4 +1,4 @@
-import CategoryTable from '@renderer/components/table/category/categoryTable'
+import CategoryTable from '@renderer/components/table/category/category-table'
 import { categoryColumns } from './columns'
 import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate';
 import useCategories from '@renderer/api/hooks/useCategories';
