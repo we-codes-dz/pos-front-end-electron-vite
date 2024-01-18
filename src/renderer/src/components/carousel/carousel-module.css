@@ -8,11 +8,18 @@
 }
 .swiper-button-next {
   right: -6px;
+  background-image: url(./arrow-chevron-right.svg);
 }
 .swiper-button-prev {
   left: -6px;
+  background-image: url(./arrow-chevron-left.svg);
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  display: none;
 }
 
-.swiper-pagination-bullet-active {
+.swiper-pagination-bullet {
   background: #eab308;
+  display: none;
 }
