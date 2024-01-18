@@ -37,9 +37,6 @@ const CategoryTable =
         // Show 8 products per page  
         const itemsPerPage = 7;
         // Logic to slice array for current page
-        const indexOfLastItem = currentPage * itemsPerPage;
-        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-        const currentItems = categoryData.slice(indexOfFirstItem, indexOfLastItem);
         // Total pages 
         const totalPages = Math.ceil(categoryData.length / itemsPerPage);
 

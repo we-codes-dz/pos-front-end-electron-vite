@@ -1,6 +1,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { RxCross2 } from "react-icons/rx";
 import loginImage from '../../assets/images/login-bg.jpg';
 import BgLoginImage from './bg-login-image';
 import Header from './header';
@@ -11,7 +12,6 @@ import { Button, Input } from '@nextui-org/react';
 import ErrorMessage from '@renderer/components/inputs/ErrorMessage/ErrorMessage';
 import SpinnerComponent from '@renderer/components/Spinner/Spinner';
 import { useBoundStore } from '@renderer/stores/store';
-import ErrorHeader from './error-header';
 import axios from '@renderer/api/axios';
 import { userSchema } from '@renderer/types/form-schema';
 
@@ -80,7 +80,12 @@ const index = () => {
         <div className="bg-gray-100 flex justify-center items-center h-screen text-black">
             <BgLoginImage src={loginImage} />
             <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-                <ErrorHeader error={error} setError={() => setError(null)} />
+                {error &&
+                    <div role="alert" className="alert alert-error">
+                        <RxCross2 className='h-6 w-6 text-danger' />
+                        <span>{error}</span>
+                    </div>
+                }
                 <Header />
                 <form
                     onSubmit={handleSubmit(onSubmit)}

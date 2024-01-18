@@ -29,7 +29,7 @@ interface Props {
 
 }
 const ModalBody =
-    ({ modalHandler, btnClassName, action }: Props) => {
+    ({ modalHandler }: Props) => {
         const [isSubmitting, setSubmitting] = useState<boolean>(false);
 
         //? form control logic
@@ -48,6 +48,7 @@ const ModalBody =
         const handlerSubmit =
             async (data: Inputs) => {
                 try {
+                    console.log(data)
                     //? enabling the spinner
                     setSubmitting(true);
                     //? resetting the form after action 

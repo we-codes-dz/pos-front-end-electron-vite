@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ModalWrapper =
-    ({ title, className, modalIsOpened, modalHandler, children, maxWidth, btnClassName }: Props) => {
+    ({ title, className, modalIsOpened, children, maxWidth }: Props) => {
         return (
             <dialog id="my_modal_4"
                 className={cn(

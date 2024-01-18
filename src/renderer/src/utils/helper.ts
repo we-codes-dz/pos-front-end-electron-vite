@@ -84,7 +84,7 @@ const stringToHTML = (arg: string) => {
   return DOM.body.childNodes[0] as HTMLElement
 }
 
-const slideUp = (el: HTMLElement, duration = 300, callback = (el: HTMLElement) => {}) => {
+const slideUp = (el: HTMLElement, duration = 300, callback = (_el: HTMLElement) => {}) => {
   el.style.transitionProperty = 'height, margin, padding'
   el.style.transitionDuration = duration + 'ms'
   el.style.height = el.offsetHeight + 'px'
@@ -109,7 +109,7 @@ const slideUp = (el: HTMLElement, duration = 300, callback = (el: HTMLElement) =
   }, duration)
 }
 
-const slideDown = (el: HTMLElement, duration = 300, callback = (el: HTMLElement) => {}) => {
+const slideDown = (el: HTMLElement, duration = 300, callback = (_el: HTMLElement) => {}) => {
   el.style.removeProperty('display')
   let display = window.getComputedStyle(el).display
   if (display === 'none') display = 'block'

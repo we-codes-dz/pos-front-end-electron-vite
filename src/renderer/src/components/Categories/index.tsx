@@ -5,7 +5,6 @@ import _ from "lodash";
 import { SwiperSlide } from "swiper/react";
 import CarouselWrapper from "../carousel/carousel-wrapper";
 import SliderElement from "../carousel/slider";
-import { useBoundStore } from "@renderer/stores/store";
 
 type TContentSlider = {
   name: string;
@@ -21,8 +20,6 @@ const Categories = () => {
   const axiosInstance = useAxiosPrivate();
 
   const { data: categories, isLoading } = useCategories(axiosInstance);
-  //const { adCategory } = useBoundStore((set) => set);
-  console.log(categories);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -40,20 +37,21 @@ const Categories = () => {
   
     addCategory(getSafeProductList(categories))*/
 
-  const organizeDataIntoSlider = (categories: any): TSlider[] => {
-    const chunkSize = 6;
-    const chunkedCategories: TCategory[][] = _.chunk(
-      categories.data.data,
-      chunkSize
-    );
-    return _.map(chunkedCategories, (chunk, index) => ({
-      tabNumber: index + 1,
-      content: _.map(chunk, (cat) => ({
-        name: cat.name,
-        image_url: cat.avatar?.url || "",
-      })),
-    }));
-  };
+  const organizeDataIntoSlider =
+    (categories: any): TSlider[] => {
+      const chunkSize = 6;
+      const chunkedCategories: TCategory[][] = _.chunk(
+        categories.data.data,
+        chunkSize
+      );
+      return _.map(chunkedCategories, (chunk, index) => ({
+        tabNumber: index + 1,
+        content: _.map(chunk, (cat) => ({
+          name: cat.name,
+          image_url: cat.avatar?.url || "",
+        })),
+      }));
+    };
   const sliderData: TSlider[] = organizeDataIntoSlider(categories);
 
   return (

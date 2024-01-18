@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react"
+import { Button, Input, Textarea } from "@nextui-org/react"
 import SpinnerComponent from "@renderer/components/Spinner/Spinner";
 import ErrorMessage from "@renderer/components/inputs/ErrorMessage/ErrorMessage";
 import { productSchema } from "@renderer/types/form-schema";
@@ -17,7 +17,7 @@ interface Props {
 
 }
 const ModalBody =
-    ({ modalHandler, btnClassName, action }: Props) => {
+    ({ modalHandler }: Props) => {
         const [isSubmitting, setSubmitting] = useState<boolean>(false);
 
         //? form control logic
@@ -36,6 +36,7 @@ const ModalBody =
         const handlerSubmit =
             async (data: Inputs) => {
                 try {
+                    console.log(data)
                     //? enabling the spinner
                     setSubmitting(true);
                     //? resetting the form after action 

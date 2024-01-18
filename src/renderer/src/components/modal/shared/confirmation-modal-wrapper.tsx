@@ -14,7 +14,7 @@ interface Props {
 }
 
 const ConfirmationModalWrapper =
-    ({ title, className, modalIsOpened, modalHandler, handleDeleteButtonClick, children, maxWidth, btnClassName }: Props) => {
+    ({ title, className, modalIsOpened, children, maxWidth }: Props) => {
         return (
             <dialog id="my_modal_4"
                 className={cn(

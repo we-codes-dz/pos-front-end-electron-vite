@@ -1,5 +1,4 @@
 import { StateCreator } from 'zustand'
-import { boolean } from 'zod'
 import { TUser } from '@renderer/types/type-schema'
 
 export interface AuthState {

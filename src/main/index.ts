@@ -1,18 +1,16 @@
-import { app, shell, BrowserWindow, screen } from 'electron'
+import { app, shell, BrowserWindow /*screen*/ } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow(): void {
-  const screenElectron = screen
-  const display = screenElectron.getPrimaryDisplay()
-  const dimensions = display.workAreaSize
+  //const screenElectron = screen
+  //const display = screenElectron.getPrimaryDisplay()
+  //const dimensions = display.workAreaSize
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: dimensions.width,
-    height: dimensions.height,
-    minWidth: dimensions.width,
-    minHeight: dimensions.height,
+    width: 1024,
+    height: 768,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),

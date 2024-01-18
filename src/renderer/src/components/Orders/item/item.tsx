@@ -1,5 +1,4 @@
-import React from 'react'
-import { TOrder, TOrderList } from '../../../data/tableCommandData';
+import { TOrderList } from '../../../data/tableCommandData';
 import OrderHeader from './header';
 import ItemList from './item-list';
 import TotalOrder from './total';

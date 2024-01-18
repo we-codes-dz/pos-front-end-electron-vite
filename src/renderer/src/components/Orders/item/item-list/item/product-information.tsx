@@ -1,4 +1,3 @@
-import React from 'react'
 import { TOrder } from '../../../../../data/tableCommandData';
 interface Props {
     item: TOrder;
