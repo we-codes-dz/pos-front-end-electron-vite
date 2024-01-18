@@ -1,14 +1,11 @@
+import SaleInformationModal from "@renderer/components/modal/sales/inforrmation/crud-modal";
 import { TProduct } from "@renderer/types/type-schema";
 import { cn, formatDateOnly } from "@renderer/utils/helper";
 import { useEffect, useState } from "react";
-import { FaTrashCan } from "react-icons/fa6";
-import CRUDDeleteProductModal from '../../modal/product/delete/crud-modal';
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import { Table, Tbody, Td, Th, Thead, Tr } from "../common";
 import Header from "../common/header";
 import { Pagination } from '../common/pagination/pagination';
-;
-
-
 
 //TODO: add pagination logic
 
@@ -25,6 +22,7 @@ const SalesTable =
     ({ headers, sales }: Props) => {
 
         const [salesData, setSalesData] = useState<any[]>(sales);
+        const [SelectedSale, setSelectedSale] = useState();
         const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false);
 
         const [currentPage, setCurrentPage] = useState(1);
@@ -44,17 +42,17 @@ const SalesTable =
 
 
         //? modal logic
-        //** delete modal
-        const modalDeleteHandler = () => {
+        const modalHandler = () => {
             setOpenedDeleteModal(!isDeleteModalOpen);
         }
-        const handleDeleteButtonClick = () => {
-            modalDeleteHandler();
-            //TODO: adding delete via api and in global state
-        }
 
 
 
+        const handleInfoButtonClick =
+            (element: any) => {
+                setSelectedSale(element);
+                setOpenedDeleteModal(!isDeleteModalOpen);
+            }
 
         return (
             <div className="mt-4 pb-2">
@@ -103,9 +101,9 @@ const SalesTable =
                                         className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
                                     >
                                         <div className="flex items-center justify-between ">
-                                            <div className="flex gap-1 items-end text-error">
-                                                <FaTrashCan onClick={modalDeleteHandler} className="text-error" size={30} strokeWidth={1.8} />
-                                                Delete
+                                            <div className="flex gap-1 items-center text-info">
+                                                <IoMdInformationCircleOutline onClick={() => handleInfoButtonClick(item)} size={30} strokeWidth={1.8} />
+                                                Voir
                                             </div>
                                         </div>
                                     </Td>
@@ -121,7 +119,7 @@ const SalesTable =
                         />
                     </div>
                 </div>
-                <CRUDDeleteProductModal title={"Delete Product"} modalHandler={modalDeleteHandler} handleDeleteButtonClick={handleDeleteButtonClick} modalIsOpened={isDeleteModalOpen} />
+                <SaleInformationModal title={"Information"} modalHandler={modalHandler} modalIsOpened={isDeleteModalOpen} data={SelectedSale} />
             </div>
         )
     }

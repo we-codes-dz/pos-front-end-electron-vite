@@ -8,7 +8,6 @@ interface Props {
     title?: string;
     modalIsOpened: boolean;
     modalHandler: () => void;
-    handleDeleteButtonClick: () => void;
     children: ReactNode;
     maxWidth?: "max-w-xs" | "max-w-sm" | "max-w-md" | "max-w-lg";
 }
