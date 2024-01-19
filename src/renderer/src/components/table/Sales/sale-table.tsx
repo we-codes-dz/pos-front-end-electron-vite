@@ -1,11 +1,11 @@
-import SaleInformationModal from "@renderer/components/modal/sales/inforrmation/crud-modal";
+import SaleInformationModal from "@renderer/components/modal/sales/information/crud-modal";
 import { TProduct } from "@renderer/types/type-schema";
-import { cn, formatDateOnly } from "@renderer/utils/helper";
 import { useEffect, useState } from "react";
-import { IoMdInformationCircleOutline } from "react-icons/io";
-import { Table, Tbody, Td, Th, Thead, Tr } from "../common";
+import { Table, Tbody } from "../common";
 import Header from "../common/header";
 import { Pagination } from '../common/pagination/pagination';
+import TableHeader from "../common/table/category-table-header";
+import SaleTableRow from "./category-table-row";
 
 //TODO: add pagination logic
 
@@ -64,50 +64,10 @@ const SalesTable =
                 total pages : {totalPages}
                 <div className=" overflow-auto intro-y lg:overflow-visible ">
                     <Table className="border-spacing-y-[10px] border-separate ">
-                        <Thead>
-                            <Tr>
-                                {headers.map((item) => (
-                                    <Th key={item.key} className={cn(
-                                        { "text-center": item.label === 'actions' },
-                                        "border-b-0 whitespace-nowrap"
-                                    )}>
-                                        {item.label}
-                                    </Th>
-                                ))
-                                }
-                            </Tr>
-                        </Thead>
+                        <TableHeader headers={headers} />
                         <Tbody>
                             {currentItems?.map((item, fakerKey) => (
-                                <Tr key={fakerKey} className="intro-x">
-                                    <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.table?.number}
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.total}
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {/* {new Date(item.createdAt).toISOString().split('T')[0]} */}
-                                            {formatDateOnly(item.createdAt)}
-                                        </span>
-                                    </Td>
-
-                                    <Td
-                                        className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-                                    >
-                                        <div className="flex items-center justify-between ">
-                                            <div className="flex gap-1 items-center text-info">
-                                                <IoMdInformationCircleOutline onClick={() => handleInfoButtonClick(item)} size={30} strokeWidth={1.8} />
-                                                Voir
-                                            </div>
-                                        </div>
-                                    </Td>
-                                </Tr>
+                                <SaleTableRow key={fakerKey} sale={item} handleInfoButtonClick={() => handleInfoButtonClick(item)} />
                             ))}
                         </Tbody>
                     </Table>
