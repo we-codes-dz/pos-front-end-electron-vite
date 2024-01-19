@@ -1,17 +1,14 @@
-import { FaEdit } from "react-icons/fa";;
-import { FaTrashCan } from "react-icons/fa6";
-import { ChangeEvent, useEffect, useState } from "react";
-import { Table, Tbody, Td, Th, Thead, Tr } from "../common";
-import HeaderSection from "../common/header-section";
-import CRUDDeleteProductModal from '../../modal/product/delete/crud-modal';
-import CRUDAddProductModal from '../../modal/product/add/crud-modal';
-import CRUDEditProductModal from '../../modal/product/edit/edit-modal';
-import { Pagination } from '../common/pagination/pagination';
 import { TProduct } from "@renderer/types/type-schema";
 import { ProductOrderBy, orderProducts } from "@renderer/utils/filter";
-import { cn } from "@renderer/utils/helper";
-
-
+import { ChangeEvent, useEffect, useState } from "react";
+import CRUDAddProductModal from '../../modal/product/add/crud-modal';
+import CRUDDeleteProductModal from '../../modal/product/delete/crud-modal';
+import CRUDEditProductModal from '../../modal/product/edit/edit-modal';
+import { Table, Tbody } from "../common";
+import HeaderSection from "../common/header-section";
+import { Pagination } from '../common/pagination/pagination';
+import ProductTableRow from "./product-table-row";
+import TableHeader from "../common/table/category-table-header";
 
 //TODO: add pagination logic
 
@@ -117,60 +114,10 @@ const ProductTable =
                 total pages : {totalPages}
                 <div className=" overflow-auto intro-y lg:overflow-visible ">
                     <Table className="border-spacing-y-[10px] border-separate ">
-                        <Thead>
-                            <Tr>
-                                {headers.map((item) => (
-                                    <Th key={item.key} className={cn(
-                                        { "text-center": item.label === 'actions' },
-                                        "border-b-0 whitespace-nowrap"
-                                    )}>
-                                        {item.label}
-                                    </Th>
-                                ))
-                                }
-                            </Tr>
-                        </Thead>
+                        <TableHeader headers={headers} />
                         <Tbody>
                             {currentItems?.map((item, fakerKey) => (
-                                <Tr key={fakerKey} className="intro-x">
-                                    <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.name}
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.description}
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {parseFloat(item.price.toFixed(2)).toFixed(2)}DA
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {//TODO: adding category display
-                                            }
-                                            {"item.category"}
-                                        </span>
-                                    </Td>
-
-                                    <Td
-                                        className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-                                    >
-                                        <div className="flex items-center justify-between ">
-                                            <div className="flex gap-1 items-end text-neutral-900">
-                                                <FaEdit onClick={() => handleEditButtonClick(item)} className="text-neutral-900" size={30} strokeWidth={1.8} />
-                                                Edit
-                                            </div>
-                                            <div className="flex gap-1 items-end text-error">
-                                                <FaTrashCan onClick={modalDeleteHandler} className="text-error" size={30} strokeWidth={1.8} />
-                                                Delete
-                                            </div>
-                                        </div>
-                                    </Td>
-                                </Tr>
+                                <ProductTableRow product={item} key={fakerKey} handleEditButtonClick={() => handleEditButtonClick(item)} modalDeleteHandler={modalDeleteHandler} />
                             ))}
                         </Tbody>
                     </Table>

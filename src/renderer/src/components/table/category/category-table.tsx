@@ -1,21 +1,22 @@
 //import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 
-import { FaEdit } from "react-icons/fa";;
-import { FaTrashCan } from "react-icons/fa6";
-import { ChangeEvent, useEffect, useState } from "react";
-import { Table, Tbody, Td, Th, Thead, Tr } from "../common";
-import HeaderSection from "../common/header-section";
-import CRUDDeleteCategoryModal from "../../modal/category/delete/crud-modal";
-import CRUDAddCategoryModal from "../../modal/category/add/crud-modal";
-import CRUDEditCategoryModal from "../../modal/category/edit/edit-modal";
-import { Pagination } from "../common/pagination/pagination";
-import { TCategory, TColumn } from '@renderer/types/type-schema';
-import { cn } from '@renderer/utils/helper';
+import { TCategory } from '@renderer/types/type-schema';
 import { CategoryOrderBy, orderCategories } from "@renderer/utils/filter";
+import { ChangeEvent, useEffect, useState } from "react";
+import CRUDAddCategoryModal from "../../modal/category/add/crud-modal";
+import CRUDDeleteCategoryModal from "../../modal/category/delete/crud-modal";
+import CRUDEditCategoryModal from "../../modal/category/edit/edit-modal";
+import { ColumnHeaderInt } from "../Product/product-table";
+import { Table, Tbody } from "../common";
+import HeaderSection from "../common/header-section";
+import { Pagination } from "../common/pagination/pagination";
+import TableHeader from "../common/table/category-table-header";
+import CategoryTableRow from "./category-table-row";
+;
 
 
 interface Props {
-    categoryColumns: TColumn[];
+    categoryColumns: ColumnHeaderInt[];
     categories: TCategory[];
 }
 const FilterParameter = CategoryOrderBy;
@@ -108,55 +109,10 @@ const CategoryTable =
                 }
                 <div className=" overflow-auto intro-y lg:overflow-visible ">
                     <Table className="border-spacing-y-[10px] border-separate ">
-                        <Thead>
-                            <Tr>
-                                {categoryColumns.map((item) => (
-                                    <Th key={item.key} className={cn(
-                                        { "text-center": item.label === 'Actions' },
-                                        "border-b-0 whitespace-nowrap"
-                                    )}>
-                                        {item.label}
-                                    </Th>
-                                ))
-                                }
-                            </Tr>
-                        </Thead>
+                        <TableHeader headers={categoryColumns} />
                         <Tbody>
                             {categoryData?.map((item, fakerKey) => (
-                                <Tr key={fakerKey} className="intro-x">
-                                    <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
-                                    //onClick={() => handleEditButtonClick(item)}
-                                    //onClick={toggleEditModal}
-                                    >
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.name}
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.parent ? item?.parent[0].name : "no"}
-                                        </span>
-                                    </Td>
-                                    <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-                                        <span className="font-medium whitespace-nowrap">
-                                            {item.children ? item?.children[0].name : "no"}
-                                        </span>
-                                    </Td>
-                                    <Td
-                                        className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400"
-                                    >
-                                        <div className="flex items-center justify-between ">
-                                            <div className="flex gap-1 items-end text-neutral-900">
-                                                <FaEdit onClick={() => handleEditButtonClick(item)} className="text-neutral-900" size={30} strokeWidth={1.8} />
-                                                Edit
-                                            </div>
-                                            <div className="flex gap-1 items-end text-error">
-                                                <FaTrashCan onClick={modalDeleteHandler} className="text-error" size={30} strokeWidth={1.8} />
-                                                Delete
-                                            </div>
-                                        </div>
-                                    </Td>
-                                </Tr>
+                                <CategoryTableRow key={fakerKey} category={item} handleEditButtonClick={() => handleEditButtonClick(item)} modalDeleteHandler={modalDeleteHandler} />
                             ))}
                         </Tbody>
                     </Table>
