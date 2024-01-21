@@ -72,6 +72,7 @@ const CategoryTable = ({ categoryColumns, categories }: Props) => {
             for (const value of dataInputs.values()) {
                 console.log(value);
             }
+            setDataInputs(undefined);
         }
     }, [isCreateModalOpen, dataInputs]);
 
@@ -94,6 +95,7 @@ const CategoryTable = ({ categoryColumns, categories }: Props) => {
         console.log('onClickCreateModel called')
         //console.log(dataInputs)
         setOpenedCreateModal(!isCreateModalOpen)
+
     }
 
     //** edit modal
