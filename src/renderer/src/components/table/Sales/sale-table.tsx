@@ -79,7 +79,7 @@ const SalesTable =
                         />
                     </div>
                 </div>
-                <SaleInformationModal title={"Information"} modalHandler={modalHandler} modalIsOpened={isDeleteModalOpen} data={SelectedSale} />
+                {SelectedSale && <SaleInformationModal title={"Information"} modalHandler={modalHandler} modalIsOpened={isDeleteModalOpen} data={SelectedSale} />}
             </div>
         )
     }
