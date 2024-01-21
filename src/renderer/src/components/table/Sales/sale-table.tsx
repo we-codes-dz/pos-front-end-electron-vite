@@ -5,7 +5,7 @@ import { Table, Tbody } from "../common";
 import Header from "../common/header";
 import { Pagination } from '../common/pagination/pagination';
 import TableHeader from "../common/table/category-table-header";
-import SaleTableRow from "./category-table-row";
+import SaleTableRow from "./sale-table-row";
 
 //TODO: add pagination logic
 
