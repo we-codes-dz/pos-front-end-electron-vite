@@ -1,22 +1,24 @@
+import { ColumnHeaderInt } from '@renderer/components/table/Sales/sale-table'
+
 export interface CategoryColumnInt {
   key: number
   label: string
 }
-export const categoryColumns: CategoryColumnInt[] = [
+export const categoryColumns: ColumnHeaderInt[] = [
   {
-    key: 1,
+    key: '1',
     label: 'Name'
   },
   {
-    key: 2,
+    key: '2',
     label: 'Parent'
   },
   {
-    key: 3,
+    key: '3',
     label: 'Child'
   },
   {
-    key: 4,
+    key: '4',
     label: 'Actions'
   }
 ]
