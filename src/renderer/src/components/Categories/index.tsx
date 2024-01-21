@@ -1,58 +1,43 @@
-import useCategories from "@renderer/api/hooks/useCategories";
-import useAxiosPrivate from "@renderer/hooks/useAxiosPrivate";
-import { TCategory } from "@renderer/types/type-schema";
-import _ from "lodash";
-import { SwiperSlide } from "swiper/react";
-import CarouselWrapper from "../carousel/carousel-wrapper";
-import SliderElement from "../carousel/slider";
+import _ from 'lodash'
+import { SwiperSlide } from 'swiper/react'
+import useCategories from '../../api/hooks/useCategories'
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'
+import { TCategory } from '../../types/type-schema'
+import CarouselWrapper from '../carousel/carousel-wrapper'
+import SliderElement from '../carousel/slider'
 
 type TContentSlider = {
-  name: string;
-  image_url: string;
-};
+  id: number
+  name: string
+  image_url: string
+}
 
 type TSlider = {
-  tabNumber: number;
-  content: TContentSlider[];
-};
+  tabNumber: number
+  content: TContentSlider[]
+}
 const Categories = () => {
+  const axiosInstance = useAxiosPrivate()
 
-  const axiosInstance = useAxiosPrivate();
+  const { data: categories, error, isLoading } = useCategories(axiosInstance)
 
-  const { data: categories, isLoading } = useCategories(axiosInstance);
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <span className="loading loading-spinner loading-lg"></span>
   }
-  /*
-    const getSafeProductList =
-      (data: any): TCategory[] => {
-        if (Array.isArray(data)) {
-          return data;
-        } else if (data && 'data' in data) {
-          return data.data.data || [];
-        } else {
-          return [];
-        }
-      };
-  
-    addCategory(getSafeProductList(categories))*/
-
-  const organizeDataIntoSlider =
-    (categories: any): TSlider[] => {
-      const chunkSize = 6;
-      const chunkedCategories: TCategory[][] = _.chunk(
-        categories.data.data,
-        chunkSize
-      );
-      return _.map(chunkedCategories, (chunk, index) => ({
-        tabNumber: index + 1,
-        content: _.map(chunk, (cat) => ({
-          name: cat.name,
-          image_url: cat.avatar?.url || "",
-        })),
-      }));
-    };
-  const sliderData: TSlider[] = organizeDataIntoSlider(categories);
+  if (error) return <div>{error.message}</div>
+  const organizeDataIntoSlider = (categories: any): TSlider[] => {
+    const chunkSize = 6
+    const chunkedCategories: TCategory[][] = _.chunk(categories.data.data, chunkSize)
+    return _.map(chunkedCategories, (chunk, index) => ({
+      tabNumber: index + 1,
+      content: _.map(chunk, (cat) => ({
+        id: cat.id,
+        name: cat.name,
+        image_url: cat.avatar?.url || ''
+      }))
+    }))
+  }
+  const sliderData: TSlider[] = organizeDataIntoSlider(categories)
 
   return (
     <div className="w-40 full rounded-md overflow-hidden relative py-1">
@@ -73,7 +58,7 @@ const Categories = () => {
         ))}
       </CarouselWrapper>
     </div>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories

@@ -1,11 +1,16 @@
-import { AxiosInstance as AxiosInstanceOriginal } from "axios";
-import APICLIENT from "./apiClient";
+import { AxiosInstance as AxiosInstanceOriginal } from 'axios'
+import APICLIENT from './apiClient'
 
-class APIService<T> {
-  apiClient: APICLIENT<T>;
-
-  constructor(apiPath: string, axiosInstance: AxiosInstanceOriginal) {
-    this.apiClient = new APICLIENT(apiPath, axiosInstance);
+class APIService<T, F> {
+  apiClient: APICLIENT<T, F>
+  filter: F
+  constructor(apiPath: string, axiosInstance: AxiosInstanceOriginal, filter: F) {
+    this.apiClient = new APICLIENT(apiPath, axiosInstance)
+    this.filter = filter
+  }
+  findAll = async () => {
+    const response = await this.apiClient.getAll(this.filter)
+    return response
   }
 }
-export default APIService;
+export default APIService

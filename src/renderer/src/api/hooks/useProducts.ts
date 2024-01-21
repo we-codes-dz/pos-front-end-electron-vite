@@ -1,13 +1,19 @@
-import { PRODUCTS } from '../../utils/constants'
 import { AxiosInstance as AxiosInstanceOriginal } from 'axios'
+import { TProduct, TProductFilter } from '../../types/type-schema'
 
-import APIService from '../services/apiService'
 import { useQuery } from '@tanstack/react-query'
-const useProducts = (axiosInstance: AxiosInstanceOriginal) => {
-  const productsService = new APIService<any>('/products', axiosInstance)
-  const data = useQuery({
-    queryKey: PRODUCTS,
-    queryFn: productsService.apiClient.getAll
+import APIService from '../services/apiService'
+import { CATEGORIES, PRODUCTS } from '../../utils/constants'
+const useProducts = (axiosInstance: AxiosInstanceOriginal, categorieId?: any) => {
+  const productsService = new APIService<TProduct, TProductFilter>(
+    '/products',
+    axiosInstance,
+    categorieId
+  )
+
+  const data = useQuery<TProduct[], Error>({
+    queryKey: categorieId ? [CATEGORIES, categorieId, PRODUCTS] : [PRODUCTS],
+    queryFn: productsService.findAll
   })
 
   return data
