@@ -1,8 +1,10 @@
-import { TCategory, TProduct } from '@renderer/types/type-schema'
+import { TCategory, TCategoryFilter, TProduct } from '@renderer/types/type-schema'
 import { StateCreator } from 'zustand'
 
 export interface CategorySlice {
   categories: TCategory[]
+  categoryFilterKey: TCategoryFilter
+  setCategoryFilterKey: (key: TCategoryFilter) => void
   isCategoriesMounted: boolean
   fetchCategories: (url: string) => Promise<void>
   addCategory: (category: TCategory) => void
@@ -14,6 +16,8 @@ export interface CategorySlice {
 export const createCategorySlice: StateCreator<CategorySlice> = (set) => ({
   categories: [],
   isCategoriesMounted: false,
+  categoryFilterKey: { page: 1, limit: 2 },
+  setCategoryFilterKey: (categoryFilterKey: TCategoryFilter) => set({ categoryFilterKey }),
   fetchCategories: async (url: string) => {
     const response = await fetch(url)
     set({ categories: (await response.json()) as TCategory[] })

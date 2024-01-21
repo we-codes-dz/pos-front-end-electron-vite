@@ -92,10 +92,10 @@ export type TProductColumn = {
 
 export type TProductFilter = {
   'filter.categoryId'?: number | null
-  pageSize?: number | null
-  pageParam?: number | null
+  page?: number | null
+  limit?: number | null
 }
 export type TCategoryFilter = {
-  pageSize: number | null
-  pageParam: number | null
+  page: number | null
+  limit: number | null
 }

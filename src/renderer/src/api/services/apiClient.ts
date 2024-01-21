@@ -20,11 +20,9 @@ class APICLIENT<T, F> {
     return this.axiosInstance.get<T[]>(this.endpoint, config).then((res) => res.data)
   }
 
-  // post = (data: T) => {
-  //   return useAxiosPrivate()
-  //     .post<T>(this.endpoint, data)
-  //     .then((res) => res.data);
-  // };
+  post = (data: T) => {
+    return this.axiosInstance.post<T>(this.endpoint, data).then((res) => res.data)
+  }
 }
 
 export default APICLIENT
