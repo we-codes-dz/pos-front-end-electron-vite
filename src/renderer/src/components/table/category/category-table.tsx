@@ -75,9 +75,15 @@ const CategoryTable = ({ categoryColumns, categories }: Props) => {
   const toggleCreateModal = () => {
     setOpenedCreateModal(!isCreateModalOpen)
   }
-  const onClickCreateModalHandler = () => {
+  const onClickCreateModalHandler = (data: any) => {
     toggleCreateModal()
     //TODO: adding delete via api and in global state
+    console.log('onClickCreateModel called')
+    console.log(data)
+    console.log(data.values())
+    for (const value of data.values()) {
+      console.log('********************************', value)
+    }
   }
 
   //** edit modal
