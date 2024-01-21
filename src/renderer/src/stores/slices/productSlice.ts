@@ -1,9 +1,11 @@
-import { TProduct } from '@renderer/types/type-schema'
+import { TProduct, TProductFilter } from '@renderer/types/type-schema'
 import { StateCreator } from 'zustand'
 
 export interface ProductSlice {
   products: TProduct[]
+  productFilterKey: TProductFilter
   isProductsMounted: boolean
+  setProductFilterKey: (productFilterKey: TProductFilter) => void
   addProduct: (product: TProduct) => void
   setProducts: (products: TProduct[]) => void
   setCategory: (productId: number, categoryId: number) => void
@@ -13,6 +15,8 @@ export interface ProductSlice {
 
 export const createProductSlice: StateCreator<ProductSlice> = (set) => ({
   products: [],
+  productFilterKey: { 'filter.categoryId': null, pageParam: null, pageSize: null },
+  setProductFilterKey: (productFilterKey: TProductFilter) => set({ productFilterKey }),
   isProductsMounted: false,
   fetchProducts: async (url: string) => {
     const response = await fetch(url)

@@ -1,24 +1,24 @@
 import {
-  AxiosInstance as AxiosInstanceOriginal,
-  AxiosResponse as AxiosResponseOriginal,
-} from "axios";
+  AxiosInstance as AxiosInstanceOriginal
+  // AxiosResponse as AxiosResponseOriginal
+} from 'axios'
 
 // Define a generic AxiosResponse type
-type AxiosResponse<T> = AxiosResponseOriginal<T>;
+// type AxiosResponse<T> = AxiosResponseOriginal<T>
 
-class APICLIENT<T> {
-  endpoint: string;
-  axiosInstance: AxiosInstanceOriginal;
+class APICLIENT<T, F> {
+  endpoint: string
+  axiosInstance: AxiosInstanceOriginal
   constructor(endpoint: string, axiosInstance: AxiosInstanceOriginal) {
-    this.endpoint = endpoint;
-    this.axiosInstance = axiosInstance;
+    this.endpoint = endpoint
+    this.axiosInstance = axiosInstance
   }
 
-  getAll = () => {
-    return this.axiosInstance
-      .get<T[]>(this.endpoint)
-      .then((res: AxiosResponse<T[]>) => res.data);
-  };
+  getAll = (filter?: F) => {
+    // const config = filter ? { params: { "filter.categoryId": filter } } : {};
+    const config = filter ? { params: filter } : {}
+    return this.axiosInstance.get<T[]>(this.endpoint, config).then((res) => res.data)
+  }
 
   // post = (data: T) => {
   //   return useAxiosPrivate()
@@ -27,4 +27,4 @@ class APICLIENT<T> {
   // };
 }
 
-export default APICLIENT;
+export default APICLIENT

@@ -1,74 +1,7 @@
+import { TAvatar } from '@renderer/types/type-schema'
+
 export type TFoodItem = {
   name: string
   price: number
-  imageUrl: string
+  avatar: TAvatar
 }
-
-export const productData: TFoodItem[] = [
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  {
-    name: 'Grilled corn',
-    price: 1.75,
-    imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600'
-  },
-  { name: 'Grilled corn', price: 1.75, imageUrl: 'https://source.unsplash.com/sc5sTPMrVfk/600x600' }
-]

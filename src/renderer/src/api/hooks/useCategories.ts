@@ -1,16 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
+import { TCategory, TCategoryFilter } from '../../types/type-schema'
+import { CATEGORIES } from '../../utils/constants'
 import { AxiosInstance as AxiosInstanceOriginal } from 'axios'
 
 import APIService from '../services/apiService'
-import { TCategory } from '@renderer/types/type-schema'
-import { CATEGORIES } from '@renderer/utils/constants'
 
-const useCategories = (axiosInstance: AxiosInstanceOriginal) => {
+const useCategories = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
   // const categoriesService = new CategoriesService("/categories", axiosInstance);
-  const categoriesService = new APIService<TCategory>('/categories', axiosInstance)
-  const data = useQuery({
-    queryKey: CATEGORIES,
-    queryFn: categoriesService.apiClient.getAll
+  const categoriesService = new APIService<TCategory, TCategoryFilter>(
+    '/categories',
+    axiosInstance,
+    filter
+  )
+  const data = useQuery<TCategory[], Error>({
+    queryKey: filter ? [CATEGORIES, filter] : [CATEGORIES],
+    queryFn: categoriesService.findAll
   })
 
   return data

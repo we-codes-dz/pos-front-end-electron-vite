@@ -86,3 +86,13 @@ export type TProductColumn = {
   key: string
   label: string
 }
+
+export type TProductFilter = {
+  'filter.categoryId'?: number | null
+  pageSize?: number | null
+  pageParam?: number | null
+}
+export type TCategoryFilter = {
+  pageSize: number | null
+  pageParam: number | null
+}
