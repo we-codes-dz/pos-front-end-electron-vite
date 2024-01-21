@@ -6,7 +6,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import CRUDAddCategoryModal from "../../modal/category/add/crud-modal";
 import CRUDDeleteCategoryModal from "../../modal/category/delete/crud-modal";
 import CRUDEditCategoryModal from "../../modal/category/edit/edit-modal";
-import { ColumnHeaderInt } from "../Product/product-table";
+import { ColumnHeaderInt } from "../product/product-table";
 import { Table, Tbody } from "../common";
 import HeaderSection from "../common/header-section";
 import { Pagination } from "../common/pagination/pagination";

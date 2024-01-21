@@ -1,5 +1,5 @@
 import useSales from "@renderer/api/hooks/useSales";
-import SalesTable from "@renderer/components/table/Sales/sale-table";
+import SalesTable from "@renderer/components/table/sales/sale-table";
 import useAxiosPrivate from "@renderer/hooks/useAxiosPrivate";
 import { TProductColumn } from "@renderer/types/type-schema";
 

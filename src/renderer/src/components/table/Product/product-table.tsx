@@ -7,8 +7,8 @@ import CRUDEditProductModal from '../../modal/product/edit/edit-modal';
 import { Table, Tbody } from "../common";
 import HeaderSection from "../common/header-section";
 import { Pagination } from '../common/pagination/pagination';
-import ProductTableRow from "./product-table-row";
 import TableHeader from "../common/table/category-table-header";
+import ProductTableRow from "./product-table-row";
 
 //TODO: add pagination logic
 
@@ -75,10 +75,10 @@ const ProductTable =
         const modalDeleteHandler = () => {
             setOpenedDeleteModal(!isDeleteModalOpen);
         }
-        const handleDeleteButtonClick = () => {
-            modalDeleteHandler();
-            //TODO: adding delete via api and in global state
-        }
+        // const handleDeleteButtonClick = () => {
+        //     modalDeleteHandler();
+        //     //TODO: adding delete via api and in global state
+        // }
 
 
         //** create modal
@@ -129,7 +129,7 @@ const ProductTable =
                         />
                     </div>
                 </div>
-                <CRUDDeleteProductModal title={"Delete Product"} modalHandler={modalDeleteHandler} handleDeleteButtonClick={handleDeleteButtonClick} modalIsOpened={isDeleteModalOpen} />
+                <CRUDDeleteProductModal title={"Delete Product"} modalHandler={modalDeleteHandler} modalIsOpened={isDeleteModalOpen} />
                 <CRUDAddProductModal title={"Add Product"} modalHandler={toggleCreateModal} handleCreateButtonClick={onClickCreateModalHandler} modalIsOpened={isCreateModalOpen} action="create" />
                 <CRUDEditProductModal title={"Edit Product"} modalHandler={openEditModal} handleDeleteButtonClick={openEditModal} modalIsOpened={isEditModalOpen} data={selectedProductForEdit} />
             </div>

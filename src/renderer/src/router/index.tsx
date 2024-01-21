@@ -9,6 +9,7 @@ import ErrorPage from '@renderer/pages/ErrorPage/ErrorPage'
 import CategoriesManagement from '@renderer/pages/category-management'
 import ProductsManagement from '@renderer/pages/products-management'
 import SalesManagement from '@renderer/pages/sales-management'
+import OrdersManagement from '@renderer/pages/orders-management'
 
 
 export type TPath =
@@ -19,6 +20,7 @@ export type TPath =
   | '/work-space/products-management'
   | '/work-space/table-management'
   | '/work-space/sales-management'
+  | '/work-space/orders-management'
 
 export type TRoute = {
   path: TPath
@@ -86,6 +88,10 @@ function Router() {
         {
           path: '/work-space/sales-management',
           element: <SalesManagement />
+        },
+        {
+          path: '/work-space/orders-management',
+          element: <OrdersManagement />
         }
       ]
     },

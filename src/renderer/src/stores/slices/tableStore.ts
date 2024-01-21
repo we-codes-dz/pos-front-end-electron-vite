@@ -20,12 +20,12 @@ export const createTableSlice: StateCreator<TableSlice> = (set) => ({
   },
   addTable: (table: TTable) => set((state) => ({ tables: [...state.tables, table] })),
   setTables: (tables: TTable[]) => set({ tables }),
-  addOrderToTable: (tableId: number, order: TOrder) => {
+  addOrderToTable: (tableId: number) => {
     set((state) => {
       const table: TTable = state.tables.find((t) => t.id === tableId)!
       return {
-        tables: state.tables.map((t) =>
-          t.id === tableId ? { ...table, orders: [...table.orders, order] } : t
+        tables: state.tables.map(
+          (t) => (t.id === tableId ? { ...table } : t) //TODO : adding orders
         )
       }
     })

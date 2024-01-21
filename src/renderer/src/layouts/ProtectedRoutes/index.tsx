@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const ProtectedRoutes: FC<{ allowedRoles: string, children: any }> = ({ allowedRoles, children }) => {
+const ProtectedRoutes: FC<{ allowedRoles: string, children: any }> = ({ children }) => {
     //const auth = useAppSelector((state: RootState) => state.profile.admin)
 
 

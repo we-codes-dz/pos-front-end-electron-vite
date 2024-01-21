@@ -44,8 +44,11 @@ export type TCategory = {
 export type TOrder = {
   id: number
   total: number
-  table: number
-  products: TProduct[]
+  table: any[]
+  items: any[]
+  createdAt: string
+  updatedAt: string
+  deletedAt: string
 }
 
 export interface SaleInt {

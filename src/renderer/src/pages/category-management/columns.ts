@@ -1,4 +1,4 @@
-import { ColumnHeaderInt } from '@renderer/components/table/Sales/sale-table'
+import { ColumnHeaderInt } from '@renderer/components/table/sales/sale-table'
 
 export interface CategoryColumnInt {
   key: number
