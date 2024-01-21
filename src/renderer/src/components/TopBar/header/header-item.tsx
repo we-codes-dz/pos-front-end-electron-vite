@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export type TPath = '/' | '*' | '/work-space' |
     '/work-space/categories-management' |
     '/work-space/products-management' |
-    '/work-space/table-management' |
+    '/work-space/tables-management' |
     '/work-space/orders-management' |
     '/work-space/sales-management';
 
