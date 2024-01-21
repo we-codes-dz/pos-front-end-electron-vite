@@ -7,22 +7,27 @@ export type TOrderTabs = {
     content: ReactNode;
 }
 type TProps = {
-    data: TOrderTabs[]
+    eatInTable: ReactNode;
+    eatOutTable: ReactNode;
 }
 const OrderTabs =
-    ({ data }: TProps) => {
+    ({ eatInTable, eatOutTable }: TProps) => {
         return (
             <Tabs color="warning">
-                {data.map((item) =>
-                    <Tab key={item.key} title={item.title}>
-                        <Card>
-                            <CardBody>
-                                {item.content}
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                )
-                }
+                <Tab key="eat-in" title="Eat in">
+                    <Card>
+                        <CardBody>
+                            {eatInTable}
+                        </CardBody>
+                    </Card>
+                </Tab>
+                <Tab key="eat-out" title="Eat out">
+                    <Card>
+                        <CardBody>
+                            {eatOutTable}
+                        </CardBody>
+                    </Card>
+                </Tab>
             </Tabs>
         )
     }
