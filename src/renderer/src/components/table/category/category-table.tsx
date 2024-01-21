@@ -69,9 +69,6 @@ const CategoryTable = ({ categoryColumns, categories }: Props) => {
     //? display data coming from the create modal 
     useEffect(() => {
         if (dataInputs) {
-            for (const value of dataInputs.values()) {
-                console.log(value);
-            }
             setDataInputs(undefined);
         }
     }, [isCreateModalOpen, dataInputs]);
