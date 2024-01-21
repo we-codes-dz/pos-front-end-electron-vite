@@ -1,7 +1,6 @@
-import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import useSales from "@renderer/api/hooks/useSales";
-import SalesTable from "@renderer/components/table/sales/sale-table";
-import OrderTabs, { TOrderTabs } from "@renderer/components/tabs/orders/order-tabs";
+import OrdersTable from "@renderer/components/table/orders/order-table";
+import OrderTabs from "@renderer/components/tabs/orders/order-tabs";
 import useAxiosPrivate from "@renderer/hooks/useAxiosPrivate";
 import { TProductColumn } from "@renderer/types/type-schema";
 
@@ -28,39 +27,25 @@ const columnHeaders: TProductColumn[] = [
 const OrdersPage = () => {
 
     const axiosInstance = useAxiosPrivate();
-    const { data: sales, isLoading } = useSales(axiosInstance);
+    const { data: orders, isLoading } = useSales(axiosInstance);
 
     if (isLoading) return null
-    console.log(sales)
+    console.log(orders)
 
     const structuringData =
-        (sales: any) => {
-            return sales.data.data;
+        (orders: any) => {
+            return orders.data.data;
         }
-    const structuredSales = structuringData(sales)
-    console.log(structuredSales)
+    const structuredOrders = structuringData(orders)
+    console.log(structuredOrders)
 
-    const tabData: TOrderTabs[] = [
-        {
-            key: 'eat-in',
-            title: "Eat in",
-            content: <> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</>
-        },
-        {
-            key: 'eat-out',
-            title: "Eat out",
-            content: <> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</>
 
-        },
-
-    ]
     return (
         <div className="flex flex-col w-full overflow-y-scroll h-full">
-            <OrderTabs data={tabData} />
-            {/* <SalesTable
-                headers={columnHeaders}
-                sales={structuredSales}
-            /> */}
+            <OrderTabs
+                eatInTable={<OrdersTable headers={columnHeaders} orders={structuredOrders} />}
+                eatOutTable={<OrdersTable headers={columnHeaders} orders={structuredOrders} />}
+            />
         </div>
     )
 }
