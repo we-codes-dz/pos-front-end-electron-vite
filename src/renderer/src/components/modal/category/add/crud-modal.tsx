@@ -6,16 +6,15 @@ interface Props {
     title: string;
     modalIsOpened: boolean;
     modalHandler: () => void;
-    handleCreateButtonClick: () => void;
-    action: "create" | "edit"
+    setDataInputs: (data: any) => void;
 }
 
 const CRUDAddCategoryModal =
-    ({ title, modalIsOpened, modalHandler, handleCreateButtonClick, action }: Props) => {
+    ({ title, modalIsOpened, modalHandler, setDataInputs }: Props) => {
         return (
             //TODO: add cancel and remove customized button to delete modal
-            <CreateModalWrapper title={title} modalIsOpened={modalIsOpened} modalHandler={modalHandler} onClickHandler={handleCreateButtonClick} btnClassName="btn-second">
-                <ModalBody modalHandler={modalHandler} action={action} />
+            <CreateModalWrapper title={title} modalIsOpened={modalIsOpened} btnClassName="btn-second">
+                <ModalBody setDataInputs={setDataInputs} modalHandler={modalHandler} />
             </CreateModalWrapper>
         )
     }
