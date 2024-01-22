@@ -1,7 +1,6 @@
 import { fabric } from 'fabric';
 import { useEffect, useRef, useState } from 'react';
-import { addRect, generateId, initCanvas } from './helpers';
-import { tableFill, tableShadow, tableStroke } from './data';
+import { addChair, addCircle, addRect, addTriangle, initCanvas } from './helpers';
 
 
 const TableDragAndDrop = () => {
@@ -22,10 +21,35 @@ const TableDragAndDrop = () => {
     }, []);
 
     //? furniture functions
-    const addChairClickHandler = () => {
+
+    //? big table
+    const addRectTableClickHandler = () => {
         console.log(chairNumber)
         addRect(canvas.current, chairNumber, 30, 90, 60, 90);
         setChairNumber(prev => prev + 1);
+    }
+    //? circle table
+    const addCircleClickHandler = () => {
+        addCircle(canvas.current, chairNumber, 0, 0, 30)
+        setChairNumber(prev => prev + 1);
+    }
+
+    const addTriangleClickHandler = () => {
+        addTriangle(canvas.current, chairNumber, 0, 0, 30)
+        setChairNumber(prev => prev + 1);
+    }
+
+    const addChairClickHandler = () => {
+        addChair(canvas.current, 15, 105)
+    }
+
+    const handleRemoveClick = () => {
+        if (canvas && canvas.current) {
+            const o = (canvas.current as fabric.Canvas).getActiveObject()
+            if (o) {
+                (canvas.current as fabric.Canvas).remove(o)?.discardActiveObject()?.renderAll();
+            }
+        }
     }
 
 
@@ -51,19 +75,25 @@ const TableDragAndDrop = () => {
                     <div className="space-x-3">
                         <button
                             className="btn btn-primary rectangle"
-                            onClick={addChairClickHandler}
+                            onClick={addRectTableClickHandler}
                         >+ &#9647; Table
                         </button>
-                        <button className="btn btn-primary circle"
-
+                        <button
+                            className="btn btn-primary circle"
+                            onClick={addCircleClickHandler}
                         >+ &#9711; Table</button>
-                        <button className="btn btn-primary triangle">+ &#9651; Table</button>
-                        <button className="btn btn-primary chair"
+                        <button
+                            className="btn btn-primary triangle"
+                            onClick={addTriangleClickHandler}
+                        >+ &#9651; Table</button>
+                        <button
+                            className="btn btn-primary chair"
+                            onClick={addChairClickHandler}
                         >+ Chair</button>
-                        <button className="btn btn-primary bar">+ Bar</button>
-                        <button className="btn btn-default wall">+ Wall</button>
-                        <button className="btn btn-danger remove">Remove</button>
-                        <button className="btn btn-warning customer-mode">Customer mode</button>
+                        <button
+                            className="btn btn-error remove"
+                            onClick={handleRemoveClick}
+                        >Remove</button>
                     </div>
                     <div className='w-full flex gap-2'>
                         <canvas ref={canvasRef} id="c" width={700} height={400}></canvas>

@@ -225,7 +225,7 @@ export const addCircle = (
     number: number
   })
   canvas.add(g)
-  number++
+  //number++
   return g
 }
 
