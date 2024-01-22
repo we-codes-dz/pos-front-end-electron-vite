@@ -8,7 +8,6 @@ interface AddCategoryContext {
   previousCategories: TCategory[]
 }
 const useCategories = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
-  // const categoriesService = new CategoriesService("/categories", axiosInstance);
   const categoriesService = new APIService<TCategory, TCategoryFilter>(
     '/categories',
     axiosInstance,
@@ -23,7 +22,6 @@ const useCategories = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
 }
 
 export const usePaginateCategories = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
-  // const categoriesService = new CategoriesService("/categories", axiosInstance);
   const categoriesService = new APIService<TCategory, TCategoryFilter>(
     '/categories',
     axiosInstance,
@@ -31,40 +29,59 @@ export const usePaginateCategories = (axiosInstance: AxiosInstanceOriginal, filt
   )
   const data = useQuery<TCategory[], Error, TCategoryFilter>({
     queryKey: filter ? [CATEGORIES, filter] : [CATEGORIES],
-    queryFn: categoriesService.findAll,
-    staleTime: 0,
-    keepPreviousData: true
+    queryFn: categoriesService.findAll
   })
 
   return data
 }
 
-export const useAddCategories = (axiosInstance: AxiosInstanceOriginal) => {
+export const useAddCategories = (axiosInstance: AxiosInstanceOriginal, reset: () => void) => {
   const queryClient = useQueryClient()
-  const categoriesService = new APIService<TCategory, TCategoryFilter>(
-    '/categories',
-    axiosInstance,
-    filter
-  )
-  return useMutation<TCategory, Error, TCategory, AddCategoryContext>({
-    mutationFn: categoriesService.post,
-    onMutate: (newCategory: TCategory) => {
+  // const categoriesService = new APIService<TCategory, TCategoryFilter>('/categories', axiosInstance)
+  return useMutation<TCategory, Error, any, AddCategoryContext>({
+    mutationFn: async (data) => {
+      return await axiosInstance.post('http://localhost:3000/categories', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    },
+    onMutate: (newCategory: any) => {
       //APPRCOHE updateing the data in chache corrently
-      const previousCategories = queryClient.getQueryData<TCategory[]>([CATEGORIES]) || []
-      queryClient.setQueryData<TCategory[]>([CATEGORIES], (categories = []) => [
-        newCategory,
-        ...categories
-      ])
 
-      return { previousCategories }
+      const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
+
+      queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
+        const newCategories = Array.isArray(categories)
+          ? [newCategory, ...categories.data.data]
+          : [newCategory]
+        return newCategories
+      })
+
+      return { previousCategories: previousCategories || [] }
     },
-    onSuccess: (savedCategory, newCategory) => {
-      queryClient.setQueryData<TCategory[]>([CATEGORIES], (categories) =>
-        categories?.map((category) => (category === newCategory ? savedCategory : category))
-      )
+    onSuccess: (savedCategory: any, _, context: any) => {
+      reset()
+
+      // Log information for debugging
+      // console.log('Previous Categories:', context?.previousCategories)
+      // console.log('Saved Category:', savedCategory)
+
+      queryClient.setQueryData<any>([CATEGORIES], (categories) => {
+        const previousCategories = context?.previousCategories || []
+        const updatedCategories = Array.isArray(categories)
+          ? [savedCategory.data.data, ...previousCategories.data.data]
+          : [savedCategory.data.data, ...previousCategories]
+
+        // console.log('Updated Categories:', updatedCategories)
+
+        return updatedCategories
+      })
     },
-    onError: (error, newTodo, context: AddCategoryContext) => {
-      console.log(error, newTodo)
+
+    onError: (error, context: AddCategoryContext) => {
+      console.log(error)
+      reset()
       if (!context) return
       queryClient.setQueryData<TCategory[]>([CATEGORIES], context.previousCategories)
     }

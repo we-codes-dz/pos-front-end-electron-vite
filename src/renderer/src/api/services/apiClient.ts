@@ -21,7 +21,13 @@ class APICLIENT<T, F> {
   }
 
   post = (data: T) => {
-    return this.axiosInstance.post<T>(this.endpoint, data).then((res) => res.data)
+    return this.axiosInstance
+      .post<T>(this.endpoint, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => res.data)
   }
 }
 

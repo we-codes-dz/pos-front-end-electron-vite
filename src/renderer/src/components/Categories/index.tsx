@@ -26,8 +26,9 @@ const Categories = () => {
   }
   if (error) return <div>{error.message}</div>
   const organizeDataIntoSlider = (categories: any): TSlider[] => {
+    const data = categories?.data?.data ? categories?.data?.data : categories
     const chunkSize = 6
-    const chunkedCategories: TCategory[][] = _.chunk(categories.data.data, chunkSize)
+    const chunkedCategories: TCategory[][] = _.chunk(data, chunkSize)
     return _.map(chunkedCategories, (chunk, index) => ({
       tabNumber: index + 1,
       content: _.map(chunk, (cat) => ({
