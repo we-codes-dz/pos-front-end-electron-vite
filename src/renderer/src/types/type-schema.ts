@@ -96,6 +96,7 @@ export type TProductFilter = {
   limit?: number | null
 }
 export type TCategoryFilter = {
-  page: number | null
-  limit: number | null
+  page?: number | null
+  limit?: number | null
+  totalPages?: number | null
 }

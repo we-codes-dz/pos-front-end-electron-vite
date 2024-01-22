@@ -3,8 +3,8 @@ import APICLIENT from './apiClient'
 
 class APIService<T, F> {
   apiClient: APICLIENT<T, F>
-  filter: F
-  constructor(apiPath: string, axiosInstance: AxiosInstanceOriginal, filter: F) {
+  filter?: F
+  constructor(apiPath: string, axiosInstance: AxiosInstanceOriginal, filter?: F) {
     this.apiClient = new APICLIENT(apiPath, axiosInstance)
     this.filter = filter
   }

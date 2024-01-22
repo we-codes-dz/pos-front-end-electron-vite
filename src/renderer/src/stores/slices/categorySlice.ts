@@ -4,6 +4,9 @@ import { StateCreator } from 'zustand'
 export interface CategorySlice {
   categories: TCategory[]
   categoryFilterKey: TCategoryFilter
+  dataInputs: FormData | null
+  setInputs: (newInputs: FormData) => void
+  reset: () => void
   setCategoryFilterKey: (key: TCategoryFilter) => void
   isCategoriesMounted: boolean
   fetchCategories: (url: string) => Promise<void>
@@ -16,8 +19,11 @@ export interface CategorySlice {
 export const createCategorySlice: StateCreator<CategorySlice> = (set) => ({
   categories: [],
   isCategoriesMounted: false,
-  categoryFilterKey: { page: 1, limit: 2 },
+  categoryFilterKey: { page: 1, limit: 2, totalPages: null },
   setCategoryFilterKey: (categoryFilterKey: TCategoryFilter) => set({ categoryFilterKey }),
+  dataInputs: null,
+  setInputs: (newInputs: FormData) => set({ dataInputs: newInputs }),
+  reset: () => set({ dataInputs: null }),
   fetchCategories: async (url: string) => {
     const response = await fetch(url)
     set({ categories: (await response.json()) as TCategory[] })
