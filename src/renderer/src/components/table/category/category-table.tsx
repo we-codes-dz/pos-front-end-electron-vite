@@ -78,11 +78,14 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   }, [isCreateModalOpen, dataInputs])
 
 
+
   //? modal logic
   //** delete modal
   const modalDeleteHandler = () => {
     setOpenedDeleteModal(!isDeleteModalOpen)
   }
+
+  // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
     console.log('id of the item to delete it :', deletedItemId)
   }
@@ -107,11 +110,15 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   const handleEditButtonClick = (element: TCategory) => {
     setSelectedCategory(element)
     toggleEditModal()
-    //TODO: adding delete via api and in global state
   }
   const openEditModal = () => {
     toggleEditModal()
-    //TODO: adding delete via api and in global state
+  }
+
+
+  // TODO: do api logic of the edit here
+  const handleEditSubmit = (data: any) => {
+    console.log(data);
   }
 
   return (
@@ -165,7 +172,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
       <CRUDEditCategoryModal
         title={'Edit Category'}
         modalHandler={openEditModal}
-        handleDeleteButtonClick={openEditModal}
+        handleEditButtonClick={(data) => handleEditSubmit(data)}
         modalIsOpened={isEditModalOpen}
         data={selectedCategoryForEdit}
       />

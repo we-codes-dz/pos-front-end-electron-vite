@@ -27,10 +27,11 @@ interface Props {
     btnClassName?: string;
     modalHandler: () => void;
     data?: TCategory;
+    onClickHandler: (data: any) => void;
 
 }
 const ModalBody =
-    ({ modalHandler, data }: Props) => {
+    ({ modalHandler, onClickHandler, data }: Props) => {
         const [isSubmitting, setSubmitting] = useState<boolean>(false);
 
         //? form control logic
@@ -52,7 +53,7 @@ const ModalBody =
         const handlerSubmit =
             async (data: Inputs) => {
                 try {
-                    console.log(data)
+                    onClickHandler(data);
                     //? enabling the spinner
                     setSubmitting(true);
                     //? resetting the form after action 
