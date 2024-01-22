@@ -14,7 +14,7 @@ const CRUDDeleteCategoryModal =
         return (
             //TODO: add cancel and remove customized button to delete modal
             <ConfirmationModalWrapper title={title} modalIsOpened={modalIsOpened} modalHandler={modalHandler}  >
-                <ModalBody modalHandler={modalHandler} btnClassName="btn-error" />
+                <ModalBody modalHandler={modalHandler} confirmDeletingHandler={handleDeleteButtonClick} btnClassName="btn-error" />
             </ConfirmationModalWrapper>
         )
     }

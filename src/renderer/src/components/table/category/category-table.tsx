@@ -14,8 +14,6 @@ import TableHeader, { ColumnHeaderInt } from '../common/table/category-table-hea
 import CategoryTableRow from './category-table-row'
 import {
   useAddCategories,
-  useDeleteCategory,
-  useUpdateCategory
 } from '@renderer/api/hooks/useCategories'
 import { AxiosInstance } from 'axios'
 interface Props {
@@ -40,6 +38,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false)
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
+  const [deletedItemId, setDeletedItemId] = useState<number>()
 
   //? create data state
   //   const [dataInputs, setDataInputs] = useState<FormData>()
@@ -78,14 +77,14 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
     handleAddButtonSubmit()
   }, [isCreateModalOpen, dataInputs])
 
+
   //? modal logic
   //** delete modal
   const modalDeleteHandler = () => {
     setOpenedDeleteModal(!isDeleteModalOpen)
   }
   const handleDeleteButtonClick = () => {
-    modalDeleteHandler()
-    console.log('handle delete click')
+    console.log('id of the item to delete it :', deletedItemId)
   }
 
   //** create modal
@@ -136,6 +135,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
                 category={item}
                 handleEditButtonClick={() => handleEditButtonClick(item)}
                 modalDeleteHandler={modalDeleteHandler}
+                catchingId={() => setDeletedItemId(item.id)}
               />
             ))}
           </Tbody>
@@ -145,7 +145,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
             currentPage={categoryFilterKey.page!}
             limit={categoryFilterKey.limit!}
             totalPages={totalPages}
-            // onPageChange={(page) => setCurrentPage(page)}
+          // onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
       </div>

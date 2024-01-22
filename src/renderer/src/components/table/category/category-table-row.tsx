@@ -7,10 +7,16 @@ type TProps = {
     category: TCategory;
     handleEditButtonClick: () => void;
     modalDeleteHandler: () => void;
+    catchingId: (data: any) => void
 }
 
 const CategoryTableRow =
-    ({ category, handleEditButtonClick, modalDeleteHandler }: TProps) => {
+    ({ category, handleEditButtonClick, modalDeleteHandler, catchingId }: TProps) => {
+
+        const clickHandler = () => {
+            catchingId(category.id);
+            modalDeleteHandler();
+        }
         return (
             <Tr className="intro-x">
                 <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -40,7 +46,7 @@ const CategoryTableRow =
                             Edit
                         </div>
                         <div className="flex gap-1 items-end text-error">
-                            <FaTrashCan onClick={modalDeleteHandler} className="text-error" size={30} strokeWidth={1.8} />
+                            <FaTrashCan onClick={clickHandler} className="text-error" size={30} strokeWidth={1.8} />
                             Delete
                         </div>
                     </div>

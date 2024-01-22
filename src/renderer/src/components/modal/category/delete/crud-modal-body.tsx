@@ -3,9 +3,14 @@ import { cn } from "@renderer/utils/helper";
 interface Props {
     btnClassName?: string;
     modalHandler: () => void;
+    confirmDeletingHandler: () => void;
 }
 const ModalBody =
-    ({ modalHandler, btnClassName }: Props) => {
+    ({ modalHandler, confirmDeletingHandler, btnClassName }: Props) => {
+        const onConfirmHandler = () => {
+            confirmDeletingHandler();
+            modalHandler();
+        }
         return (
             <div className="font-medium text-lg">
                 {/* if there is a button, it will close the modal */}
@@ -18,7 +23,7 @@ const ModalBody =
                     <button className={cn(
                         "text-white btn btn-primary",
                         btnClassName
-                    )} onClick={modalHandler} >Confirm</button>
+                    )} onClick={onConfirmHandler} >Confirm</button>
                 </div>
             </div>
         )
