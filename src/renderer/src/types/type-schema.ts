@@ -100,3 +100,18 @@ export type TCategoryFilter = {
   limit?: number | null
   totalPages?: number | null
 }
+
+export type TLinks = {
+  current?: string
+  next?: string
+  prev?: string
+}
+export type FetchResponse<T> = {
+  message: string
+  statusCode: number
+  data: {
+    data: T | T[]
+    meta?: TMeta
+    links?: TLinks
+  }
+}

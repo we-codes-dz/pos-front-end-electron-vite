@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { TCategory, TCategoryFilter } from '../../types/type-schema'
+import { FetchResponse, TCategory, TCategoryFilter } from '../../types/type-schema'
 import { CATEGORIES } from '../../utils/constants'
 import { AxiosInstance as AxiosInstanceOriginal } from 'axios'
 
@@ -13,7 +13,7 @@ const useCategories = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
     axiosInstance,
     filter
   )
-  const data = useQuery<TCategory[], Error>({
+  const data = useQuery<FetchResponse<TCategory[]>, Error>({
     queryKey: filter ? [CATEGORIES, filter] : [CATEGORIES],
     queryFn: categoriesService.findAll
   })
@@ -27,7 +27,7 @@ export const usePaginateCategories = (axiosInstance: AxiosInstanceOriginal, filt
     axiosInstance,
     filter
   )
-  const data = useQuery<TCategory[], Error, TCategoryFilter>({
+  const data = useQuery<FetchResponse<TCategory[]>, Error>({
     queryKey: filter ? [CATEGORIES, filter] : [CATEGORIES],
     queryFn: categoriesService.findAll
   })
@@ -51,7 +51,7 @@ export const useAddCategories = (axiosInstance: AxiosInstanceOriginal, reset: ()
 
       const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
 
-      queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
+      queryClient.setQueryData<any>([CATEGORIES], (categories: FetchResponse<TCategory[]>) => {
         const newCategories = Array.isArray(categories)
           ? [newCategory, ...categories.data.data]
           : [newCategory]

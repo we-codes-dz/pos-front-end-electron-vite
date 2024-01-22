@@ -15,7 +15,7 @@ const index = () => {
   const structuringData = (categories: any): TCategory[] => {
     return categories.data.data
   }
-
+  const totalPages = categories?.data?.meta?.totalPages
   const structuredCategory = structuringData(categories) as TCategory[]
   return (
     <div className="flex flex-col w-full">
@@ -23,7 +23,7 @@ const index = () => {
         axiosInstance={axiosInstance}
         categoryColumns={categoryColumns}
         categories={structuredCategory}
-        totalPages={categories.data.meta.totalPages}
+        totalPages={totalPages!}
       />
     </div>
   )

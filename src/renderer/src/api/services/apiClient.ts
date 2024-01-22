@@ -1,3 +1,4 @@
+import { FetchResponse } from '@renderer/types/type-schema'
 import {
   AxiosInstance as AxiosInstanceOriginal
   // AxiosResponse as AxiosResponseOriginal
@@ -17,7 +18,7 @@ class APICLIENT<T, F> {
   getAll = (filter?: F) => {
     // const config = filter ? { params: { "filter.categoryId": filter } } : {};
     const config = filter ? { params: filter } : {}
-    return this.axiosInstance.get<T[]>(this.endpoint, config).then((res) => res.data)
+    return this.axiosInstance.get<FetchResponse<T[]>>(this.endpoint, config).then((res) => res.data)
   }
 
   post = (data: T) => {
