@@ -12,7 +12,11 @@ import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader, { ColumnHeaderInt } from '../common/table/category-table-header'
 import CategoryTableRow from './category-table-row'
-import { useAddCategories } from '@renderer/api/hooks/useCategories'
+import {
+  useAddCategories,
+  useDeleteCategory,
+  useUpdateCategory
+} from '@renderer/api/hooks/useCategories'
 import { AxiosInstance } from 'axios'
 interface Props {
   categoryColumns: ColumnHeaderInt[]
@@ -70,7 +74,9 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   }, [selectedFilterParam, categories])
 
   //? display data coming from the create modal
-  useEffect(() => {}, [isCreateModalOpen, dataInputs])
+  useEffect(() => {
+    handleAddButtonSubmit()
+  }, [isCreateModalOpen, dataInputs])
 
   //? modal logic
   //** delete modal
@@ -79,7 +85,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   }
   const handleDeleteButtonClick = () => {
     modalDeleteHandler()
-    //TODO: adding delete via api and in global state
+    console.log('handle delete click')
   }
 
   //** create modal
@@ -88,7 +94,9 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   }
 
   const handleAddButtonSubmit = async () => {
+    console.log('entered to submit data')
     if (dataInputs) {
+      console.log('before mutate')
       addCategory.mutate(dataInputs)
     }
   }
