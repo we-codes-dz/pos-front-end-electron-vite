@@ -36,7 +36,6 @@ export const usePaginateProducts = (axiosInstance: AxiosInstanceOriginal, filter
 
 export const useAddProduct = (axiosInstance: AxiosInstanceOriginal, reset: () => void) => {
   const queryClient = useQueryClient()
-  // const categoriesService = new APIService<TCategory, TCategoryFilter>('/categories', axiosInstance)
   return useMutation<TProduct, Error, any, AddProductContext>({
     mutationFn: async (data) => {
       const response = await axiosInstance.post('http://localhost:3000/products', data, {
@@ -144,10 +143,10 @@ export const useDeleteProduct = (axiosInstance: AxiosInstanceOriginal) => {
       const previousProducts = queryClient.getQueryData<any>([PRODUCTS]) || []
 
       queryClient.setQueryData<any>([PRODUCTS], (products: FetchResponse<TProduct>) => {
-        const updatedCategories = Array.isArray(products)
+        const updatedProducts = Array.isArray(products)
           ? products.data.data.filter((product) => product.id !== productId)
           : previousProducts.data.data.filter((product) => product.id !== productId)
-        return updatedCategories
+        return updatedProducts
       })
 
       return { previousProducts: previousProducts || [] }
@@ -155,7 +154,7 @@ export const useDeleteProduct = (axiosInstance: AxiosInstanceOriginal) => {
     onError: (error) => {
       console.log(error)
       // if (!context) return
-      // queryClient.setQueryData<TCategory[]>([CATEGORIES], context.previousProducts)
+      // queryClient.setQueryData<TCategory[]>([PRODUCTS], context.previousProducts)
     }
   })
 }
