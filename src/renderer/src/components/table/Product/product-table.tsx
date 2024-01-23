@@ -1,5 +1,8 @@
+import { useAddProduct, useDeleteProduct, useUpdateProduct } from '@renderer/api/hooks/useProducts'
+import { useBoundStore } from '@renderer/stores/store'
 import { TProduct } from '@renderer/types/type-schema'
 import { ProductOrderBy, orderProducts } from '@renderer/utils/filter'
+import { AxiosInstance } from 'axios'
 import { ChangeEvent, useEffect, useState } from 'react'
 import CRUDAddProductModal from '../../modal/product/add/crud-modal'
 import CRUDDeleteProductModal from '../../modal/product/delete/crud-modal'
@@ -8,11 +11,7 @@ import { Table, Tbody } from '../common'
 import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader from '../common/table/category-table-header'
-import { AxiosInstance } from 'axios'
 import ProductTableRow from './product-table-row'
-import { useBoundStore } from '@renderer/stores/store'
-import { useAddProduct, useDeleteProduct, useUpdateProduct } from '@renderer/api/hooks/useProducts'
-import { unstable_batchedUpdates } from 'react-dom'
 //TODO: add pagination logic
 
 export interface ColumnHeaderInt {
@@ -116,6 +115,10 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
     //TODO: adding delete via api and in global state
   }
 
+  const handleEditSubmit = (data: any, avatar: any) => {
+    editProduct.mutate({ id: selectedProductForEdit!.id, name: data.name, avatar })
+  }
+
   return (
     <div className="mt-4 pb-2">
       <HeaderSection
@@ -167,7 +170,7 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
       <CRUDEditProductModal
         title={'Edit Product'}
         modalHandler={openEditModal}
-        handleDeleteButtonClick={openEditModal}
+        handleEditButtonClick={(data, avatar) => handleEditSubmit(data, avatar)}
         modalIsOpened={isEditModalOpen}
         data={selectedProductForEdit}
       />

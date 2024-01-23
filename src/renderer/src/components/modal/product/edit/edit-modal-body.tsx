@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Textarea } from "@nextui-org/react"
+import { Button } from "@nextui-org/react";
 import SpinnerComponent from "@renderer/components/Spinner/Spinner";
 import ErrorMessage from "@renderer/components/inputs/ErrorMessage/ErrorMessage";
+import ReusableInput from "@renderer/components/inputs/input/custom-input";
 import { productSchema } from "@renderer/types/form-schema";
 import { TProduct } from "@renderer/types/type-schema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -15,30 +16,49 @@ interface Props {
     btnClassName?: string;
     modalHandler: () => void;
     data?: TProduct;
-
+    onClickHandler: (data: any, avatar: any) => void
 }
 const ModalBody =
-    ({ modalHandler, data }: Props) => {
+    ({ modalHandler, onClickHandler, data }: Props) => {
         const [isSubmitting, setSubmitting] = useState<boolean>(false);
+        const [image, setImage] = useState<any>([])
 
         //? form control logic
         const {
             register,
             handleSubmit,
             reset,
+            setValue,
             formState: { errors }
         } = useForm<Inputs>({
             mode: 'onSubmit',
-
+            defaultValues: {
+                name: data?.name,
+                category: data?.category,
+                description: data?.description,
+                price: data?.price
+            },
             resolver: zodResolver(productSchema),
         })
 
+
+
+        useEffect(() => {
+            if (data) {
+                const { name, category, description, price } = data
+                setValue('name', name)
+                setValue('category', category)
+                setValue('description', description)
+                setValue('price', price)
+
+            }
+        }, [data, setValue])
 
         //? 
         const handlerSubmit =
             async (data: Inputs) => {
                 try {
-                    console.log(data)
+                    onClickHandler(data, image)
                     //? enabling the spinner
                     setSubmitting(true);
                     //? resetting the form after action 
@@ -56,53 +76,67 @@ const ModalBody =
                 }
             }
 
-        if (!data) return;
+
+        const imageUploadHandler = (event: any) => {
+            if (!event.target.files[0]) return
+            setImage(event.target.files[0])
+        }
+
+        if (!data) return null;
         return (
             <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-4">
                 {/* <!-- name Input --> */}
-                <Input
-                    type="text"
-                    label="Category Name"
-                    placeholder="Category Name..."
-                    className="shadow-md overflow-auto rounded-lg"
-                    defaultValue={data?.name}
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('name')}
-                />
-                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+                <ReusableInput label='Product Name' >
+                    <input type="text" placeholder="Product Name..." className="input input-bordered w-full" {...register('name')} />
+                    {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+                </ReusableInput>
+                {/* <!-- name Input end --> */}
 
-                <Textarea
-                    type="text"
-                    label="Description"
-                    className="shadow-md overflow-auto rounded-lg"
-                    defaultValue={data?.description}
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('description')}
-                />
-                {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+                {/* <!-- description Input --> */}
+                <ReusableInput label='Product Name' >
+                    <textarea placeholder="Product Name..." className="textarea input-bordered w-full h-24" {...register('description')} />
+                    {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+                </ReusableInput>
+                { }
 
 
-                <Input
-                    type="number"
-                    label="Price"
-                    className="shadow-md overflow-auto rounded-lg"
-                    defaultValue={data?.price.toString()}
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('price')}
-                />
-                {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
+                {/* <!-- price Input --> */}
+                <ReusableInput label='Price' >
+                    <input
+                        type="number"
+                        className="input input-bordered w-full"
+                        {...register('price', {
+                            setValueAs: (value) => parseFloat(value)
+                        })} />
+                    {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
+                </ReusableInput>
+                {/* <!-- price Input end --> */}
+
 
                 {//TODO: Add category select
                 }
-                <Input
-                    type="number"
-                    label="Category number"
-                    className="shadow-md overflow-auto rounded-lg"
-                    //errorMessage={errors.title && "Title is required"}
-                    defaultValue={data?.category.toString()}
-                    {...register('category')}
-                />
-                {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
+                {/* <!-- category Input --> */}
+                <ReusableInput label='Category number' >
+                    <input
+                        type="number"
+                        className="input input-bordered w-full"
+                        {...register('category', {
+                            setValueAs: (value) => parseFloat(value)
+                        })}
+                    />
+                    {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
+                </ReusableInput>
+                {/* <!-- category Input end --> */}
+
+
+                <label className="form-control w-full ">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="file-input file-input-bordered file-input-accent w-full max-w-xs"
+                        onChange={(e: any) => imageUploadHandler(e)}
+                    />
+                </label>
 
 
                 {/* <!-- Login Button --> */}

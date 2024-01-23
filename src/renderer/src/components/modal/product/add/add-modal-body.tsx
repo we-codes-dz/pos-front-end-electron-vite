@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Textarea } from "@nextui-org/react"
+import { Button } from "@nextui-org/react";
 import SpinnerComponent from "@renderer/components/Spinner/Spinner";
 import ErrorMessage from "@renderer/components/inputs/ErrorMessage/ErrorMessage";
 import ReusableInput from "@renderer/components/inputs/input/custom-input";

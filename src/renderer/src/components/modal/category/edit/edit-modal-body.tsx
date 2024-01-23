@@ -58,7 +58,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
       const { name } = data
       setValue('name', name)
     }
-  }, [data])
+  }, [data, setValue])
   //?
   const handlerSubmit = async (data: Inputs) => {
     try {
