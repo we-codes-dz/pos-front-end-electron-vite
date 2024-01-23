@@ -33,7 +33,6 @@ interface Props {
 
 const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
   const [image, setImage] = useState<any>([])
-  const [hasImage, setHasImage] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
 
   console.log(data)
@@ -64,10 +63,6 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
   //?
   const handlerSubmit = async (data: Inputs) => {
     try {
-      if (!image || image.length === 0) {
-        setHasImage(true)
-        return
-      }
       onClickHandler(data, image)
       //? enabling the spinner
       setSubmitting(true)
@@ -113,13 +108,8 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
           className="file-input file-input-bordered file-input-accent w-full max-w-xs"
           onChange={(e: any) => {
             imageUploadHandler(e)
-            setHasImage(false);
           }}
         />
-        <div className="label">
-          <span className="label-text text-xs">{hasImage && <ErrorMessage>You should choose an image</ErrorMessage>}
-          </span>
-        </div>
       </label>
 
       <div className="pt-6 flex gap-2 items-center w-full justify-end">
