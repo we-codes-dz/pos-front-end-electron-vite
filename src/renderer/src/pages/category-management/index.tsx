@@ -11,7 +11,8 @@ const index = () => {
 
   if (isLoading) return null
   const structuringData = (categories: any): TCategory[] => {
-    return categories.data.data
+    const data = categories?.data?.data ? categories?.data?.data : categories
+    return data
   }
   const structuredCategory = structuringData(categories) as TCategory[]
   return (
