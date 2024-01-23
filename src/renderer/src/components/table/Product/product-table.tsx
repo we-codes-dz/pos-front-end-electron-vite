@@ -82,7 +82,6 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
 
   // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
-    console.log('id of the item to delete it :', deletedItemId)
     if (deletedItemId) {
       deleteProduct.mutate(deletedItemId!)
     }
