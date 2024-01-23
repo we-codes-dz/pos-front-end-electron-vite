@@ -4,7 +4,7 @@ import SpinnerComponent from '@renderer/components/Spinner/Spinner'
 import ErrorMessage from '@renderer/components/inputs/ErrorMessage/ErrorMessage'
 import { categorySchema } from '@renderer/types/form-schema'
 import { TCategory } from '@renderer/types/type-schema'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -38,12 +38,10 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors }
   } = useForm<Inputs>({
     mode: 'onSubmit',
-    defaultValues: {
-      name: data?.name
-    },
     resolver: zodResolver(categorySchema)
   })
 
@@ -51,6 +49,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     if (!event.target.files[0]) return
     setImage(event.target.files[0])
   }
+
 
   //?
   const handlerSubmit = async (data: Inputs) => {
@@ -72,6 +71,16 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     }
   }
 
+
+  useEffect(() => {
+    // Update form inputs when data prop changes
+    if (data) {
+      setValue('name', data.name || ''); // Assuming 'name' is a key in your schema
+      //setValue('child', data.children ? [`${data.children[0].name}`] : ['']);
+      //setValue('parent', data.parent ? [`${data.parent[0].name}`] : ['']);
+    }
+  }, [data, setValue]);
+
   if (!data) return
   return (
     <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-4">
@@ -81,7 +90,6 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
         label="Category Name"
         placeholder="Category Name..."
         className="shadow-md overflow-auto rounded-lg"
-        defaultValue={data?.name}
         //errorMessage={errors.title && "Title is required"}
         {...register('name')}
       />
@@ -94,7 +102,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
         placeholder="Select child category"
         {...register('child')}
 
-        //onChange={(e) => filterByParam(e)}
+      //onChange={(e) => filterByParam(e)}
       >
         {categories.map((item) => (
           <SelectItem className="text-black" key={item.value} value={item.value}>
@@ -108,7 +116,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
         className=" text-black w-full"
         placeholder="Select parent category"
         {...register('parent')}
-        //onChange={(e) => filterByParam(e)}
+      //onChange={(e) => filterByParam(e)}
       >
         {categories.map((item) => (
           <SelectItem className="text-black" key={item.value} value={item.value}>
