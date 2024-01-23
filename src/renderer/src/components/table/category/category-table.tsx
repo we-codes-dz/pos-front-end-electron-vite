@@ -120,7 +120,10 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
 
   // TODO: do api logic of the edit here
   const handleEditSubmit = (data: any, avatar: any) => {
-    editCategory.mutate({ data, avatar })
+    console.log("id: ", selectedCategoryForEdit!.id)
+
+    console.log('data', data)
+    //editCategory.mutate({ data, avatar })
   }
 
   return (
