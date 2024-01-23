@@ -64,16 +64,12 @@ export const useAddCategories = (axiosInstance: AxiosInstanceOriginal, reset: ()
       reset()
 
       // Log information for debugging
-      // console.log('Previous Categories:', context?.previousCategories)
-      // console.log('Saved Category:', savedCategory)
 
       queryClient.setQueryData<any>([CATEGORIES], (categories) => {
         const previousCategories = context?.previousCategories || []
         const updatedCategories = Array.isArray(categories)
           ? [savedCategory.data.data, ...previousCategories.data.data]
           : [savedCategory.data.data, ...previousCategories]
-
-        // console.log('Updated Categories:', updatedCategories)
 
         return updatedCategories
       })
@@ -105,11 +101,14 @@ export const useUpdateCategory = (axiosInstance: AxiosInstanceOriginal, reset: (
     onMutate: async (updatedCategory) => {
       const { id, ...rest } = updatedCategory
       const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
-      console.log('---------', previousCategories)
-      queryClient.setQueryData<any>([CATEGORIES], (categories: FetchResponse<TCategory[]>) => {
+      queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
+        let dataCategories = categories?.data?.data ? categories?.data?.data : categories
         const updatedCategories = Array.isArray(categories)
-          ? categories.map((category) => (category.id === id ? { id, ...rest } : category))
-          : [updatedCategory, ...previousCategories.data.data]
+          ? dataCategories.map((category) => (category.id === id ? { id, ...rest } : category))
+          : [
+              updatedCategory,
+              ...previousCategories.data.data.filter((category) => category.id !== id)
+            ]
 
         return updatedCategories
       })
@@ -119,13 +118,13 @@ export const useUpdateCategory = (axiosInstance: AxiosInstanceOriginal, reset: (
     onSuccess: (updatedCategory, _, context: any) => {
       reset()
 
-      queryClient.setQueryData<any>([CATEGORIES], (categories: FetchResponse<TCategory[]>) => {
+      queryClient.setQueryData<any>([CATEGORIES], (categories: FetchResponse<TCategory>) => {
         const previousCategories = context?.previousCategories || []
         const updatedCategories = Array.isArray(categories)
           ? categories.map((category) =>
               category.id === updatedCategory.id ? updatedCategory : category
             )
-          : [updatedCategory, ...previousCategories]
+          : [updatedCategory, ...previousCategories.data.data]
 
         return updatedCategories
       })

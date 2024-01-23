@@ -35,7 +35,6 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
   const [image, setImage] = useState<any>([])
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
 
-  console.log(data)
   //? form control logic
   const {
     register,
@@ -56,7 +55,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
 
   useEffect(() => {
     if (data) {
-      const { name } = data;
+      const { name } = data
       setValue('name', name)
     }
   }, [data])
@@ -69,7 +68,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
       //? resetting the form after action
       reset()
       //? closing the modal
-      //modalHandler()
+      modalHandler()
       //? adding api logic
 
       //? disenabling the spinner
@@ -80,18 +79,22 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     }
   }
 
-
-  if (!data) return null;
+  if (!data) return null
   return (
     <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-3">
       {/* <!-- name Input  start--> */}
-      <ReusableInput label='Category Name' >
-        <input type="text" placeholder="Category Name..." className="input input-bordered w-full" {...register('name')} />
+      <ReusableInput label="Category Name">
+        <input
+          type="text"
+          placeholder="Category Name..."
+          className="input input-bordered w-full"
+          {...register('name')}
+        />
         {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
       </ReusableInput>
       {/* <!-- name Input end --> */}
 
-      <ReusableInput label='Category parent' >
+      <ReusableInput label="Category parent">
         <select className="select select-bordered" {...register('parent')}>
           {categories.map((item) => (
             <option className="text-black" key={item.value} value={item.value}>

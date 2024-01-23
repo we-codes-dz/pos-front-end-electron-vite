@@ -87,7 +87,6 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
 
   // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
-    console.log('id of the item to delete it :', deletedItemId)
     if (deletedItemId) {
       deleteCategory.mutate(deletedItemId!)
     }
@@ -99,9 +98,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
   }
 
   const handleAddButtonSubmit = async () => {
-    console.log('entered to submit data')
     if (dataInputs) {
-      console.log('before mutate')
       addCategory.mutate(dataInputs)
     }
   }
@@ -120,10 +117,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
 
   // TODO: do api logic of the edit here
   const handleEditSubmit = (data: any, avatar: any) => {
-    console.log("id: ", selectedCategoryForEdit!.id)
-
-    console.log('data', data)
-    //editCategory.mutate({ data, avatar })
+    editCategory.mutate({ id: selectedCategoryForEdit!.id, name: data.name, avatar })
   }
 
   return (
