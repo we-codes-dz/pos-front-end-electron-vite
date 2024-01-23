@@ -1,8 +1,14 @@
 //import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 
+import {
+  useAddCategories,
+  useDeleteCategory,
+  useUpdateCategory
+} from '@renderer/api/hooks/useCategories'
 import { useBoundStore } from '@renderer/stores/store'
 import { TCategory } from '@renderer/types/type-schema'
 import { CategoryOrderBy, orderCategories } from '@renderer/utils/filter'
+import { AxiosInstance } from 'axios'
 import { ChangeEvent, useEffect, useState } from 'react'
 import CRUDAddCategoryModal from '../../modal/category/add/crud-modal'
 import CRUDDeleteCategoryModal from '../../modal/category/delete/crud-modal'
@@ -12,18 +18,13 @@ import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader, { ColumnHeaderInt } from '../common/table/category-table-header'
 import CategoryTableRow from './category-table-row'
-import {
-  useAddCategories,
-} from '@renderer/api/hooks/useCategories'
-import { AxiosInstance } from 'axios'
 interface Props {
   categoryColumns: ColumnHeaderInt[]
   categories: TCategory[]
   axiosInstance: AxiosInstance
-  totalPages: number
 }
 const FilterParameter = CategoryOrderBy
-const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages }: Props) => {
+const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) => {
   const filterOptions = [
     { label: 'Date', value: 'Date' },
     { label: 'Name', value: 'Name' }
@@ -34,6 +35,8 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
 
   const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
   const addCategory = useAddCategories(axiosInstance, reset)
+  const deleteCategory = useDeleteCategory(axiosInstance)
+  const editCategory = useUpdateCategory(axiosInstance, reset)
   const [categoryData, setCategoryData] = useState<TCategory[]>(categories)
   const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false)
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
@@ -43,13 +46,12 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   //? create data state
   //   const [dataInputs, setDataInputs] = useState<FormData>()
 
-  const { categoryFilterKey } = useBoundStore((state) => state)
-  //   const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1)
   // Show 8 products per page
-  //   const itemsPerPage = 7
+  const itemsPerPage = 9
   // Logic to slice array for current page
   // Total pages
-  //   const totalPages = Math.ceil(categoryData.length / itemsPerPage)
+  const totalPages = Math.ceil(categoryData.length / itemsPerPage)
 
   //? selectedCategoryForEdit is variable used to display data in edit category modal
   const [selectedCategoryForEdit, setSelectedCategory] = useState<TCategory>()
@@ -77,8 +79,6 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
     handleAddButtonSubmit()
   }, [isCreateModalOpen, dataInputs])
 
-
-
   //? modal logic
   //** delete modal
   const modalDeleteHandler = () => {
@@ -88,6 +88,9 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
   // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
     console.log('id of the item to delete it :', deletedItemId)
+    if (deletedItemId) {
+      deleteCategory.mutate(deletedItemId!)
+    }
   }
 
   //** create modal
@@ -115,10 +118,9 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
     toggleEditModal()
   }
 
-
   // TODO: do api logic of the edit here
-  const handleEditSubmit = (data: any) => {
-    console.log(data);
+  const handleEditSubmit = (data: any, avatar: any) => {
+    editCategory.mutate({ data, avatar })
   }
 
   return (
@@ -149,10 +151,9 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
         </Table>
         <div className="flex justify-center mt-3">
           <Pagination
-            currentPage={categoryFilterKey.page!}
-            limit={categoryFilterKey.limit!}
+            currentPage={currentPage}
             totalPages={totalPages}
-          // onPageChange={(page) => setCurrentPage(page)}
+            onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
       </div>
@@ -172,7 +173,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance, totalPages 
       <CRUDEditCategoryModal
         title={'Edit Category'}
         modalHandler={openEditModal}
-        handleEditButtonClick={(data) => handleEditSubmit(data)}
+        handleEditButtonClick={(data, avatar) => handleEditSubmit(data, avatar)}
         modalIsOpened={isEditModalOpen}
         data={selectedCategoryForEdit}
       />

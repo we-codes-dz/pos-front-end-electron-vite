@@ -1,21 +1,18 @@
+import useCategories from '@renderer/api/hooks/useCategories'
 import CategoryTable from '@renderer/components/table/category/category-table'
-import { categoryColumns } from './columns'
 import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
-import { usePaginateCategories } from '@renderer/api/hooks/useCategories'
 import { TCategory } from '@renderer/types/type-schema'
-import { useBoundStore } from '@renderer/stores/store'
+import { categoryColumns } from './columns'
 
 const index = () => {
   const axiosInstance = useAxiosPrivate()
-  const { categoryFilterKey } = useBoundStore((state) => state)
 
-  const { data: categories, isLoading } = usePaginateCategories(axiosInstance, categoryFilterKey)
+  const { data: categories, isLoading } = useCategories(axiosInstance)
 
   if (isLoading) return null
   const structuringData = (categories: any): TCategory[] => {
     return categories.data.data
   }
-  const totalPages = categories?.data?.meta?.totalPages
   const structuredCategory = structuringData(categories) as TCategory[]
   return (
     <div className="flex flex-col w-full">
@@ -23,7 +20,6 @@ const index = () => {
         axiosInstance={axiosInstance}
         categoryColumns={categoryColumns}
         categories={structuredCategory}
-        totalPages={totalPages!}
       />
     </div>
   )

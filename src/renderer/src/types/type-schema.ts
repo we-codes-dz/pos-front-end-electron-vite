@@ -110,7 +110,7 @@ export type FetchResponse<T> = {
   message: string
   statusCode: number
   data: {
-    data: T | T[]
+    data: T[]
     meta?: TMeta
     links?: TLinks
   }
