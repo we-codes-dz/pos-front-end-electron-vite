@@ -8,8 +8,11 @@ import { Table, Tbody } from '../common'
 import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader from '../common/table/category-table-header'
+import { AxiosInstance } from 'axios'
 import ProductTableRow from './product-table-row'
-
+import { useBoundStore } from '@renderer/stores/store'
+import { useAddProduct, useDeleteProduct, useUpdateProduct } from '@renderer/api/hooks/useProducts'
+import { unstable_batchedUpdates } from 'react-dom'
 //TODO: add pagination logic
 
 export interface ColumnHeaderInt {
@@ -20,9 +23,10 @@ export interface ColumnHeaderInt {
 interface Props {
   headers: ColumnHeaderInt[]
   products: TProduct[]
+  axiosInstance: AxiosInstance
 }
 const FilterParameter = ProductOrderBy
-const ProductTable = ({ headers, products }: Props) => {
+const ProductTable = ({ headers, products, axiosInstance }: Props) => {
   const filterOptions = [
     { label: 'Date', value: 'Date' },
     { label: 'Name', value: 'Name' }
@@ -35,6 +39,10 @@ const ProductTable = ({ headers, products }: Props) => {
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
 
+  const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
+  const addProduct = useAddProduct(axiosInstance, reset)
+  const deleteProduct = useDeleteProduct(axiosInstance)
+  const editProduct = useUpdateProduct(axiosInstance, reset)
   const [currentPage, setCurrentPage] = useState(1)
   // Show 8 products per page
   const itemsPerPage = 9
@@ -48,6 +56,7 @@ const ProductTable = ({ headers, products }: Props) => {
   //? selectedProductForEdit is variable used to display data in edit product modal
   const [selectedProductForEdit, setSelectedCategory] = useState<TProduct>()
 
+  const [deletedItemId, setDeletedItemId] = useState<number>()
   /* /**
    * Updates the filter parameter based on the selected value.
    * @param e - The change event from the select element.
@@ -71,18 +80,26 @@ const ProductTable = ({ headers, products }: Props) => {
   const modalDeleteHandler = () => {
     setOpenedDeleteModal(!isDeleteModalOpen)
   }
-  // const handleDeleteButtonClick = () => {
-  //     modalDeleteHandler();
-  //     //TODO: adding delete via api and in global state
-  // }
+
+  // TODO: do api logic of the delete here
+  const handleDeleteButtonClick = () => {
+    console.log('id of the item to delete it :', deletedItemId)
+    if (deletedItemId) {
+      deleteProduct.mutate(deletedItemId!)
+    }
+  }
 
   //** create modal
   const toggleCreateModal = () => {
     setOpenedCreateModal(!isCreateModalOpen)
   }
-  const onClickCreateModalHandler = () => {
-    toggleCreateModal()
-    //TODO: adding delete via api and in global state
+
+  const handleAddButtonSubmit = async () => {
+    console.log('entered to submit data')
+    if (dataInputs) {
+      console.log('before mutate')
+      addProduct.mutate(dataInputs)
+    }
   }
 
   //** edit modal
@@ -121,6 +138,7 @@ const ProductTable = ({ headers, products }: Props) => {
                 key={fakerKey}
                 handleEditButtonClick={() => handleEditButtonClick(item)}
                 modalDeleteHandler={modalDeleteHandler}
+                catchingId={() => setDeletedItemId(item.id)}
               />
             ))}
           </Tbody>
@@ -136,14 +154,15 @@ const ProductTable = ({ headers, products }: Props) => {
       <CRUDDeleteProductModal
         title={'Delete Product'}
         modalHandler={modalDeleteHandler}
+        handleDeleteButtonClick={handleDeleteButtonClick}
         modalIsOpened={isDeleteModalOpen}
       />
       <CRUDAddProductModal
         title={'Add Product'}
         modalHandler={toggleCreateModal}
-        handleCreateButtonClick={onClickCreateModalHandler}
+        handleAddButtonSubmit={handleAddButtonSubmit}
+        setDataInputs={setInputs}
         modalIsOpened={isCreateModalOpen}
-        action="create"
       />
       <CRUDEditProductModal
         title={'Edit Product'}

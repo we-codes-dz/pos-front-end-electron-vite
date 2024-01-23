@@ -65,12 +65,11 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
         handleAddButtonSubmit()
         //? enabling the spinner
         setSubmitting(true)
-        //? resetting the form after action
-        //modalHandler()
-
+        modalHandler()
         //? disenabling the spinner
         setSubmitting(false)
         modalHandler()
+        //? resetting the form after action
         reset()
       }
 
@@ -115,6 +114,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
           </span>
         </div>
       </label>
+
       <div className="pt-6 flex gap-2 items-center w-full justify-end">
         <Button
           type="button"

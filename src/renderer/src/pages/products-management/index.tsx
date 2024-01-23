@@ -1,43 +1,27 @@
-import useProducts, { usePaginateProducts } from '@renderer/api/hooks/useProducts'
-import ProductTable from '@renderer/components/table/Product/product-table'
+import { usePaginateProducts } from '@renderer/api/hooks/useProducts'
+import ProductTable from '@renderer/components/table/product/product-table'
 import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
-import { TProduct, TProductColumn } from '@renderer/types/type-schema'
+import { TProduct } from '@renderer/types/type-schema'
+import { columnHeaders } from './columns'
 
-const columnHeaders: TProductColumn[] = [
-  {
-    key: 'name',
-    label: 'Product Name'
-  },
-  {
-    key: 'description',
-    label: 'Product Description'
-  },
-  {
-    key: 'price',
-    label: 'Price'
-  },
-  {
-    key: 'category',
-    label: 'Category'
-  },
-  {
-    key: 'actions',
-    label: 'Actions'
-  }
-]
+
 const ProductsPage = () => {
   const axiosInstance = useAxiosPrivate()
   //   const { data: products, isLoading } = useProducts(axiosInstance)
   const { data: products, isLoading } = usePaginateProducts(axiosInstance)
   if (isLoading) return null
-  const structuringData = (products: any): TProduct[] => {
-    return products.data.data
-  }
-  const totalPages = products?.data?.meta?.totalPages
+  const structuringData =
+    (products: any): TProduct[] => {
+      const data = products?.data?.data ? products?.data?.data : products
+      return data
+    }
   const structuredProduct: TProduct[] = structuringData(products)
   return (
     <div className="flex flex-col w-full overflow-y-scroll">
-      <ProductTable headers={columnHeaders} products={structuredProduct} />
+      <ProductTable
+        axiosInstance={axiosInstance}
+        headers={columnHeaders}
+        products={structuredProduct} />
     </div>
   )
 }

@@ -10,10 +10,11 @@ const index = () => {
   const { data: categories, isLoading } = useCategories(axiosInstance)
 
   if (isLoading) return null
-  const structuringData = (categories: any): TCategory[] => {
-    const data = categories?.data?.data ? categories?.data?.data : categories
-    return data
-  }
+  const structuringData =
+    (categories: any): TCategory[] => {
+      const data = categories?.data?.data ? categories?.data?.data : categories
+      return data
+    }
   const structuredCategory = structuringData(categories) as TCategory[]
   return (
     <div className="flex flex-col w-full">

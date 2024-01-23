@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, Textarea } from "@nextui-org/react"
 import SpinnerComponent from "@renderer/components/Spinner/Spinner";
 import ErrorMessage from "@renderer/components/inputs/ErrorMessage/ErrorMessage";
+import ReusableInput from "@renderer/components/inputs/input/custom-input";
 import { productSchema } from "@renderer/types/form-schema";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,15 +12,18 @@ type Inputs = z.infer<typeof productSchema>
 
 
 interface Props {
-    btnClassName?: string;
-    modalHandler: () => void;
-    action: "create" | "edit";
+    btnClassName?: string
+    modalHandler: () => void
+    setDataInputs: (data: any) => void
+    handleAddButtonSubmit: () => void
 
 }
 const ModalBody =
-    ({ modalHandler }: Props) => {
-        const [isSubmitting, setSubmitting] = useState<boolean>(false);
+    ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props) => {
 
+        const [image, setImage] = useState<any>([])
+        const [isSubmitting, setSubmitting] = useState<boolean>(false);
+        const [hasImage, setHasImage] = useState<boolean>(false);
         //? form control logic
         const {
             register,
@@ -36,17 +40,24 @@ const ModalBody =
         const handlerSubmit =
             async (data: Inputs) => {
                 try {
-                    console.log(data)
-                    //? enabling the spinner
-                    setSubmitting(true);
-                    //? resetting the form after action 
-                    reset()
-                    //? closing the modal
-                    modalHandler();
-                    //? adding api logic
+                    const dataForm = new FormData()
+                    if (!image || image.length === 0) {
+                        setHasImage(true)
+                        return
+                    }
 
-                    //? disenabling the spinner
-                    setSubmitting(false);
+                    if (image) {
+                        dataForm.append('name', data.name)
+                        dataForm.append('avatar', image)
+                        setDataInputs(dataForm)
+                        handleAddButtonSubmit()
+                        //? enabling the spinner
+                        setSubmitting(true);
+                        modalHandler();
+                        //? disenabling the spinner
+                        setSubmitting(false);
+                        reset()
+                    }
 
                 } catch (error) {
                     console.log(error);
@@ -54,51 +65,72 @@ const ModalBody =
                 }
             }
 
+        const imageUploadHandler = (event: any) => {
+            if (!event.target.files[0]) return
+            setImage(event.target.files[0])
+        }
+
         return (
             <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-4">
-
                 {/* <!-- name Input --> */}
-                <Input
-                    type="text"
-                    label="Product Name"
-                    placeholder="Product Name..."
-                    className="shadow-md overflow-auto rounded-lg"
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('name')}
-                />
-                {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+                <ReusableInput label='Product Name' >
+                    <input type="text" placeholder="Product Name..." className="input input-bordered w-full" {...register('name')} />
+                    {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+                </ReusableInput>
+                {/* <!-- name Input end --> */}
+
+                {/* <!-- description Input --> */}
+                <ReusableInput label='Product Name' >
+                    <textarea placeholder="Product Name..." className="textarea input-bordered w-full h-24" {...register('description')} />
+                    {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+                </ReusableInput>
+                { }
 
 
-                <Textarea
-                    type="text"
-                    label="Description"
-                    className="shadow-md overflow-auto rounded-lg"
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('description')}
-                />
-                {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+                {/* <!-- price Input --> */}
+                <ReusableInput label='Price' >
+                    <input
+                        type="number"
+                        className="input input-bordered w-full"
+                        {...register('price', {
+                            setValueAs: (value) => parseFloat(value)
+                        })} />
+                    {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
+                </ReusableInput>
+                {/* <!-- price Input end --> */}
 
-
-                <Input
-                    type="number"
-                    label="Price"
-                    className="shadow-md overflow-auto rounded-lg"
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('price')}
-                />
-                {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
 
                 {//TODO: Add category select
                 }
-                <Input
-                    type="number"
-                    label="Category number"
-                    className="shadow-md overflow-auto rounded-lg"
-                    //errorMessage={errors.title && "Title is required"}
-                    {...register('category')}
-                />
-                {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
+                {/* <!-- category Input --> */}
+                <ReusableInput label='Category number' >
+                    <input
+                        type="number"
+                        className="input input-bordered w-full"
+                        {...register('category', {
+                            setValueAs: (value) => parseFloat(value)
+                        })}
+                    />
+                    {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
+                </ReusableInput>
+                {/* <!-- category Input end --> */}
 
+
+                <label className="form-control w-full ">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        className="file-input file-input-bordered file-input-accent w-full max-w-xs"
+                        onChange={(e: any) => {
+                            imageUploadHandler(e)
+                            setHasImage(false);
+                        }}
+                    />
+                    <div className="label">
+                        <span className="label-text text-xs">{hasImage && <ErrorMessage>You should choose an image</ErrorMessage>}
+                        </span>
+                    </div>
+                </label>
 
                 {/* <!-- Login Button --> */}
                 <div className='pt-6 flex gap-2 items-center w-full justify-end'>
