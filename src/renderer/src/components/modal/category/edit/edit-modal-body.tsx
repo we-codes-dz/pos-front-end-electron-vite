@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Input, Select, SelectItem } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import SpinnerComponent from '@renderer/components/Spinner/Spinner'
 import ErrorMessage from '@renderer/components/inputs/ErrorMessage/ErrorMessage'
+import ReusableInput from '@renderer/components/inputs/input/custom-input'
 import { categorySchema } from '@renderer/types/form-schema'
 import { TCategory } from '@renderer/types/type-schema'
 import { useEffect, useState } from 'react'
@@ -29,10 +30,13 @@ interface Props {
   data?: TCategory
   onClickHandler: (data: any, avatar: any) => void
 }
+
 const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
   const [image, setImage] = useState<any>([])
+  const [hasImage, setHasImage] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
 
+  console.log(data)
   //? form control logic
   const {
     register,
@@ -42,6 +46,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     formState: { errors }
   } = useForm<Inputs>({
     mode: 'onSubmit',
+    defaultValues: { name: data?.name },
     resolver: zodResolver(categorySchema)
   })
 
@@ -50,17 +55,26 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     setImage(event.target.files[0])
   }
 
-
+  useEffect(() => {
+    if (data) {
+      const { name } = data;
+      setValue('name', name)
+    }
+  }, [data])
   //?
   const handlerSubmit = async (data: Inputs) => {
     try {
+      if (!image || image.length === 0) {
+        setHasImage(true)
+        return
+      }
       onClickHandler(data, image)
       //? enabling the spinner
       setSubmitting(true)
       //? resetting the form after action
       reset()
       //? closing the modal
-      modalHandler()
+      //modalHandler()
       //? adding api logic
 
       //? disenabling the spinner
@@ -72,64 +86,41 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
   }
 
 
-  useEffect(() => {
-    // Update form inputs when data prop changes
-    if (data) {
-      setValue('name', data.name || ''); // Assuming 'name' is a key in your schema
-      //setValue('child', data.children ? [`${data.children[0].name}`] : ['']);
-      //setValue('parent', data.parent ? [`${data.parent[0].name}`] : ['']);
-    }
-  }, [data, setValue]);
-
-  if (!data) return
+  if (!data) return null;
   return (
-    <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-4">
-      {/* <!-- name Input --> */}
-      <Input
-        type="text"
-        label="Category Name"
-        placeholder="Category Name..."
-        className="shadow-md overflow-auto rounded-lg"
-        //errorMessage={errors.title && "Title is required"}
-        {...register('name')}
-      />
-      {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+    <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-3">
+      {/* <!-- name Input  start--> */}
+      <ReusableInput label='Category Name' >
+        <input type="text" placeholder="Category Name..." className="input input-bordered w-full" {...register('name')} />
+        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+      </ReusableInput>
+      {/* <!-- name Input end --> */}
 
-      <Select
-        defaultSelectedKeys={data?.children ? [`${data?.children[0].name}`] : ['']}
-        label="Child"
-        className=" text-black w-full"
-        placeholder="Select child category"
-        {...register('child')}
+      <ReusableInput label='Category parent' >
+        <select className="select select-bordered" {...register('parent')}>
+          {categories.map((item) => (
+            <option className="text-black" key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </ReusableInput>
 
-      //onChange={(e) => filterByParam(e)}
-      >
-        {categories.map((item) => (
-          <SelectItem className="text-black" key={item.value} value={item.value}>
-            {item.label}
-          </SelectItem>
-        ))}
-      </Select>
-      <Select
-        defaultSelectedKeys={data?.parent ? [`${data?.parent[0].name}`] : ['']}
-        label="Parent"
-        className=" text-black w-full"
-        placeholder="Select parent category"
-        {...register('parent')}
-      //onChange={(e) => filterByParam(e)}
-      >
-        {categories.map((item) => (
-          <SelectItem className="text-black" key={item.value} value={item.value}>
-            {item.label}
-          </SelectItem>
-        ))}
-      </Select>
-
-      <input
-        type="file"
-        className="file-input file-input-bordered file-input-accent w-full max-w-xs"
-        onChange={(e: any) => imageUploadHandler(e)}
-      />
+      <label className="form-control w-full ">
+        <input
+          type="file"
+          accept="image/*"
+          className="file-input file-input-bordered file-input-accent w-full max-w-xs"
+          onChange={(e: any) => {
+            imageUploadHandler(e)
+            setHasImage(false);
+          }}
+        />
+        <div className="label">
+          <span className="label-text text-xs">{hasImage && <ErrorMessage>You should choose an image</ErrorMessage>}
+          </span>
+        </div>
+      </label>
 
       <div className="pt-6 flex gap-2 items-center w-full justify-end">
         <Button

@@ -11,7 +11,6 @@ export const categorySchema = z.object({
     .string()
     .min(3, "Votre nom d'utilisateur doit au-moins contenir 3 caractères")
     .max(40, "Votre nom d'utilisateur ne doit pas dépasser 40 caractères"),
-  child: z.string().min(0),
   parent: z.string().min(0)
 })
 

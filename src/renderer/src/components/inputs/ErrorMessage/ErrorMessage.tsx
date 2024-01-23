@@ -6,9 +6,9 @@ const ErrorMessage =
         if (!children) return null;
 
         return (
-            <p className='text-red-500 text-xs'>
-                {children}
-            </p>
+            <div className='label  text-xs'>
+                <span className="label-text-alt text-danger">{children}</span>
+            </div>
         )
     }
 

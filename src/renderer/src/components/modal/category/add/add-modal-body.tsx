@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Input, Select, SelectItem } from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import SpinnerComponent from '@renderer/components/Spinner/Spinner'
 import ErrorMessage from '@renderer/components/inputs/ErrorMessage/ErrorMessage'
+import ReusableInput from '@renderer/components/inputs/input/custom-input'
 import { categorySchema } from '@renderer/types/form-schema'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -30,6 +31,7 @@ interface Props {
 }
 const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props) => {
   const [image, setImage] = useState<any>([])
+  const [hasImage, setHasImage] = useState<boolean>(false);
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
   //? form control logic
   const {
@@ -52,6 +54,10 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
   const handlerSubmit = async (data: Inputs) => {
     try {
       const dataForm = new FormData()
+      if (!image || image.length === 0) {
+        setHasImage(true)
+        return
+      }
       if (image) {
         dataForm.append('name', data.name)
         dataForm.append('avatar', image)
@@ -67,6 +73,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
         modalHandler()
         reset()
       }
+
     } catch (error) {
       console.log(error)
       modalHandler()
@@ -76,50 +83,38 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
   return (
     <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-4">
       {/* <!-- name Input --> */}
-      <Input
-        type="text"
-        label="Category Name"
-        placeholder="Category Name..."
-        className="shadow-md overflow-auto rounded-lg"
-        //errorMessage={errors.title && "Title is required"}
-        {...register('name')}
-      />
-      {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+      <ReusableInput label='Category Name' >
+        <input type="text" placeholder="Category Name..." className="input input-bordered w-full" {...register('name')} />
+        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+      </ReusableInput>
+      {/* <!-- name Input end --> */}
 
-      <Select
-        label="Child"
-        className=" text-black w-full"
-        placeholder="Select child category"
-        {...register('child')}
+      <ReusableInput label='Category parent' >
+        <select className="select select-bordered" {...register('parent')}>
+          <option className="text-black" value="">{""}</option>
+          {categories.map((item) => (
+            <option className="text-black" key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </ReusableInput>
 
-        //onChange={(e) => filterByParam(e)}
-      >
-        {categories.map((item) => (
-          <SelectItem className="text-black" key={item.value} value={item.value}>
-            {item.label}
-          </SelectItem>
-        ))}
-      </Select>
-      <Select
-        label="Parent"
-        className=" text-black w-full"
-        placeholder="Select parent category"
-        {...register('parent')}
-        //onChange={(e) => filterByParam(e)}
-      >
-        {categories.map((item) => (
-          <SelectItem className="text-black" key={item.value} value={item.value}>
-            {item.label}
-          </SelectItem>
-        ))}
-      </Select>
-
-      <input
-        type="file"
-        className="file-input file-input-bordered file-input-accent w-full max-w-xs"
-        onChange={(e: any) => imageUploadHandler(e)}
-      />
-
+      <label className="form-control w-full ">
+        <input
+          type="file"
+          accept="image/*"
+          className="file-input file-input-bordered file-input-accent w-full max-w-xs"
+          onChange={(e: any) => {
+            imageUploadHandler(e)
+            setHasImage(false);
+          }}
+        />
+        <div className="label">
+          <span className="label-text text-xs">{hasImage && <ErrorMessage>You should choose an image</ErrorMessage>}
+          </span>
+        </div>
+      </label>
       <div className="pt-6 flex gap-2 items-center w-full justify-end">
         <Button
           type="button"
