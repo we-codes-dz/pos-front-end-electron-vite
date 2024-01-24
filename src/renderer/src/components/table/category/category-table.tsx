@@ -43,7 +43,7 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
   const [deletedItemId, setDeletedItemId] = useState<number>()
-
+  const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false)
   //? create data state
   //   const [dataInputs, setDataInputs] = useState<FormData>()
 
@@ -73,7 +73,7 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
   useEffect(() => {
     const updatedData = orderCategories(categories, selectedFilterParam) as TCategory[]
     setCategoryData(updatedData)
-  }, [selectedFilterParam, categories])
+  }, [selectedFilterParam, categories, isItemDeleted])
 
   //? display data coming from the create modal
   useEffect(() => {
@@ -89,6 +89,7 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
       deleteCategory.mutate(deletedItemId!)
+      setIsItemDeleted(prev => !prev)
     }
   }
 

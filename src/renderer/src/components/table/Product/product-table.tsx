@@ -38,6 +38,8 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false)
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
+  const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false)
+
 
   const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
   const addProduct = useAddProduct(axiosInstance, reset)
@@ -73,7 +75,7 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   useEffect(() => {
     const updatedData = orderProducts(products, selectedFilterParam) as TProduct[]
     setProductData(updatedData)
-  }, [selectedFilterParam, products])
+  }, [selectedFilterParam, products, isItemDeleted])
 
   useEffect(() => {
     handleAddButtonSubmit()
@@ -85,11 +87,10 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
     setOpenedDeleteModal(!isDeleteModalOpen)
   }
 
-  // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
-      console.log('deleted Item Id', deletedItemId)
       deleteProduct.mutate(deletedItemId!)
+      setIsItemDeleted(prev => !prev)
     }
   }
 

@@ -39,6 +39,7 @@ const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false)
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
+  const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false)
 
   const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
   const addServer = useAddServer(axiosInstance, reset)
@@ -72,7 +73,7 @@ const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   useEffect(() => {
     const updatedData = orderServers(servers, selectedFilterParam) as TServer[]
     setServerData(updatedData)
-  }, [selectedFilterParam, servers])
+  }, [selectedFilterParam, servers, isItemDeleted])
 
   useEffect(() => {
     handleAddButtonSubmit()
@@ -87,8 +88,8 @@ const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
-      console.log('deleted Item Id', deletedItemId)
       deleteServer.mutate(deletedItemId!)
+      setIsItemDeleted(prev => !prev)
     }
   }
 
