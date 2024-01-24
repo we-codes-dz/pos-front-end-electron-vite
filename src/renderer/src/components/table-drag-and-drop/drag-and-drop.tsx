@@ -1,7 +1,7 @@
 import { fabric } from 'fabric';
 import { useEffect, useRef, useState } from 'react';
-import { addChair, addCircle, addRect, addTriangle, initCanvas } from './helpers';
 import dataTable from './data-table.json';
+import { addChair, addCircle, addRect, addTriangle } from './helpers';
 
 const TableDragAndDrop = () => {
     const canvasRef = useRef(null);
