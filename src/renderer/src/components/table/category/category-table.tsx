@@ -85,7 +85,6 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
     setOpenedDeleteModal(!isDeleteModalOpen)
   }
 
-  // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
       deleteCategory.mutate(deletedItemId!)
@@ -115,7 +114,6 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
     toggleEditModal()
   }
 
-  // TODO: do api logic of the edit here
   const handleEditSubmit = (data: any, avatar: any) => {
     editCategory.mutate({ id: selectedCategoryForEdit!.id, name: data.name, avatar })
   }
