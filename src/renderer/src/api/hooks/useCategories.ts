@@ -51,9 +51,10 @@ export const useAddCategories = (axiosInstance: AxiosInstanceOriginal, reset: ()
 
       const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
 
-      queryClient.setQueryData<any>([CATEGORIES], (categories: FetchResponse<TCategory[]>) => {
+      queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
+        const categoriesData = categories?.data?.data ? categories?.data?.data : categories
         const newCategories = Array.isArray(categories)
-          ? [newCategory, ...categories.data.data]
+          ? [newCategory, ...categoriesData]
           : [newCategory]
         return newCategories
       })
@@ -67,9 +68,12 @@ export const useAddCategories = (axiosInstance: AxiosInstanceOriginal, reset: ()
 
       queryClient.setQueryData<any>([CATEGORIES], (categories) => {
         const previousCategories = context?.previousCategories || []
+        const prevData = previousCategories?.data?.data
+          ? previousCategories?.data?.data
+          : previousCategories
         const updatedCategories = Array.isArray(categories)
-          ? [savedCategory.data.data, ...previousCategories.data.data]
-          : [savedCategory.data.data, ...previousCategories]
+          ? [savedCategory.data.data, ...prevData]
+          : [savedCategory.data.data, ...prevData]
 
         return updatedCategories
       })

@@ -44,8 +44,9 @@ export const useAddServer = (axiosInstance: AxiosInstanceOriginal, reset: () => 
 
       const previousServers = queryClient.getQueryData<any>([SERVERS]) || []
 
-      queryClient.setQueryData<any>([SERVERS], (servers: FetchResponse<TServer[]>) => {
-        const newServers = Array.isArray(servers) ? [newServer, ...servers.data.data] : [newServer]
+      queryClient.setQueryData<any>([SERVERS], (servers: any) => {
+        const serversData = servers?.data?.data ? servers?.data?.data : servers
+        const newServers = Array.isArray(servers) ? [newServer, ...serversData] : [newServer]
         return newServers
       })
 
@@ -56,9 +57,10 @@ export const useAddServer = (axiosInstance: AxiosInstanceOriginal, reset: () => 
       // Log information for debugging
       queryClient.setQueryData<any>([SERVERS], (servers) => {
         const previousServers = context?.previousServers || []
+        const prevData = previousServers?.data?.data ? previousServers?.data?.data : previousServers
         const updatedServers = Array.isArray(servers)
-          ? [savedServer.data.data, ...previousServers.data.data]
-          : [savedServer.data.data, ...previousServers]
+          ? [savedServer.data.data, ...prevData]
+          : [savedServer.data.data, ...prevData]
 
         return updatedServers
       })
@@ -131,7 +133,7 @@ export const useDeleteServer = (axiosInstance: AxiosInstanceOriginal) => {
       const previousServers = queryClient.getQueryData<any>([SERVERS]) || []
 
       queryClient.setQueryData<any>([SERVERS], (servers: any) => {
-        const dataServer = servers.data.data ? servers.data.data : servers
+        const dataServer = servers?.data?.data ? servers?.data?.data : servers
         const updatedServers = Array.isArray(servers)
           ? dataServer?.data?.data.filter((server) => server.id !== serverId)
           : previousServers.data.data.filter((server) => server.id !== serverId)

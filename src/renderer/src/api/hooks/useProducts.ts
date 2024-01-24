@@ -85,9 +85,7 @@ export const useAddProduct = (axiosInstance: AxiosInstanceOriginal, reset: () =>
         const prevData = previousProducts?.data?.data
           ? previousProducts?.data?.data
           : previousProducts
-        console.log(savedProduct)
-        console.log(products)
-        console.log(prevData)
+
         const updatedProducts = Array.isArray(products)
           ? [savedProduct.data.data, ...prevData]
           : [savedProduct.data.data, ...prevData]
@@ -110,8 +108,23 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
 
   return useMutation<TProduct, Error, any, AddProductContext>({
     mutationFn: async (updatedProduct) => {
-      const { id, ...rest } = updatedProduct
-      const response = await axiosInstance.put(`http://localhost:3000/products/${id}`, rest, {
+      const { id, ...data } = updatedProduct
+      const dataForm = new FormData()
+      console.log(data, 'data')
+      if (data.name) dataForm.append('name', data.name)
+      if (data.avatar) dataForm.append('avatar', data.avatar)
+      if (data.description) dataForm.append('description', data.description)
+      if (data.price) dataForm.append('price', data.price.toString())
+      if (data.category) dataForm.append('category[id]', data.category.toString())
+      // const body = {
+      //   name: data.name,
+      //   avatar: data.avatar,
+      //   description: data.description,
+      //   price: data.price.toString(),
+      //   "category['id']": data.category.toString()
+      // }
+
+      const response = await axiosInstance.put(`http://localhost:3000/products/${id}`, dataForm, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -122,6 +135,7 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
       const { id, ...rest } = updatedProduct
       const previousProducts = queryClient.getQueryData<any>(['products']) || []
 
+      console.log(updatedProduct)
       queryClient.setQueryData<any>(['products'], (products: any) => {
         let dataProducts = products?.data?.data ? products?.data?.data : products
         const updatedProducts = Array.isArray(products)

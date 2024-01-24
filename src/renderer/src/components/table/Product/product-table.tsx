@@ -12,6 +12,7 @@ import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader from '../common/table/category-table-header'
 import ProductTableRow from './product-table-row'
+
 //TODO: add pagination logic
 
 export interface ColumnHeaderInt {
@@ -39,7 +40,6 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
   const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false)
-
 
   const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
   const addProduct = useAddProduct(axiosInstance, reset)
@@ -90,7 +90,7 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
       deleteProduct.mutate(deletedItemId!)
-      setIsItemDeleted(prev => !prev)
+      setIsItemDeleted((prev) => !prev)
     }
   }
 
@@ -121,8 +121,8 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   }
 
   const handleEditSubmit = (data: any, avatar: any) => {
-    console.log(data)
     const product = { id: selectedProductForEdit!.id, ...data, avatar }
+
     editProduct.mutate(product)
   }
 
