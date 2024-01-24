@@ -72,7 +72,11 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
   useEffect(() => {
     const updatedData = orderProducts(products, selectedFilterParam) as TProduct[]
     setProductData(updatedData)
-  }, [selectedFilterParam])
+  }, [selectedFilterParam, products])
+
+  useEffect(() => {
+    handleAddButtonSubmit()
+  }, [isCreateModalOpen, dataInputs])
 
   //? modal logic
   //** delete modal
@@ -83,6 +87,7 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
   // TODO: do api logic of the delete here
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
+      console.log('deleted Item Id', deletedItemId)
       deleteProduct.mutate(deletedItemId!)
     }
   }
@@ -95,7 +100,6 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
   const handleAddButtonSubmit = async () => {
     console.log('entered to submit data')
     if (dataInputs) {
-      console.log('before mutate')
       addProduct.mutate(dataInputs)
     }
   }
@@ -115,7 +119,9 @@ const ProductTable = ({ headers, products, axiosInstance }: Props) => {
   }
 
   const handleEditSubmit = (data: any, avatar: any) => {
-    editProduct.mutate({ id: selectedProductForEdit!.id, name: data.name, avatar })
+    console.log(data)
+    const product = { id: selectedProductForEdit!.id, ...data, avatar }
+    editProduct.mutate(product)
   }
 
   return (

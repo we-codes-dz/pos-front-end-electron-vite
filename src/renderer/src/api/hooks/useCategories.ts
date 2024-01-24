@@ -148,9 +148,11 @@ export const useDeleteCategory = (axiosInstance: AxiosInstanceOriginal) => {
     onMutate: async (categoryId) => {
       const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
 
-      queryClient.setQueryData<any>([CATEGORIES], (categories: FetchResponse<TCategory>) => {
+      queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
+        const dataCategorie = categories.data.data ? categories.data.data : categories
+        console.log('dataCategorie', dataCategorie)
         const updatedCategories = Array.isArray(categories)
-          ? categories.data.data.filter((category) => category.id !== categoryId)
+          ? dataCategorie?.data?.data.filter((category) => category.id !== categoryId)
           : previousCategories.data.data.filter((category) => category.id !== categoryId)
         return updatedCategories
       })

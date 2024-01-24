@@ -17,7 +17,7 @@ const useProducts = (axiosInstance: AxiosInstanceOriginal, categorieId?: any) =>
   )
 
   const data = useQuery<FetchResponse<TProduct[]>, Error>({
-    queryKey: categorieId ? [CATEGORIES, categorieId, PRODUCTS] : [PRODUCTS],
+    queryKey: categorieId ? [CATEGORIES, categorieId, PRODUCTS] : ['products'],
     queryFn: productsService.findAll
   })
 
@@ -27,33 +27,51 @@ const useProducts = (axiosInstance: AxiosInstanceOriginal, categorieId?: any) =>
 export const usePaginateProducts = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
   const productsService = new APIService<TProduct, TProductFilter>('/products', axiosInstance)
   const data = useQuery<FetchResponse<TProduct[]>, Error>({
-    queryKey: filter ? [PRODUCTS, filter] : [PRODUCTS],
+    queryKey: filter ? [PRODUCTS, filter] : ['products'],
     queryFn: productsService.findAll
   })
 
   return data
 }
-
 export const useAddProduct = (axiosInstance: AxiosInstanceOriginal, reset: () => void) => {
   const queryClient = useQueryClient()
   return useMutation<TProduct, Error, any, AddProductContext>({
     mutationFn: async (data) => {
-      const response = await axiosInstance.post('http://localhost:3000/products', data, {
+      return await axiosInstance.post('http://localhost:3000/products', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      return response.data
     },
     onMutate: (newProduct: any) => {
-      //APPRCOHE updateing the data in chache corrently
+      const previousProducts = queryClient.getQueryData<any>(['products']) || []
+      const name = newProduct.get('name') as string
+      const id = newProduct.get('id') as number
+      const avatar = newProduct.get('avatar') as Blob
+      const description = newProduct.get('description') as string
+      const price = parseFloat(newProduct.get('price') as string)
+      const categoryId = parseInt(newProduct.get('category[id]') as string)
+      const categoryName = newProduct.get('category[name]') as string
 
-      const previousProducts = queryClient.getQueryData<any>([PRODUCTS]) || []
+      // Convert relevant attributes to numbers
+      const convertedProduct: any = {
+        id,
+        name,
+        avatar,
+        description,
+        price,
+        category: {
+          id: categoryId,
+          name: categoryName
+        }
+      }
 
-      queryClient.setQueryData<any>([PRODUCTS], (products: FetchResponse<TProduct[]>) => {
+      queryClient.setQueryData<any>(['products'], (products: any) => {
+        const productData = products?.data?.data ? products?.data?.data : products
+
         const newProducts = Array.isArray(products)
-          ? [newProduct.data, ...products.data.data]
-          : [newProduct.data]
+          ? [convertedProduct, ...productData]
+          : [convertedProduct]
         return newProducts
       })
 
@@ -61,13 +79,19 @@ export const useAddProduct = (axiosInstance: AxiosInstanceOriginal, reset: () =>
     },
     onSuccess: (savedProduct: any, _, context: any) => {
       reset()
-      console.log('savedProduct')
-      queryClient.setQueryData<any>([PRODUCTS], (products) => {
-        const previousProducts = context?.previousProducts || []
-        const updatedProducts = Array.isArray(products)
-          ? [savedProduct, ...previousProducts.data.data]
-          : [savedProduct, ...previousProducts]
 
+      queryClient.setQueryData<any>(['products'], (products) => {
+        const previousProducts = context?.previousProducts || []
+        const prevData = previousProducts?.data?.data
+          ? previousProducts?.data?.data
+          : previousProducts
+        console.log(savedProduct)
+        console.log(products)
+        console.log(prevData)
+        const updatedProducts = Array.isArray(products)
+          ? [savedProduct.data.data, ...prevData]
+          : [savedProduct.data.data, ...prevData]
+        console.log(updatedProducts)
         return updatedProducts
       })
     },
@@ -76,7 +100,7 @@ export const useAddProduct = (axiosInstance: AxiosInstanceOriginal, reset: () =>
       console.log(error)
       reset()
       if (!context) return
-      queryClient.setQueryData<TProduct[]>([PRODUCTS], context.previousProducts)
+      queryClient.setQueryData<TProduct[]>(['products'], context.previousProducts)
     }
   })
 }
@@ -87,7 +111,6 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
   return useMutation<TProduct, Error, any, AddProductContext>({
     mutationFn: async (updatedProduct) => {
       const { id, ...rest } = updatedProduct
-      console.log(updatedProduct, '**************')
       const response = await axiosInstance.put(`http://localhost:3000/products/${id}`, rest, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -95,27 +118,29 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
       })
       return response.data // Adjust to the correct data structure
     },
-    onMutate: async (updatedProduct) => {
+    onMutate: async (updatedProduct: any) => {
       const { id, ...rest } = updatedProduct
-      const previousProducts = queryClient.getQueryData<any>([PRODUCTS]) || []
-      console.log('---------', previousProducts)
-      queryClient.setQueryData<any>([PRODUCTS], (products: FetchResponse<TProduct>) => {
+      const previousProducts = queryClient.getQueryData<any>(['products']) || []
+
+      queryClient.setQueryData<any>(['products'], (products: any) => {
+        let dataProducts = products?.data?.data ? products?.data?.data : products
         const updatedProducts = Array.isArray(products)
-          ? products.data.data.map((product) => (product.id === id ? { id, ...rest } : product))
-          : [updatedProduct, ...previousProducts.data.data]
+          ? dataProducts?.map((product) => (product.id === id ? { id, ...rest } : product))
+          : [updatedProduct, ...previousProducts.data.data.filter((product) => product.id !== id)]
 
         return updatedProducts
       })
 
       return { previousProducts: previousProducts || [] }
     },
-    onSuccess: (updatedProduct, _, context: any) => {
+    onSuccess: (updatedProduct: any, _, context: any) => {
       reset()
 
-      queryClient.setQueryData<any>([PRODUCTS], (products: FetchResponse<TProduct>) => {
+      queryClient.setQueryData<any>(['products'], (products: any) => {
         const previousProducts = context?.previousProducts || []
+        const dataProducts = products?.data?.data ? products?.data?.data : products
         const updatedProducts = Array.isArray(products)
-          ? products.data.data.map((product) =>
+          ? dataProducts.map((product) =>
               product.id === updatedProduct.id ? updatedProduct : product
             )
           : [updatedProduct, ...previousProducts]
@@ -127,7 +152,7 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
       console.log(error)
       reset()
       if (!context) return
-      queryClient.setQueryData<TProduct[]>([PRODUCTS], context.previousProducts)
+      queryClient.setQueryData<TProduct[]>(['products'], context.previousProducts)
     }
   })
 }
@@ -139,23 +164,21 @@ export const useDeleteProduct = (axiosInstance: AxiosInstanceOriginal) => {
     mutationFn: async (productId) => {
       await axiosInstance.delete(`http://localhost:3000/products/${productId}`)
     },
-    onMutate: async (productId) => {
-      const previousProducts = queryClient.getQueryData<any>([PRODUCTS]) || []
+    onMutate: (productId) => {
+      const previousProducts = queryClient.getQueryData<any>(['products']) || []
+      const updatedProducts = Array.isArray(previousProducts)
+        ? previousProducts.filter((product) => product.id !== productId)
+        : previousProducts.data.data.filter((product) => product.id !== productId)
 
-      queryClient.setQueryData<any>([PRODUCTS], (products: FetchResponse<TProduct>) => {
-        const updatedProducts = Array.isArray(products)
-          ? products.data.data.filter((product) => product.id !== productId)
-          : previousProducts.data.data.filter((product) => product.id !== productId)
-        return updatedProducts
-      })
+      queryClient.setQueryData<any>(['products'], updatedProducts)
 
-      return { previousProducts: previousProducts || [] }
+      return { previousProducts }
     },
     onError: (error) => {
-      console.log(error)
-      // if (!context) return
-      // queryClient.setQueryData<TCategory[]>([PRODUCTS], context.previousProducts)
+      console.error(error)
+      // Handle error if needed
     }
   })
 }
+
 export default useProducts
