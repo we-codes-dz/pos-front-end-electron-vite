@@ -110,7 +110,7 @@ export const initCanvas = (canvas: fabric.Canvas): void => {
     e.target.scaleX = e.target.scaleX >= 0.25 ? Math.round(e.target.scaleX * 2) / 2 : 0.5
     e.target.scaleY = e.target.scaleY >= 0.25 ? Math.round(e.target.scaleY * 2) / 2 : 0.5
     snapToGrid(e.target)
-    if (e.target.type === 'table') {
+    if (e.target.type === 'rect') {
       canvas.bringToFront(e.target)
     } else {
       canvas.sendToBack(e.target)
@@ -179,7 +179,7 @@ export const addRect = (
     centeredRotation: true,
     snapAngle: 45,
     selectable: true,
-    type: 'table',
+    customType: 'table',
     id: id,
     number: number
   })
@@ -220,7 +220,7 @@ export const addCircle = (
     centeredRotation: true,
     snapAngle: 45,
     selectable: true,
-    type: 'table',
+    customType: 'table',
     id: id,
     number: number
   })
@@ -261,7 +261,7 @@ export const addTriangle = (
     centeredRotation: true,
     snapAngle: 45,
     selectable: true,
-    type: 'table',
+    customType: 'table',
     id: id,
     number: number
   })
@@ -325,7 +325,7 @@ export const addBar = (
     centeredRotation: true,
     snapAngle: 45,
     selectable: true,
-    type: 'bar'
+    customType: 'bar'
   })
   canvas.add(g)
   return g
