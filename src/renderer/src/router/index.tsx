@@ -11,6 +11,7 @@ import ProductsManagement from '@renderer/pages/products-management'
 import SalesManagement from '@renderer/pages/sales-management'
 import OrdersManagement from '@renderer/pages/orders-management'
 import TablesManagement from '@renderer/pages/table-management'
+import ServersManagement from '@renderer/pages/servers-management'
 
 export type TPath =
   | '/'
@@ -21,6 +22,7 @@ export type TPath =
   | '/work-space/sales-management'
   | '/work-space/orders-management'
   | '/work-space/tables-management'
+  | '/work-space/servers-management'
 
 export type TRoute = {
   path: TPath
@@ -96,6 +98,10 @@ function Router() {
         {
           path: '/work-space/tables-management',
           element: <TablesManagement />
+        },
+        {
+          path: '/work-space/servers-management',
+          element: <ServersManagement />
         }
       ]
     },

@@ -1,4 +1,5 @@
 export const CATEGORIES = 'categories'
+export const SERVERS = 'users/servers'
 export const PRODUCTS = 'products'
 export const ORDERS = 'orders'
 export const SALES = 'sales'

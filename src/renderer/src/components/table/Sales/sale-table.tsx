@@ -15,10 +15,11 @@ export interface ColumnHeaderInt {
 }
 
 interface Props {
+  title?: string
   headers: ColumnHeaderInt[]
   sales: TProduct[]
 }
-const SalesTable = ({ headers, sales }: Props) => {
+const SalesTable = ({ title, headers, sales }: Props) => {
   const [salesData, setSalesData] = useState<any[]>(sales)
   const [SelectedSale, setSelectedSale] = useState()
   const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false)
@@ -50,7 +51,7 @@ const SalesTable = ({ headers, sales }: Props) => {
   return (
     <div className="mt-4 pb-2">
       <div className="flex justify-between items-center w-full ">
-        <Header title={'Sales'} />
+        <Header title={title ? title : 'Table'} />
       </div>
       {
         //? ************Table

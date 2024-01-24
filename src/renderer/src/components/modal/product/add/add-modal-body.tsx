@@ -89,7 +89,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
         />
         {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
       </ReusableInput>
-      {}
+      { }
 
       {/* <!-- price Input --> */}
       <ReusableInput label="Price">

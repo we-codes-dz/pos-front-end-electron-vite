@@ -12,11 +12,7 @@ interface AddServerContext {
   previousServers: TServer[]
 }
 const useServers = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
-  const serversService = new APIService<TServer, TServerFilter>(
-    '/users/servers',
-    axiosInstance,
-    filter
-  )
+  const serversService = new APIService<TServer, TServerFilter>(SERVERS, axiosInstance, filter)
   const data = useQuery<FetchResponse<TServer[]>, Error>({
     queryKey: filter ? [SERVERS, filter] : [SERVERS],
     queryFn: serversService.findAll
@@ -26,11 +22,7 @@ const useServers = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
 }
 
 export const usePaginateServers = (axiosInstance: AxiosInstanceOriginal, filter?: any) => {
-  const serversService = new APIService<TServer, TServerFilter>(
-    '/users/servers',
-    axiosInstance,
-    filter
-  )
+  const serversService = new APIService<TServer, TServerFilter>(SERVERS, axiosInstance, filter)
   const data = useQuery<FetchResponse<TServer[]>, Error>({
     queryKey: filter ? [SERVERS, filter] : [SERVERS],
     queryFn: serversService.findAll

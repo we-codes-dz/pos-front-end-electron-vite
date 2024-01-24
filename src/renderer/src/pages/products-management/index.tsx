@@ -2,7 +2,7 @@ import useProducts from '@renderer/api/hooks/useProducts'
 import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
 import { TProduct } from '@renderer/types/type-schema'
 import { columnHeaders } from './columns'
-import ProductTable from '@renderer/components/table/Product/product-table'
+import ProductTable from '@renderer/components/table/product/product-table'
 
 const ProductsPage = () => {
   const axiosInstance = useAxiosPrivate()

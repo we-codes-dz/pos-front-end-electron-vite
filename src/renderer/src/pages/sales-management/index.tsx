@@ -1,28 +1,9 @@
 import useSales from "@renderer/api/hooks/useSales";
 import SalesTable from "@renderer/components/table/sales/sale-table";
 import useAxiosPrivate from "@renderer/hooks/useAxiosPrivate";
-import { TProductColumn } from "@renderer/types/type-schema";
+import { columnHeaders } from "./columns";
 
 
-
-const columnHeaders: TProductColumn[] = [
-    {
-        key: "table",
-        label: "Table"
-    },
-    {
-        key: "total",
-        label: "Total"
-    },
-    {
-        key: "createdAt",
-        label: "Date"
-    },
-    {
-        key: "action",
-        label: "Actions"
-    }
-];
 const ProductsPage = () => {
 
     const axiosInstance = useAxiosPrivate();

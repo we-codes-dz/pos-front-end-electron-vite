@@ -1,17 +1,17 @@
-import { useAddProduct, useDeleteProduct, useUpdateProduct } from '@renderer/api/hooks/useProducts'
+import { useAddServer, useDeleteServer, useUpdateServer } from '@renderer/api/hooks/useServers'
 import { useBoundStore } from '@renderer/stores/store'
-import { TProduct } from '@renderer/types/type-schema'
-import { ProductOrderBy, orderProducts } from '@renderer/utils/filter'
+import { TServer } from '@renderer/types/type-schema'
+import { ServerOrderBy, orderServers } from '@renderer/utils/filter'
 import { AxiosInstance } from 'axios'
-import { ChangeEvent, useEffect, useState } from 'react'
-import CRUDAddProductModal from '../../modal/product/add/crud-modal'
-import CRUDDeleteProductModal from '../../modal/product/delete/crud-modal'
-import CRUDEditProductModal from '../../modal/product/edit/edit-modal'
+import { useEffect, useState } from 'react'
+import CRUDAddServerModal from '../../modal/servers/add/crud-modal'
+import CRUDDeleteServerModal from '../../modal/servers/delete/crud-modal'
+import CRUDEditServerModal from '../../modal/servers/edit/edit-modal'
 import { Table, Tbody } from '../common'
 import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader from '../common/table/category-table-header'
-import ProductTableRow from './product-table-row'
+import ServerTableRow from './server-table-row'
 //TODO: add pagination logic
 
 export interface ColumnHeaderInt {
@@ -22,58 +22,57 @@ export interface ColumnHeaderInt {
 interface Props {
   title?: string
   headers: ColumnHeaderInt[]
-  products: TProduct[]
+  servers: TServer[]
   axiosInstance: AxiosInstance
 }
-const FilterParameter = ProductOrderBy
-const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
+const FilterParameter = ServerOrderBy
+
+const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   const filterOptions = [
     { label: 'Date', value: 'Date' },
     { label: 'Name', value: 'Name' }
   ]
-  const [selectedFilterParam, setSelectedFilterParam] = useState<ProductOrderBy>(
-    FilterParameter.Empty
+  const [selectedFilterParam, setSelectedFilterParam] = useState<ServerOrderBy>(
+    FilterParameter.Name
   )
-  const [productData, setProductData] = useState<TProduct[]>(products)
+  const [serverData, setServerData] = useState<TServer[]>(servers)
   const [isDeleteModalOpen, setOpenedDeleteModal] = useState<boolean>(false)
   const [isCreateModalOpen, setOpenedCreateModal] = useState<boolean>(false)
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
 
   const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
-  const addProduct = useAddProduct(axiosInstance, reset)
-  const deleteProduct = useDeleteProduct(axiosInstance)
-  const editProduct = useUpdateProduct(axiosInstance, reset)
+  const addServer = useAddServer(axiosInstance, reset)
+  const deleteServer = useDeleteServer(axiosInstance)
+  const editServer = useUpdateServer(axiosInstance, reset)
   const [currentPage, setCurrentPage] = useState(1)
   // Show 8 products per page
   const itemsPerPage = 9
   // Logic to slice array for current page
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem)
+  const currentItems = serverData.slice(indexOfFirstItem, indexOfLastItem)
   // Total pages
-  const totalPages = Math.ceil(productData.length / itemsPerPage)
+  const totalPages = Math.ceil(serverData.length / itemsPerPage)
 
-  //? selectedProductForEdit is variable used to display data in edit product modal
-  const [selectedProductForEdit, setSelectedCategory] = useState<TProduct>()
+  //? selectedServerForEdit is variable used to display data in edit product modal
+  const [selectedServerForEdit, setSelectedServer] = useState<TServer>()
 
   const [deletedItemId, setDeletedItemId] = useState<number>()
   /* /**
    * Updates the filter parameter based on the selected value.
    * @param e - The change event from the select element.
    */
-  const handleFilterParamChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleFilterParamChange = () => {
     // Extract the selected value from the event
-    const selectedValue = e.target.value
-    // Map the selected value to the corresponding FilterParameter enum
-    const newFilterParam = selectedValue === 'Name' ? FilterParameter.Name : FilterParameter.Empty
+    const newFilterParam = FilterParameter.Name
     // Set the new filter parameter
     setSelectedFilterParam(newFilterParam)
   }
 
   useEffect(() => {
-    const updatedData = orderProducts(products, selectedFilterParam) as TProduct[]
-    setProductData(updatedData)
-  }, [selectedFilterParam, products])
+    const updatedData = orderServers(servers, selectedFilterParam) as TServer[]
+    setServerData(updatedData)
+  }, [selectedFilterParam, servers])
 
   useEffect(() => {
     handleAddButtonSubmit()
@@ -89,7 +88,7 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
       console.log('deleted Item Id', deletedItemId)
-      deleteProduct.mutate(deletedItemId!)
+      deleteServer.mutate(deletedItemId!)
     }
   }
 
@@ -101,7 +100,7 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   const handleAddButtonSubmit = async () => {
     console.log('entered to submit data')
     if (dataInputs) {
-      addProduct.mutate(dataInputs)
+      addServer.mutate(dataInputs)
     }
   }
 
@@ -109,8 +108,8 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   const toggleEditModal = () => {
     setOpenedEditModal(!isEditModalOpen)
   }
-  const handleEditButtonClick = (element: TProduct) => {
-    setSelectedCategory(element)
+  const handleEditButtonClick = (element: TServer) => {
+    setSelectedServer(element)
     toggleEditModal()
     //TODO: adding delete via api and in global state
   }
@@ -119,10 +118,10 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
     //TODO: adding delete via api and in global state
   }
 
-  const handleEditSubmit = (data: any, avatar: any) => {
+  const handleEditSubmit = (data: any) => {
     console.log(data)
-    const product = { id: selectedProductForEdit!.id, ...data, avatar }
-    editProduct.mutate(product)
+    const product = { id: selectedServerForEdit!.id, ...data }
+    editServer.mutate(product)
   }
 
   return (
@@ -142,8 +141,8 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
           <TableHeader headers={headers} />
           <Tbody>
             {currentItems?.map((item, fakerKey) => (
-              <ProductTableRow
-                product={item}
+              <ServerTableRow
+                server={item}
                 key={fakerKey}
                 handleEditButtonClick={() => handleEditButtonClick(item)}
                 modalDeleteHandler={modalDeleteHandler}
@@ -160,28 +159,28 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
           />
         </div>
       </div>
-      <CRUDDeleteProductModal
-        title={'Delete Product'}
+      <CRUDDeleteServerModal
+        title={'Delete Server'}
         modalHandler={modalDeleteHandler}
         handleDeleteButtonClick={handleDeleteButtonClick}
         modalIsOpened={isDeleteModalOpen}
       />
-      <CRUDAddProductModal
-        title={'Add Product'}
+      <CRUDAddServerModal
+        title={'Add Server'}
         modalHandler={toggleCreateModal}
         handleAddButtonSubmit={handleAddButtonSubmit}
         setDataInputs={setInputs}
         modalIsOpened={isCreateModalOpen}
       />
-      <CRUDEditProductModal
-        title={'Edit Product'}
+      <CRUDEditServerModal
+        title={'Edit Server'}
         modalHandler={openEditModal}
-        handleEditButtonClick={(data, avatar) => handleEditSubmit(data, avatar)}
+        handleEditButtonClick={(data) => handleEditSubmit(data)}
         modalIsOpened={isEditModalOpen}
-        data={selectedProductForEdit}
+        data={selectedServerForEdit}
       />
     </div>
   )
 }
 
-export default ProductTable
+export default ServerTable

@@ -32,6 +32,7 @@ const OrdersPage = () => {
     if (isLoading) return null
     console.log(orders)
 
+    if (!isLoading && !orders) return <>no data</>
     const structuringData =
         (orders: any) => {
             return orders.data.data;
@@ -42,10 +43,11 @@ const OrdersPage = () => {
 
     return (
         <div className="flex flex-col w-full overflow-y-scroll h-full">
-            <OrderTabs
-                eatInTable={<OrdersTable headers={columnHeaders} orders={structuredOrders} />}
-                eatOutTable={<OrdersTable headers={columnHeaders} orders={structuredOrders} />}
-            />
+            {structuredOrders &&
+                <OrderTabs
+                    eatInTable={<OrdersTable headers={columnHeaders} orders={structuredOrders} />}
+                    eatOutTable={<OrdersTable headers={columnHeaders} orders={structuredOrders} />}
+                />}
         </div>
     )
 }

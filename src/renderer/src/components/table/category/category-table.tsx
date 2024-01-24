@@ -19,12 +19,13 @@ import { Pagination } from '../common/pagination/pagination'
 import TableHeader, { ColumnHeaderInt } from '../common/table/category-table-header'
 import CategoryTableRow from './category-table-row'
 interface Props {
+  title?: string
   categoryColumns: ColumnHeaderInt[]
   categories: TCategory[]
   axiosInstance: AxiosInstance
 }
 const FilterParameter = CategoryOrderBy
-const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) => {
+const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Props) => {
   const filterOptions = [
     { label: 'Date', value: 'Date' },
     { label: 'Name', value: 'Name' }
@@ -121,7 +122,7 @@ const CategoryTable = ({ categoryColumns, categories, axiosInstance }: Props) =>
   return (
     <div className="mt-4">
       <HeaderSection
-        title={'Categories'}
+        title={title ? title : 'Table'}
         handleFilterParamChange={handleFilterParamChange}
         filterOptions={filterOptions}
         onClick={toggleCreateModal}

@@ -18,7 +18,7 @@ const OrderTableRow =
                 </Td>
                 <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     <span className="font-medium whitespace-nowrap">
-                        {order?.table.number}
+                        {order?.table?.number}
                     </span>
                 </Td>
                 <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">

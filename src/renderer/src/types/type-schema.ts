@@ -29,6 +29,12 @@ export type TAvatar = {
   deletedAt: string
 }
 
+export type TServer = {
+  id: number
+  fullName: string
+  createdAt: string
+}
+
 export type TCategory = {
   id: number
   createdAt: string
@@ -101,6 +107,11 @@ export type TCategoryFilter = {
   totalPages?: number | null
 }
 
+export type TServerFilter = {
+  page?: number | null
+  limit?: number | null
+  totalPages?: number | null
+}
 export type TLinks = {
   current?: string
   next?: string

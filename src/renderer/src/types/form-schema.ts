@@ -23,3 +23,10 @@ export const productSchema = z.object({
   description: z.string().min(0),
   category: z.number().min(1).max(99999).positive()
 })
+
+export const serverSchema = z.object({
+  fullName: z
+    .string()
+    .min(3, 'Le nom du produit doit au-moins contenir 3 caractères')
+    .max(40, 'Le nom du produit ne doit pas dépasser 40 caractères')
+})
