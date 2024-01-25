@@ -9,6 +9,9 @@ export interface OrderSlice {
   addProductToCurrentOrder: (product: TItem) => void
   deleteItemFromCurrentOrder: (itemId: number) => void
   setOrders: (products: TOrder[]) => void
+  clearCurrentOrder: () => void
+  updateItemQuantity: (itemId: number, quantity: number) => void
+  updateItemPrice: (itemId: number, price: number) => void
 }
 
 export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
@@ -62,6 +65,79 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
         const updatedItems = state.currentOrder.items.filter((item) => item.product.id !== itemId)
 
         // Update the currentOrder with the filtered items
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: updatedItems
+        }
+
+        return {
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
+
+  clearCurrentOrder: () =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, set its 'items' array to an empty array
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: []
+        }
+
+        return {
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
+  updateItemQuantity: (itemId: number, quantity: number) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, update the quantity of the item with the provided ID
+        const updatedItems = state.currentOrder.items.map((item) => {
+          if (item.product.id === itemId) {
+            // Update the quantity of the specific item
+            return { ...item, quantity }
+          }
+          return item
+        })
+
+        // Update the currentOrder with the modified items
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: updatedItems
+        }
+
+        return {
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
+  updateItemPrice: (itemId: number, price: number) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, update the price of the item with the provided ID
+        const updatedItems = state.currentOrder.items.map((item) => {
+          if (item.product.id === itemId) {
+            // Update the price of the specific item
+            return { ...item, price }
+          }
+          return item
+        })
+
+        // Update the currentOrder with the modified items
         const updatedOrder = {
           ...state.currentOrder,
           items: updatedItems

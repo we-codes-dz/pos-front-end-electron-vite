@@ -6,13 +6,13 @@ import { TCategory } from '../../types/type-schema'
 import CarouselWrapper from '../carousel/carousel-wrapper'
 import SliderElement from '../carousel/slider'
 
-type TContentSlider = {
+export type TContentSlider = {
   id: number
   name: string
   image_url: string
 }
 
-type TSlider = {
+export type TSlider = {
   tabNumber: number
   content: TContentSlider[]
 }
