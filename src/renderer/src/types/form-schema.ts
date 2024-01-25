@@ -30,3 +30,7 @@ export const serverSchema = z.object({
     .min(3, 'Le nom du produit doit au-moins contenir 3 caractères')
     .max(40, 'Le nom du produit ne doit pas dépasser 40 caractères')
 })
+
+export const noteSchema = z.object({
+  note: z.string().min(3, 'La note doit au-moins contenir 3 caractères')
+})

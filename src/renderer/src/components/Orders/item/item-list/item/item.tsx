@@ -7,9 +7,9 @@ import Total from './total'
 
 type TProps = {
   item: TOrderItem
-
+  setSelectProductId: (id: number) => void
 }
-const Item = ({ item, }: TProps) => {
+const Item = ({ item, setSelectProductId }: TProps) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
 
   const { deleteItemFromCurrentOrder, updateItemQuantity } = useBoundStore((state) => state)
@@ -33,7 +33,7 @@ const Item = ({ item, }: TProps) => {
   }
 
   return (
-    <div className="flex flex-col  rounded-md relative border-2">
+    <div className="flex flex-col  rounded-md relative border-2" onClick={() => setSelectProductId(item.product.id)}>
       {/*/  //? delete command button*/}
       <div className="absolute top-1 right-1">
         <div

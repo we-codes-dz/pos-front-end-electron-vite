@@ -12,6 +12,7 @@ export interface OrderSlice {
   clearCurrentOrder: () => void
   updateItemQuantity: (itemId: number, quantity: number) => void
   updateItemPrice: (itemId: number, price: number) => void
+  addNoteToProduct: (productId: number, note: string) => void
 }
 
 export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
@@ -133,6 +134,33 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
           if (item.product.id === itemId) {
             // Update the price of the specific item
             return { ...item, price }
+          }
+          return item
+        })
+
+        // Update the currentOrder with the modified items
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: updatedItems
+        }
+
+        return {
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
+  addNoteToProduct: (productId: number, note: string) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, update the note of the product with the provided ID
+        const updatedItems = state.currentOrder.items.map((item) => {
+          if (item.product.id === productId) {
+            // Update the note of the specific product
+            return { ...item, note }
           }
           return item
         })
