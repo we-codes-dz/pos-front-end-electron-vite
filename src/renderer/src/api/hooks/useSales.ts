@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 const useSales = (axiosInstance: AxiosInstanceOriginal) => {
   const salesService = new APIService<any, any>('/sales', axiosInstance)
   const data = useQuery({
-    queryKey: SALES,
+    queryKey: [SALES],
     queryFn: salesService.apiClient.getAll
   })
 

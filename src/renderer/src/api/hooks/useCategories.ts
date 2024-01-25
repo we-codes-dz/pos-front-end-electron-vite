@@ -153,15 +153,25 @@ export const useDeleteCategory = (axiosInstance: AxiosInstanceOriginal) => {
       const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
 
       queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
-        const dataCategorie = categories.data.data ? categories.data.data : categories
-        console.log('dataCategorie', dataCategorie)
+        const dataCategories = categories?.data?.data ? categories.data.data : categories
+        console.log('dataCategories', dataCategories)
         const updatedCategories = Array.isArray(categories)
-          ? dataCategorie?.data?.data.filter((category) => category.id !== categoryId)
+          ? dataCategories?.data?.data?.filter((category) => category.id !== categoryId)
           : previousCategories.data.data.filter((category) => category.id !== categoryId)
         return updatedCategories
       })
 
       return { previousCategories: previousCategories || [] }
+    },
+    onSuccess: () => {
+      // Manually trigger a refetch after a successful deletion
+      const invalidatePromise: Promise<void> = queryClient.invalidateQueries()
+      // Reset or handle other logic as needed
+
+      invalidatePromise.then(() => {
+        // This block will run after the invalidation is complete
+        console.log('Query successfully invalidated')
+      })
     },
     onError: (error) => {
       console.log(error)

@@ -142,6 +142,16 @@ export const useDeleteServer = (axiosInstance: AxiosInstanceOriginal) => {
 
       return { previousServers: previousServers || [] }
     },
+    onSuccess: () => {
+      // Manually trigger a refetch after a successful deletion
+      const invalidatePromise: Promise<void> = queryClient.invalidateQueries()
+      // Reset or handle other logic as needed
+
+      invalidatePromise.then(() => {
+        // This block will run after the invalidation is complete
+        console.log('Query successfully invalidated')
+      })
+    },
     onError: (error) => {
       console.log(error)
       // if (!context) return
