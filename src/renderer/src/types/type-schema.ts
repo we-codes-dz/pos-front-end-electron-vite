@@ -46,12 +46,19 @@ export type TCategory = {
   parent?: TCategory[]
   children?: TCategory[]
 }
-
+export type TItem = {
+  note?: string
+  addOns?: string
+  product: TProduct
+  quantity: number
+  price: number
+}
 export type TOrder = {
   id: number
   total: number
   table: any[]
-  items: any[]
+  server: { id: number }
+  items: TItem[]
   createdAt: string
   updatedAt: string
   deletedAt: string
