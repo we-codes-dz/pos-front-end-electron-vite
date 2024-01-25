@@ -9,7 +9,13 @@ export type TOrder = {
 
 export type TOrderList = {
   tableNumber: number
-  orders: TOrder
+  items: TOrderItem[]
+}
+
+export type TOrderItem = {
+  quantity: number
+  price: number
+  product: any
 }
 
 // export const tableCommandData: TOrderList[] = [

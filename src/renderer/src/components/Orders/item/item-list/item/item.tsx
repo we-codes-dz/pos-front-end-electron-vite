@@ -1,25 +1,33 @@
-import { useEffect, useState } from 'react'
-import { TOrder } from '../../../../../data/tableCommandData'
-import ProductInformation from './product-information'
-import Controller from './controller/controller'
-import Total from './total'
 import { useBoundStore } from '@renderer/stores/store'
+import { useCallback, useState } from 'react'
+import { TOrderItem } from '../../../../../data/tableCommandData'
+import Controller from './controller/controller'
+import ProductInformation from './product-information'
+import Total from './total'
 
 type TProps = {
-  item: TOrder
+  item: TOrderItem
+
 }
-const Item = ({ item }: TProps) => {
+const Item = ({ item, }: TProps) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
-  //   const { updateItemQuantity } = useBoundStore((state) => state)
-  const { deleteItemFromCurrentOrder } = useBoundStore((state) => state)
-  const addQuantity = () => {
-    setQuantity((prev) => prev + 1)
-  }
+
+  const { deleteItemFromCurrentOrder, updateItemQuantity } = useBoundStore((state) => state)
+
+  const handleQuantityChange =
+    useCallback((newQuantity: number) => {
+      setQuantity(newQuantity)
+      updateItemQuantity(item.product.id, newQuantity)
+    }, [updateItemQuantity, item.product.id])
+
+  const addQuantity = () => handleQuantityChange(quantity + 1)
+
   const minusQuantity = () => {
     if (quantity > 1) {
-      setQuantity((prev) => prev - 1)
+      handleQuantityChange(quantity - 1)
     }
   }
+
   const deleteItem = () => {
     deleteItemFromCurrentOrder(item.product.id)
   }

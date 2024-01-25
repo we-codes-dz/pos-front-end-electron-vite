@@ -5,6 +5,7 @@ export type TUser = {
 export type TProduct = {
   id: number
   name: string
+  status?: string
   description: string
   price: number
   avatar?: TAvatar

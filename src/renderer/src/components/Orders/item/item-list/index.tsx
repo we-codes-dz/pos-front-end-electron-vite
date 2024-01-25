@@ -1,8 +1,8 @@
 import { randomNumbers } from '@renderer/utils/helper'
-import { TOrder } from '../../../../data/tableCommandData'
+import { TOrderItem } from '../../../../data/tableCommandData'
 import Item from './item/item'
 type TProps = {
-  itemList: TOrder[]
+  itemList: TOrderItem[]
 }
 const ItemList = ({ itemList }: TProps) => {
   return (
