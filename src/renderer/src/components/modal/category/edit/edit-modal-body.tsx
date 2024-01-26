@@ -1,28 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@nextui-org/react'
+import useCategories from '@renderer/api/hooks/useCategories'
 import SpinnerComponent from '@renderer/components/Spinner/Spinner'
 import ErrorMessage from '@renderer/components/inputs/ErrorMessage/ErrorMessage'
 import ReusableInput from '@renderer/components/inputs/input/custom-input'
+import ReusableSelect from '@renderer/components/inputs/select/custom-select'
+import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
 import { categorySchema } from '@renderer/types/form-schema'
 import { TCategory } from '@renderer/types/type-schema'
+import { getSafeCategoryList } from '@renderer/utils/helper'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 type Inputs = z.infer<typeof categorySchema>
 
-type FoodCategory = {
-  value: string
-  label: string
-}
 
-const categories: FoodCategory[] = [
-  { value: 'Food', label: 'Food' },
-  { value: 'Burgers', label: 'Burgers' },
-  { value: 'Pizzas', label: 'Pizzas' },
-  { value: 'Sandwiches', label: 'Sandwiches' }
-  // Add more categories as needed
-]
 
 interface Props {
   btnClassName?: string
@@ -34,6 +27,15 @@ interface Props {
 const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
   const [image, setImage] = useState<any>([])
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
+
+  const axiosInstance = useAxiosPrivate()
+  const { data: categories, error, isLoading } = useCategories(axiosInstance)
+
+  if (isLoading) {
+    return <span className="loading loading-spinner loading-lg"></span>
+  }
+  if (error) return <div>{error.message}</div>
+  const categoryList: TCategory[] = getSafeCategoryList(categories);
 
   //? form control logic
   const {
@@ -94,15 +96,16 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
       </ReusableInput>
       {/* <!-- name Input end --> */}
 
-      <ReusableInput label="Category parent">
-        <select className="select select-bordered" {...register('parent')}>
-          {categories.map((item) => (
-            <option className="text-black" key={item.value} value={item.value}>
-              {item.label}
-            </option>
-          ))}
+      <ReusableSelect label="Category">
+        <select
+          className="select select-bordered">
+          <option></option>
+          {categoryList.map((item) =>
+            <option key={item.id} value={item.id} >{item.name}</option>
+          )
+          }
         </select>
-      </ReusableInput>
+      </ReusableSelect>
 
       <label className="form-control w-full ">
         <input
