@@ -1,9 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@nextui-org/react'
+import useCategories from '@renderer/api/hooks/useCategories'
 import SpinnerComponent from '@renderer/components/Spinner/Spinner'
 import ErrorMessage from '@renderer/components/inputs/ErrorMessage/ErrorMessage'
 import ReusableInput from '@renderer/components/inputs/input/custom-input'
+import ReusableSelect from '@renderer/components/inputs/select/custom-select'
+import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
 import { productSchema } from '@renderer/types/form-schema'
+import { TCategory } from '@renderer/types/type-schema'
+import { getSafeCategoryList } from '@renderer/utils/helper'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -20,6 +25,18 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
   const [image, setImage] = useState<any>([])
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
   const [hasImage, setHasImage] = useState<boolean>(false)
+
+  const axiosInstance = useAxiosPrivate()
+
+  const { data: categories, error, isLoading } = useCategories(axiosInstance)
+
+  if (isLoading) {
+    return <span className="loading loading-spinner loading-lg"></span>
+  }
+  if (error) return <div>{error.message}</div>
+
+
+  const categoryList: TCategory[] = getSafeCategoryList(categories);
   //? form control logic
   const {
     register,
@@ -108,7 +125,22 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
         //TODO: Add category select
       }
       {/* <!-- category Input --> */}
-      <ReusableInput label="Category number">
+      <ReusableSelect label="Category">
+        <select
+          className="select select-bordered"
+          {...register('category', {
+            setValueAs: (value) => parseFloat(value)
+          })}>
+          <option></option>
+          {categoryList.map((item) =>
+            <option key={item.id} value={item.id} >{item.name}</option>
+          )
+          }
+        </select>
+        {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
+      </ReusableSelect>
+
+      {/* <ReusableInput label="Category number">
         <input
           type="number"
           className="input input-bordered w-full"
@@ -117,7 +149,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
           })}
         />
         {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
-      </ReusableInput>
+      </ReusableInput> */}
       {/* <!-- category Input end --> */}
 
       <label className="form-control w-full ">
