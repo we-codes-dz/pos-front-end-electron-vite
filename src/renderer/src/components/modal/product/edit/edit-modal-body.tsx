@@ -53,7 +53,6 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     }
   }, [data, setValue])
 
-  console.log('category : ', data?.category)
   const axiosInstance = useAxiosPrivate()
 
   const { data: categories, error, isLoading } = useCategories(axiosInstance)
@@ -130,9 +129,6 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
       </ReusableInput>
       {/* <!-- price Input end --> */}
 
-      {
-        //TODO: Add category select
-      }
       {/* <!-- category Input --> */}
       <ReusableSelect label="Category">
         <select
