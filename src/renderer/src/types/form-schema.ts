@@ -21,7 +21,7 @@ export const productSchema = z.object({
     .max(40, 'Le nom du produit ne doit pas dépasser 40 caractères'),
   price: z.number().min(1).max(99999).positive(),
   description: z.string().min(0),
-  category: z.number().min(1).max(99999).positive()
+  category: z.number().min(1, 'Vous deverez selectionnner une categorie').max(99999).positive()
 })
 
 export const serverSchema = z.object({
