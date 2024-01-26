@@ -9,7 +9,7 @@ export type TProduct = {
   description: string
   price: number
   avatar?: TAvatar
-  category: number
+  category: TCategory
 }
 
 export type TMeta = {
