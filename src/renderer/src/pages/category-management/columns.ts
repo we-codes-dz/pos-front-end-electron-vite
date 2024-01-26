@@ -15,10 +15,6 @@ export const categoryColumns: ColumnHeaderInt[] = [
   },
   {
     key: '3',
-    label: 'Child'
-  },
-  {
-    key: '4',
     label: 'Actions'
   }
 ]
