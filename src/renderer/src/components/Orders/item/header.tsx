@@ -5,11 +5,10 @@ import { useState } from 'react'
 
 type TProps = {
   title: string
-  selectProductId: number
 }
-const OrderHeader = ({ title, selectProductId }: TProps) => {
+const OrderHeader = ({ title }: TProps) => {
   const [modalIsOpened, setModalIsOpened] = useState<boolean>(false);
-  const { clearCurrentOrder, addNoteToProduct } = useBoundStore((state) => state)
+  const { clearCurrentOrder, addNoteToProduct, selectProductId, isItemChosen } = useBoundStore((state) => state)
   const removeItems = () => {
     clearCurrentOrder()
   }
@@ -36,7 +35,7 @@ const OrderHeader = ({ title, selectProductId }: TProps) => {
             className={cn(
               "px-2 py-2 rounded-md bg-gray-100 text-gray-800",
               "btn",
-              { "btn-disabled": false }
+              { "btn-disabled": true }
             )
             }
           >
@@ -46,7 +45,7 @@ const OrderHeader = ({ title, selectProductId }: TProps) => {
             className={cn(
               "px-2 py-2 rounded-md bg-gray-100 text-gray-800",
               "btn",
-              { "btn-disabled": selectProductId === 0 }
+              { "btn-disabled": !isItemChosen || selectProductId === 0 }
             )
             }
             onClick={modalHandler}

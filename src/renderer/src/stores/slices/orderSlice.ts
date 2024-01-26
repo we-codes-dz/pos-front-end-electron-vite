@@ -6,6 +6,9 @@ export interface OrderSlice {
   orders: TOrder[]
   isOrderMounted: boolean
   todayOrders: TOrder[]
+  //? note & adds on management var
+  selectProductId: number
+  isItemChosen: boolean
   addProductToCurrentOrder: (product: TItem) => void
   deleteItemFromCurrentOrder: (itemId: number) => void
   setOrders: (products: TOrder[]) => void
@@ -13,6 +16,9 @@ export interface OrderSlice {
   updateItemQuantity: (itemId: number, quantity: number) => void
   updateItemPrice: (itemId: number, price: number) => void
   addNoteToProduct: (productId: number, note: string) => void
+  //? note & adds on management functions
+  setSelectProductId: (id: number) => void
+  setIsItemChosen: (bool: boolean) => void
 }
 
 export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
@@ -20,6 +26,9 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
   orders: [],
   todayOrders: [],
   isOrderMounted: false,
+  //? note & adds on management var
+  selectProductId: 0,
+  isItemChosen: false,
   addProductToCurrentOrder: (item: TItem) =>
     set((state: OrderSlice) => {
       if (state.currentOrder) {
@@ -179,5 +188,8 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
         // If there is no current order, do nothing
         return state
       }
-    })
+    }),
+  //? note & adds on management functions declaration
+  setSelectProductId: (id: number) => set({ selectProductId: id }),
+  setIsItemChosen: (bool: boolean) => set({ isItemChosen: bool })
 })

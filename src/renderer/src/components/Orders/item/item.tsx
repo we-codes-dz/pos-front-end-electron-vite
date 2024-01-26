@@ -11,7 +11,6 @@ type TProps = {
 const OrderItem = ({ order }: TProps) => {
   console.log('THE ORDER', order)
   const [totalPrice, setTotalPrice] = useState<number>(0)
-  const [selectProductId, setSelectProductId] = useState<number>(0);
 
   // Function to calculate the total price
   const calculateTotalPrice = (items: TItem[]) => {
@@ -25,10 +24,10 @@ const OrderItem = ({ order }: TProps) => {
   return (
     <div className="justify-between h-full">
       <div className="h-1/6">
-        <OrderHeader title={`Table ${order.tableNumber}`} selectProductId={selectProductId} />
+        <OrderHeader title={`Table ${order.tableNumber}`} />
       </div>
       <div className="h-3/6 px-5">
-        <ItemList itemList={order.items} setSelectProductId={setSelectProductId} />
+        <ItemList itemList={order.items} />
       </div>
       <div className="h-3/6">
         <TotalOrder totalPrice={totalPrice} />
