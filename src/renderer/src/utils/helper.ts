@@ -2,6 +2,7 @@ import {} from 'tailwindcss/lib/util/color'
 
 import { clsx, ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { TCategory } from '@renderer/types/type-schema'
 
 const cn = (...inputs: ClassValue[]): string => {
   return twMerge(clsx(inputs))
@@ -168,6 +169,16 @@ const formatDateOnly = (value: string) => {
   return createdAt
 }
 
+const getSafeCategoryList = (data: any): TCategory[] => {
+  if (Array.isArray(data)) {
+    return data
+  } else if (data && 'data' in data) {
+    return data.data.data || []
+  } else {
+    return []
+  }
+}
+
 export {
   cn,
   cutText,
@@ -182,5 +193,6 @@ export {
   slideDown,
   formatter,
   formatDateDetail,
-  formatDateOnly
+  formatDateOnly,
+  getSafeCategoryList
 }
