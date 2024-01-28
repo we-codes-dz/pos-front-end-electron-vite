@@ -10,14 +10,12 @@ const ProductsPage = () => {
     const { data: sales, isLoading } = useSales(axiosInstance);
 
     if (isLoading) return null
-    console.log(sales)
 
     const structuringData =
         (sales: any) => {
             return sales.data.data;
         }
     const structuredSales = structuringData(sales)
-    console.log(structuredSales)
     return (
         <div className="flex flex-col w-full overflow-y-scroll">
             <SalesTable

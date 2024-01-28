@@ -49,7 +49,7 @@ export type TCategory = {
 }
 export type TItem = {
   note?: string
-  addOns?: string
+  addOns?: string[]
   product: TProduct
   quantity: number
   price: number
@@ -63,6 +63,11 @@ export type TOrder = {
   createdAt: string
   updatedAt: string
   deletedAt: string
+}
+
+export type TSupply = {
+  name: string
+  productId: number
 }
 
 export interface SaleInt {

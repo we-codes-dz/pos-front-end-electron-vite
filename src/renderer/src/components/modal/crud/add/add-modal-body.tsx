@@ -48,7 +48,6 @@ const ModalBody =
         const handlerSubmit =
             async (data: Inputs) => {
                 try {
-                    console.log(data)
                     //? enabling the spinner
                     setSubmitting(true);
                     //? resetting the form after action 
@@ -80,20 +79,6 @@ const ModalBody =
                 />
                 {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
 
-                <Select
-                    label="Child"
-                    className=" text-black w-full"
-                    placeholder="Select child category"
-                    {...register('child')}
-
-                //onChange={(e) => filterByParam(e)}
-                >
-                    {categories.map((item) => (
-                        <SelectItem className="text-black" key={item.value} value={item.value}>
-                            {item.label}
-                        </SelectItem>
-                    ))}
-                </Select>
                 <Select
                     label="Parent"
                     className=" text-black w-full"

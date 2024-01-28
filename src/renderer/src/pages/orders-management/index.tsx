@@ -30,7 +30,6 @@ const OrdersPage = () => {
     const { data: orders, isLoading } = useSales(axiosInstance);
 
     if (isLoading) return null
-    console.log(orders)
 
     if (!isLoading && !orders) return <>no data</>
     const structuringData =
@@ -38,7 +37,6 @@ const OrdersPage = () => {
             return orders.data.data;
         }
     const structuredOrders = structuringData(orders)
-    console.log(structuredOrders)
 
 
     return (

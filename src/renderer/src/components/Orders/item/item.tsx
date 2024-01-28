@@ -9,7 +9,6 @@ type TProps = {
   order: TOrderList
 }
 const OrderItem = ({ order }: TProps) => {
-  console.log('THE ORDER', order)
   const [totalPrice, setTotalPrice] = useState<number>(0)
 
   // Function to calculate the total price

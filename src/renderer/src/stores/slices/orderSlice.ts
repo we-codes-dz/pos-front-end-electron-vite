@@ -1,4 +1,5 @@
 import { TItem, TOrder } from '@renderer/types/type-schema'
+import { getAddOns } from '@renderer/utils/helper'
 import { StateCreator } from 'zustand'
 
 export interface OrderSlice {
@@ -9,6 +10,7 @@ export interface OrderSlice {
   //? note & adds on management var
   selectProductId: number
   isItemChosen: boolean
+  currentAddOns: string[] | null
   addProductToCurrentOrder: (product: TItem) => void
   deleteItemFromCurrentOrder: (itemId: number) => void
   setOrders: (products: TOrder[]) => void
@@ -19,6 +21,10 @@ export interface OrderSlice {
   //? note & adds on management functions
   setSelectProductId: (id: number) => void
   setIsItemChosen: (bool: boolean) => void
+  addAddOns: (productId: number, newAddOn: string) => void
+  clearSpecificAddon: (productId: number, newAddOn: string) => void
+  getSpecificProductAddOns: (productId: number) => void
+  clearSpecificProductSupplies: (productId: number) => void
 }
 
 export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
@@ -29,6 +35,7 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
   //? note & adds on management var
   selectProductId: 0,
   isItemChosen: false,
+  currentAddOns: [],
   addProductToCurrentOrder: (item: TItem) =>
     set((state: OrderSlice) => {
       if (state.currentOrder) {
@@ -189,7 +196,125 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
         return state
       }
     }),
+  addAddOns: (productId: number, newAddOn: string) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, find the item with the provided product ID
+        const updatedItems: TItem[] = state.currentOrder.items.map((item) => {
+          if (item.product.id === productId) {
+            // If the item is found, extract existing add-ons and add the new add-on
+            const existingAddOns: string[] = item.addOns || []
+
+            // If the new add-on is already selected, remove it (deselect)
+            const updatedAddOns: string[] = existingAddOns.includes(newAddOn)
+              ? existingAddOns.filter((addOn) => addOn !== newAddOn)
+              : [...existingAddOns, newAddOn] // Otherwise, add it
+
+            // Update the add-ons list with the new add-on
+            return { ...item, addOns: updatedAddOns }
+          }
+          return item
+        })
+
+        // Update the currentOrder with the modified items
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: updatedItems
+        }
+
+        const updatedAddons = getAddOns(updatedOrder, productId)
+
+        return {
+          currentAddOns: updatedAddons,
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
+  clearSpecificAddon: (productId: number, addOn: string) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, find the item with the provided product ID
+        const updatedItems: TItem[] = state.currentOrder.items.map((item) => {
+          if (item.product.id === productId) {
+            // If the item is found, extract existing add-ons and remove the specified add-on
+            const existingAddOns: string[] = item.addOns || []
+            const updatedAddOns: string[] = existingAddOns.filter(
+              (existingAddOn) => existingAddOn !== addOn
+            )
+
+            // Update the add-ons list with the modified add-ons
+            return { ...item, addOns: updatedAddOns }
+          }
+          return item
+        })
+
+        // Update the currentOrder with the modified items
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: updatedItems
+        }
+
+        const updatedAddons = getAddOns(updatedOrder, productId)
+        return {
+          currentAddOns: updatedAddons,
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
+  clearSpecificProductSupplies: (productId: number) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, find the item with the provided product ID
+        const updatedItems: TItem[] = state.currentOrder.items.map((item) => {
+          if (item.product.id === productId) {
+            // If the item is found, remove the supplies related to the specified product
+            return { ...item, addOns: [] }
+          }
+          return item
+        })
+
+        // Update the currentOrder with the modified items
+        const updatedOrder = {
+          ...state.currentOrder,
+          items: updatedItems
+        }
+
+        const updatedAddons = getAddOns(updatedOrder, productId)
+        return {
+          currentAddOns: updatedAddons,
+          currentOrder: updatedOrder,
+          orders: [...state.orders]
+        }
+      } else {
+        // If there is no current order, do nothing
+        return state
+      }
+    }),
   //? note & adds on management functions declaration
   setSelectProductId: (id: number) => set({ selectProductId: id }),
-  setIsItemChosen: (bool: boolean) => set({ isItemChosen: bool })
+  setIsItemChosen: (bool: boolean) => set({ isItemChosen: bool }),
+  getSpecificProductAddOns: (productId: number) =>
+    set((state: OrderSlice) => {
+      if (state.currentOrder) {
+        // If there is a current order, find the item with the provided product ID
+        const foundItem = state.currentOrder.items.find((item) => item.product.id === productId)
+
+        if (foundItem) {
+          // If the item is found, retrieve the add-ons and update the specificProductAddOns variable
+          const addOns = foundItem.addOns || []
+          return { currentAddOns: addOns }
+        }
+      }
+
+      // If no item is found or there is no current order, set specificProductAddOns to null
+      return { currentAddOns: null }
+    })
 })

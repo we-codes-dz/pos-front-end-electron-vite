@@ -1,12 +1,19 @@
-import { createNoteModalSlice, noteModalSlice } from './slices/noteModalSlice'
 import { create } from 'zustand'
 import { ProductSlice, createProductSlice } from './slices/productSlice'
 import { CategorySlice, createCategorySlice } from './slices/categorySlice'
 import { TableSlice, createTableSlice } from './slices/tableStore'
 import { AuthState, createAuthSlice } from './slices/authSlice'
 import { OrderSlice, createOrderSlice } from './slices/orderSlice'
+import { noteModalSlice, createNoteModalSlice } from './slices/noteModalSlice'
+import { adsOnModalSlice, createAdsOnModalSlice } from './slices/adsOnModalSlice'
 
-type RootState = ProductSlice & CategorySlice & TableSlice & AuthState & OrderSlice & noteModalSlice
+type RootState = ProductSlice &
+  CategorySlice &
+  TableSlice &
+  AuthState &
+  OrderSlice &
+  noteModalSlice &
+  adsOnModalSlice
 
 export const useBoundStore = create<RootState>()((...a) => ({
   ...createCategorySlice(...a),
@@ -14,5 +21,6 @@ export const useBoundStore = create<RootState>()((...a) => ({
   ...createTableSlice(...a),
   ...createAuthSlice(...a),
   ...createOrderSlice(...a),
-  ...createNoteModalSlice(...a)
+  ...createNoteModalSlice(...a),
+  ...createAdsOnModalSlice(...a)
 }))

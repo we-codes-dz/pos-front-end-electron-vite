@@ -6,7 +6,7 @@ type TProps = {
 }
 const OrderHeader = ({ title }: TProps) => {
 
-  const { clearCurrentOrder, selectProductId, isItemChosen, modalHandler } = useBoundStore((state) => state)
+  const { clearCurrentOrder, selectProductId, isItemChosen, noteModalHandler, adsOnModalHandler } = useBoundStore((state) => state)
   const removeItems = () => {
     clearCurrentOrder()
   }
@@ -29,9 +29,10 @@ const OrderHeader = ({ title }: TProps) => {
             className={cn(
               "px-2 py-2 rounded-md bg-gray-100 text-gray-800",
               "btn",
-              { "btn-disabled": true }
+              { "btn-disabled": !isItemChosen || selectProductId === 0 }
             )
             }
+            onClick={adsOnModalHandler}
           >
             Adds On
           </button>
@@ -42,7 +43,7 @@ const OrderHeader = ({ title }: TProps) => {
               { "btn-disabled": !isItemChosen || selectProductId === 0 }
             )
             }
-            onClick={modalHandler}
+            onClick={noteModalHandler}
           >
             Note
           </button>

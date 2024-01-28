@@ -27,7 +27,6 @@ const TableDragAndDrop = () => {
 
         const dataTableObjects = dataTable.objects;
         const wrappedObjects = { "objects": JSON.parse(JSON.stringify(dataTableObjects)) };
-        console.log(JSON.stringify(wrappedObjects))
 
         if (canvas.current)
             (canvas.current as fabric.Canvas).loadFromJSON(wrappedObjects);
@@ -70,7 +69,6 @@ const TableDragAndDrop = () => {
 
     //? big table
     const addRectTableClickHandler = () => {
-        console.log(chairNumber)
         addRect(canvas.current, chairNumber, 30, 90, 60, 90);
         setChairNumber(prev => prev + 1);
     }
@@ -100,7 +98,6 @@ const TableDragAndDrop = () => {
     const saveDataHandler = () => {
         if (canvas.current) {
             const jsonForm = JSON.stringify(canvas.current);
-            console.log('JSON Form of the data table \n', jsonForm);
         }
     }
 

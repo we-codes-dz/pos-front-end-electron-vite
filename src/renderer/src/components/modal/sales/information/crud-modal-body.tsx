@@ -7,7 +7,6 @@ interface Props {
 }
 const ModalBody =
     ({ modalHandler, btnClassName, data }: Props) => {
-        console.log("sale information :", data)
         return (
             <div className=" ">
                 {/* if there is a button, it will close the modal */}

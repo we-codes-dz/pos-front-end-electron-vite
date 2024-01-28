@@ -100,7 +100,6 @@ const ProductTable = ({ title, headers, products, axiosInstance }: Props) => {
   }
 
   const handleAddButtonSubmit = async () => {
-    console.log('entered to submit data')
     if (dataInputs) {
       addProduct.mutate(dataInputs)
     }

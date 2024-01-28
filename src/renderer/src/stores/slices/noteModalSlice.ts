@@ -1,13 +1,13 @@
 import { StateCreator } from 'zustand'
 
 export interface noteModalSlice {
-  modalIsOpened: boolean
-  setModalIsOpened: (bool: boolean) => void
-  modalHandler: () => void
+  noteModalIsOpened: boolean
+  setNoteModalIsOpened: (bool: boolean) => void
+  noteModalHandler: () => void
 }
 
 export const createNoteModalSlice: StateCreator<noteModalSlice> = (set) => ({
-  modalIsOpened: false,
-  setModalIsOpened: (bool: boolean) => set({ modalIsOpened: bool }),
-  modalHandler: () => set((state) => ({ modalIsOpened: !state.modalIsOpened }))
+  noteModalIsOpened: false,
+  setNoteModalIsOpened: (bool: boolean) => set({ noteModalIsOpened: bool }),
+  noteModalHandler: () => set((state) => ({ noteModalIsOpened: !state.noteModalIsOpened }))
 })

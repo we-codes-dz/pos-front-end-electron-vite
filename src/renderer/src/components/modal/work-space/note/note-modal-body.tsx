@@ -33,7 +33,6 @@ const ModalBody =
         const handlerSubmit =
             (data: Inputs) => {
                 setIsSubmitting(true)
-                console.log('submit')
                 confirmDeletingHandler(data);
                 reset();
                 modalHandler();

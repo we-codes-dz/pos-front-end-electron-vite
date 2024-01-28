@@ -2,7 +2,7 @@ import {} from 'tailwindcss/lib/util/color'
 
 import { clsx, ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { TCategory } from '@renderer/types/type-schema'
+import { TCategory, TOrder, TSupply } from '@renderer/types/type-schema'
 
 const cn = (...inputs: ClassValue[]): string => {
   return twMerge(clsx(inputs))
@@ -179,6 +179,19 @@ const getSafeCategoryList = (data: any): TCategory[] => {
   }
 }
 
+const supplyExists = (supplies: TSupply[], supply: TSupply) =>
+  supplies.some((s) => s.name === supply.name && s.productId === supply.productId)
+
+const supplyExistInOrder = (productId: number, supplyName: string, currentOrders: TOrder) => {
+  if (currentOrders && currentOrders.items.length === 0) return false
+  else
+    return currentOrders?.items.some(
+      (item) => item.addOns?.includes(supplyName) && item.product.id === productId
+    )
+}
+
+const getAddOns = (updatedOrder: TOrder, productId: number) =>
+  updatedOrder.items.find((item) => item.product.id === productId)?.addOns
 export {
   cn,
   cutText,
@@ -194,5 +207,8 @@ export {
   formatter,
   formatDateDetail,
   formatDateOnly,
-  getSafeCategoryList
+  getSafeCategoryList,
+  supplyExists,
+  supplyExistInOrder,
+  getAddOns
 }

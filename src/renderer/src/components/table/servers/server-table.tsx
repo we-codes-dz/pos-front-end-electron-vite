@@ -99,7 +99,6 @@ const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   }
 
   const handleAddButtonSubmit = async () => {
-    console.log('entered to submit data')
     if (dataInputs) {
       addServer.mutate(dataInputs)
     }
@@ -120,7 +119,6 @@ const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   }
 
   const handleEditSubmit = (data: any) => {
-    console.log(data)
     const product = { id: selectedServerForEdit!.id, ...data }
     editServer.mutate(product)
   }

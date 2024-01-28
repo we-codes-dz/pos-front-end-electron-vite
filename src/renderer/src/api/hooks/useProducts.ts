@@ -110,7 +110,6 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
     mutationFn: async (updatedProduct) => {
       const { id, ...data } = updatedProduct
       const dataForm = new FormData()
-      console.log(data, 'data')
       if (data.name) dataForm.append('name', data.name)
       if (data.avatar) dataForm.append('avatar', data.avatar)
       if (data.description) dataForm.append('description', data.description)
@@ -135,7 +134,6 @@ export const useUpdateProduct = (axiosInstance: AxiosInstanceOriginal, reset: ()
       const { id, ...rest } = updatedProduct
       const previousProducts = queryClient.getQueryData<any>(['products']) || []
 
-      console.log(updatedProduct)
       queryClient.setQueryData<any>(['products'], (products: any) => {
         let dataProducts = products?.data?.data ? products?.data?.data : products
         const updatedProducts = Array.isArray(products)
