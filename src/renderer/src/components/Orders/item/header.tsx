@@ -1,27 +1,21 @@
-import NoteOrderModal from '@renderer/components/modal/work-space/note/note-modal'
 import { useBoundStore } from '@renderer/stores/store'
 import { cn } from '@renderer/utils/helper'
-import { useState } from 'react'
 
 type TProps = {
   title: string
 }
 const OrderHeader = ({ title }: TProps) => {
-  const [modalIsOpened, setModalIsOpened] = useState<boolean>(false);
-  const { clearCurrentOrder, addNoteToProduct, selectProductId, isItemChosen } = useBoundStore((state) => state)
+
+  const { clearCurrentOrder, selectProductId, isItemChosen, modalHandler } = useBoundStore((state) => state)
   const removeItems = () => {
     clearCurrentOrder()
   }
 
 
-  const modalHandler = () => {
-    setModalIsOpened(!modalIsOpened)
-  }
-
-  const handleAddNoteButton = (data: { note: string }) => {
-    addNoteToProduct(3, data.note)
-    console.log('note :', data, 'product Selected : ', selectProductId)
-  }
+  // const handleAddNoteButton = (data: { note: string }) => {
+  //   addNoteToProduct(3, data.note)
+  //   console.log('note :', data, 'product Selected : ', selectProductId)
+  // }
   return (
     <div className="h-full flex flex-col gap-4 items-center justify-between px-5 mt-5">
       <div className="font-bold text-xl">Current Order</div>
@@ -54,7 +48,7 @@ const OrderHeader = ({ title }: TProps) => {
           </button>
         </div>
       </div>
-      <NoteOrderModal handleAddNoteButton={(data) => handleAddNoteButton(data)} modalHandler={modalHandler} modalIsOpened={modalIsOpened} title='Add note' />
+      {/* <NoteOrderModal handleAddNoteButton={(data) => handleAddNoteButton(data)} modalHandler={modalHandler} modalIsOpened={modalIsOpened} title='Add note' /> */}
     </div>
   )
 }
