@@ -55,14 +55,19 @@ export type TItem = {
   price: number
 }
 export type TOrder = {
-  id: number
-  total: number
-  table: any[]
-  server: { id: number }
+  id?: number
+  total?: number
+  status?: string
+  creator?: {
+    id: number
+    fullName: string
+  }
+  table?: TTable
+  server: { id: number; fullName?: string }
   items: TItem[]
-  createdAt: string
-  updatedAt: string
-  deletedAt: string
+  createdAt?: string
+  updatedAt?: string
+  deletedAt?: string
 }
 
 export interface SaleInt {
