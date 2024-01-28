@@ -1,4 +1,4 @@
-import { cn } from "@renderer/utils/helper";
+import { cn, getAddOns } from "@renderer/utils/helper";
 import ConfirmationModalWrapper from "../../shared/confirmation-modal-wrapper";
 import ModalBody from "./ads-on-modal-body";
 import { useBoundStore } from "@renderer/stores/store";
@@ -16,7 +16,12 @@ interface Props {
 
 const AdsOnOrderModal =
     ({ title, modalIsOpened, modalHandler, handleAddNoteButton }: Props) => {
-        const { currentAddOns, clearSpecificProductSupplies, selectProductId } = useBoundStore(set => set)
+        const { currentOrder, clearSpecificProductSupplies, selectProductId } = useBoundStore(set => set)
+
+        if (!currentOrder) return null
+
+        const currentAddOns = getAddOns(currentOrder, selectProductId)
+
         console.log('currentAddOns : ', currentAddOns)
         const clickHandler = () => {
             //clearAllSuppliesForProduct(selectProductId)
