@@ -64,6 +64,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
       if (image) {
         dataForm.append('name', data.name)
         dataForm.append('avatar', image)
+        dataForm.append('parent[id]', data.parent)
         setDataInputs(dataForm)
         handleAddButtonSubmit()
         //? enabling the spinner
@@ -71,7 +72,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
         modalHandler()
         //? disenabling the spinner
         setSubmitting(false)
-        modalHandler()
+        //modalHandler()
         //? resetting the form after action
         reset()
       }
