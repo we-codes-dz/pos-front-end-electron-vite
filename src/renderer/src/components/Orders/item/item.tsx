@@ -1,7 +1,7 @@
 import { TItem } from '@renderer/types/type-schema'
 import { useEffect, useState } from 'react'
 import { TOrderList } from '../../../data/tableCommandData'
-import PayButton from './footer/footer'
+import ItemListFooter from './footer/footer'
 import OrderHeader from './header/header'
 import ItemList from './item-list'
 import TotalOrder from './total'
@@ -30,7 +30,7 @@ const OrderItem = ({ order }: TProps) => {
       </div>
       <div className="[200px]">
         <TotalOrder totalPrice={totalPrice} />
-        <PayButton />
+        <ItemListFooter />
       </div>
     </div>
   )
