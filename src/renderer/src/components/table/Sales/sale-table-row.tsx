@@ -10,13 +10,18 @@ type TProps = {
 const SaleTableRow = ({ sale, handleInfoButtonClick }: TProps) => {
   return (
     <Tr className="intro-x">
+      {sale.table ? (
+        <Td className="first:rounded-l-md last:rounded-r-md  bg-white bsale-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
+          <span className="font-medium whitespace-nowrap">{sale?.table?.number}</span>
+        </Td>
+      ) : (
+        <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
+          <span className="font-medium whitespace-nowrap">Delivery</span>
+        </Td>
+      )}
       <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-        <span className="font-medium whitespace-nowrap">{sale.total}</span>
+        <span className="font-medium whitespace-nowrap">{sale.total} DZD</span>
       </Td>
-      <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
-        <span className="font-medium whitespace-nowrap">{sale.table?.number}</span>
-      </Td>
-
       <Td className="first:rounded-l-md last:rounded-r-md  bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
         <span className="font-medium whitespace-nowrap">
           {/* {new Date(sale.createdAt).toISOString().split('T')[0]} */}
