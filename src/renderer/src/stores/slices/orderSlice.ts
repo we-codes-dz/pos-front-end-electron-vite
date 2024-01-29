@@ -1,5 +1,6 @@
 import { TItem, TOrder } from '@renderer/types/type-schema'
-import { getAddOns } from '@renderer/utils/helper'
+import { getAddOnsFromCurrentOrders } from '@renderer/utils/helper'
+
 import { StateCreator } from 'zustand'
 
 export interface OrderSlice {
@@ -61,12 +62,22 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
           currentOrder: {
             id: 0, // You might need to generate a unique ID
             total: 0, // You might need to calculate the total based on the items
-            table: [], // You might need to handle the table property appropriately
+            table: {
+              // You might need to handle the table property appropriately
+              id: 0,
+              floor: 0,
+              number: 0,
+              isAvailable: false,
+              maxSeats: 0,
+              usedSeats: 0,
+              orders: undefined
+            },
             server: { id: 0 }, // You might need to handle the server property appropriately
             items: [item], // Add the provided item to the items array
             createdAt: '',
             updatedAt: '',
-            deletedAt: ''
+            deletedAt: '',
+            currentAddOns: []
           },
           orders: [...state.orders]
         }
@@ -222,7 +233,7 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
           items: updatedItems
         }
 
-        const updatedAddons = getAddOns(updatedOrder, productId)
+        const updatedAddons = getAddOnsFromCurrentOrders(updatedOrder, productId)
 
         return {
           currentAddOns: updatedAddons,
@@ -258,7 +269,7 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
           items: updatedItems
         }
 
-        const updatedAddons = getAddOns(updatedOrder, productId)
+        const updatedAddons = getAddOnsFromCurrentOrders(updatedOrder, productId)
         return {
           currentAddOns: updatedAddons,
           currentOrder: updatedOrder,
@@ -287,7 +298,7 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
           items: updatedItems
         }
 
-        const updatedAddons = getAddOns(updatedOrder, productId)
+        const updatedAddons = getAddOnsFromCurrentOrders(updatedOrder, productId)
         return {
           currentAddOns: updatedAddons,
           currentOrder: updatedOrder,

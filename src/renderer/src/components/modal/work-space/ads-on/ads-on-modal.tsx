@@ -1,4 +1,4 @@
-import { cn, getAddOns } from "@renderer/utils/helper";
+import { cn, getAddOnsFromCurrentOrders } from "@renderer/utils/helper";
 import ConfirmationModalWrapper from "../../shared/confirmation-modal-wrapper";
 import ModalBody from "./ads-on-modal-body";
 import { useBoundStore } from "@renderer/stores/store";
@@ -20,7 +20,7 @@ const AdsOnOrderModal =
 
         if (!currentOrder) return null
 
-        const currentAddOns = getAddOns(currentOrder, selectProductId)
+        const currentAddOns = getAddOnsFromCurrentOrders(currentOrder, selectProductId)
 
         console.log('currentAddOns : ', currentAddOns?.length)
         const clickHandler = () => {
