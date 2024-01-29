@@ -16,7 +16,7 @@ const SupplyItem =
         } = useBoundStore(set => set)
 
 
-        console.log('currentOrder :', currentOrder)
+        //console.log('currentOrder :', currentOrder)
         const supply = { name: item.name, productId: selectProductId }
         if (!currentOrder) return null
         const isSupplyExists = supplyExistInOrder(selectProductId, supply.name, currentOrder)

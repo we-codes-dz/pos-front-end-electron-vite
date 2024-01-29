@@ -56,15 +56,19 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
 
   const handlerSubmit = async (data: Inputs) => {
     try {
+      console.log('entering to handler submit func')
       const dataForm = new FormData()
       if (!image || image.length === 0) {
         setHasImage(true)
         return
       }
+      console.log('data : ', data)
       if (image) {
         dataForm.append('name', data.name)
         dataForm.append('avatar', image)
+        //if (data.parent !== '') {
         dataForm.append('parent[id]', data.parent)
+        //}
         setDataInputs(dataForm)
         handleAddButtonSubmit()
         //? enabling the spinner
@@ -94,7 +98,9 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
 
       <ReusableSelect label="Category">
         <select
-          className="select select-bordered">
+          className="select select-bordered"
+          {...register('parent')}
+        >
           <option></option>
           {categoryList.map((item) =>
             <option key={item.id} value={item.id} >{item.name}</option>
@@ -106,7 +112,8 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
       <label className="form-control w-full ">
         <input
           type="file"
-          accept="image/*"
+          //? to import a specific type
+          accept="image/png image/jpeg"
           className="file-input file-input-bordered file-input-accent w-full max-w-xs"
           onChange={(e: any) => {
             imageUploadHandler(e)

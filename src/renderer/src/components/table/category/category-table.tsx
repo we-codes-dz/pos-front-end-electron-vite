@@ -100,6 +100,7 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
 
   const handleAddButtonSubmit = async () => {
     if (dataInputs) {
+      console.log(dataInputs)
       addCategory.mutate(dataInputs)
     }
   }
@@ -117,7 +118,8 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
   }
 
   const handleEditSubmit = (data: any, avatar: any) => {
-    editCategory.mutate({ id: selectedCategoryForEdit!.id, name: data.name, avatar })
+    //? add parent id  data.parent
+    editCategory.mutate({ id: selectedCategoryForEdit!.id, name: data.name, parent: data.parent, avatar })
   }
 
   return (

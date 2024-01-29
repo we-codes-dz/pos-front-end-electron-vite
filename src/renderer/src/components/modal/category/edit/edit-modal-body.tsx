@@ -57,8 +57,9 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
 
   useEffect(() => {
     if (data) {
-      const { name } = data
+      const { name, parent } = data
       setValue('name', name)
+      if (parent) setValue('parent', parent?.id.toString())
     }
   }, [data, setValue])
   //?
@@ -98,7 +99,9 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
 
       <ReusableSelect label="Category">
         <select
-          className="select select-bordered">
+          {...register('parent')}
+          className="select select-bordered"
+        >
           <option></option>
           {categoryList.map((item) =>
             <option key={item.id} value={item.id} >{item.name}</option>

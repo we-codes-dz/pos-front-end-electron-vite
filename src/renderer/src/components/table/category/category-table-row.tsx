@@ -2,6 +2,9 @@ import { FaEdit } from "react-icons/fa"
 import { Td, Tr } from "../common"
 import { FaTrashCan } from "react-icons/fa6"
 import { TCategory } from "@renderer/types/type-schema";
+import useAxiosPrivate from "@renderer/hooks/useAxiosPrivate";
+import useCategories from "@renderer/api/hooks/useCategories";
+import { getSafeCategoryList } from "@renderer/utils/helper";
 
 type TProps = {
     category: TCategory;
@@ -17,6 +20,15 @@ const CategoryTableRow =
             catchingId(category.id);
             modalDeleteHandler();
         }
+        const axiosInstance = useAxiosPrivate()
+        const { data: categories, error, isLoading } = useCategories(axiosInstance)
+
+        if (isLoading) {
+            return <span className="loading loading-spinner loading-lg"></span>
+        }
+        if (error) return <div>{error.message}</div>
+        const categoryList: TCategory[] = getSafeCategoryList(categories);
+        console.log('category list : ', categoryList)
         return (
             <Tr className="intro-x">
                 <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]"
@@ -29,7 +41,9 @@ const CategoryTableRow =
                 </Td>
                 <Td className="first:rounded-l-md last:rounded-r-md bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b]">
                     <span className="font-medium whitespace-nowrap">
-                        {category.parent ? category?.parent[0].name : "no"}
+                        {category.parent ? categoryList?.find(item => item.id === category.parent?.id)?.name || "no"
+                            : "no"
+                        }
                     </span>
                 </Td>
                 <Td

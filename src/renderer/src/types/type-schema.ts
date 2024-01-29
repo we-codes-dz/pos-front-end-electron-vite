@@ -44,8 +44,7 @@ export type TCategory = {
   name: string
   avatar?: TAvatar
   products?: TProduct[]
-  parent?: TCategory[]
-  children?: TCategory[]
+  parent?: { id: number }
 }
 export type TItem = {
   note?: string
