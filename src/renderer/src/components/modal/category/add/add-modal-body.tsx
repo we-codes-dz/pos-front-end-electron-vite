@@ -15,7 +15,6 @@ import { z } from 'zod'
 
 type Inputs = z.infer<typeof categorySchema>
 
-
 interface Props {
   btnClassName?: string
   modalHandler: () => void
@@ -24,7 +23,7 @@ interface Props {
 }
 const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props) => {
   const [image, setImage] = useState<any>([])
-  const [hasImage, setHasImage] = useState<boolean>(false);
+  const [hasImage, setHasImage] = useState<boolean>(false)
   const [isSubmitting, setSubmitting] = useState<boolean>(false)
 
   const axiosInstance = useAxiosPrivate()
@@ -34,7 +33,7 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
     return <span className="loading loading-spinner loading-lg"></span>
   }
   if (error) return <div>{error.message}</div>
-  const categoryList: TCategory[] = getSafeCategoryList(categories);
+  const categoryList: TCategory[] = getSafeCategoryList(categories)
 
   //? form control logic
   const {
@@ -66,9 +65,9 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
       if (image) {
         dataForm.append('name', data.name)
         dataForm.append('avatar', image)
-        //if (data.parent !== '') {
-        dataForm.append('parent[id]', data.parent)
-        //}
+        if (data.parent !== '') {
+          dataForm.append('parent[id]', data.parent)
+        }
         setDataInputs(dataForm)
         handleAddButtonSubmit()
         //? enabling the spinner
@@ -80,7 +79,6 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
         //? resetting the form after action
         reset()
       }
-
     } catch (error) {
       console.log(error)
       modalHandler()
@@ -90,22 +88,25 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
   return (
     <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-4 space-y-4">
       {/* <!-- name Input --> */}
-      <ReusableInput label='Category Name' >
-        <input type="text" placeholder="Category Name..." className="input input-bordered w-full" {...register('name')} />
+      <ReusableInput label="Category Name">
+        <input
+          type="text"
+          placeholder="Category Name..."
+          className="input input-bordered w-full"
+          {...register('name')}
+        />
         {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
       </ReusableInput>
       {/* <!-- name Input end --> */}
 
       <ReusableSelect label="Category">
-        <select
-          className="select select-bordered"
-          {...register('parent')}
-        >
+        <select className="select select-bordered" {...register('parent')}>
           <option></option>
-          {categoryList.map((item) =>
-            <option key={item.id} value={item.id} >{item.name}</option>
-          )
-          }
+          {categoryList.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
         </select>
       </ReusableSelect>
 
@@ -117,11 +118,12 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
           className="file-input file-input-bordered file-input-accent w-full max-w-xs"
           onChange={(e: any) => {
             imageUploadHandler(e)
-            setHasImage(false);
+            setHasImage(false)
           }}
         />
         <div className="label">
-          <span className="label-text text-xs">{hasImage && <ErrorMessage>You should choose an image</ErrorMessage>}
+          <span className="label-text text-xs">
+            {hasImage && <ErrorMessage>You should choose an image</ErrorMessage>}
           </span>
         </div>
       </label>

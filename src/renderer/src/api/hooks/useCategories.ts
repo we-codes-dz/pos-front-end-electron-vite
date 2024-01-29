@@ -4,6 +4,7 @@ import { CATEGORIES } from '../../utils/constants'
 import { AxiosInstance as AxiosInstanceOriginal } from 'axios'
 
 import APIService from '../services/apiService'
+const baseURL = 'http://localhost:3000/'
 interface AddCategoryContext {
   previousCategories: TCategory[]
 }
@@ -40,7 +41,7 @@ export const useAddCategories = (axiosInstance: AxiosInstanceOriginal, reset: ()
   // const categoriesService = new APIService<TCategory, TCategoryFilter>('/categories', axiosInstance)
   return useMutation<TCategory, Error, any, AddCategoryContext>({
     mutationFn: async (data) => {
-      return await axiosInstance.post('http://localhost:3000/categories', data, {
+      return await axiosInstance.post(baseURL + 'categories', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -93,9 +94,12 @@ export const useUpdateCategory = (axiosInstance: AxiosInstanceOriginal, reset: (
 
   return useMutation<TCategory, Error, any, AddCategoryContext>({
     mutationFn: async (updatedCategory) => {
-      const { id, ...rest } = updatedCategory
-
-      const response = await axiosInstance.put(`http://localhost:3000/categories/${id}`, rest, {
+      const { id, ...data } = updatedCategory
+      const dataForm = new FormData()
+      if (data.name) dataForm.append('name', data.name)
+      if (data.avatar) dataForm.append('avatar', data.avatar)
+      if (data.parent) dataForm.append('parent[id]', data.parent.toString())
+      const response = await axiosInstance.put(`${baseURL}categories/${id}`, dataForm, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -147,7 +151,7 @@ export const useDeleteCategory = (axiosInstance: AxiosInstanceOriginal) => {
 
   return useMutation<void, Error, number>({
     mutationFn: async (categoryId) => {
-      await axiosInstance.delete(`http://localhost:3000/categories/${categoryId}`)
+      await axiosInstance.delete(`${baseURL}categories/${categoryId}`)
     },
     onMutate: async (categoryId) => {
       const previousCategories = queryClient.getQueryData<any>([CATEGORIES]) || []
