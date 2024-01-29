@@ -9,13 +9,10 @@ type TProps = {
 const SupplyItem =
     ({ item }: TProps) => {
         const {
-            setSupplySelected,
             selectProductId,
             currentOrder,
-            clearSpecificSupply,
             clearSpecificAddon,
             addAddOns,
-            setSuppliesOfSpecificProduct
         } = useBoundStore(set => set)
 
 
