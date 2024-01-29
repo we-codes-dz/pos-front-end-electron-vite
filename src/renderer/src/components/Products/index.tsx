@@ -30,7 +30,7 @@ const Products = () => {
       <div className="w-2/3 grow grid grid-cols-12 gap-5 pt-5 mt-5 border-t overflow-y-scroll h-full ">
         {productList?.map((item, fakerKey) => <ProductItem key={fakerKey} item={item} />)}
       </div>
-      <div className="w-1/3 h-[670px]  overflow-y-scroll">
+      <div className="w-1/3 h-[680px]  overflow-y-scroll ">
         <Orders />
       </div>
     </div>

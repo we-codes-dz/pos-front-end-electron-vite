@@ -2,7 +2,7 @@ import { TItem } from '@renderer/types/type-schema'
 import { useEffect, useState } from 'react'
 import { TOrderList } from '../../../data/tableCommandData'
 import PayButton from './button/PayButton'
-import OrderHeader from './header'
+import OrderHeader from './header/header'
 import ItemList from './item-list'
 import TotalOrder from './total'
 type TProps = {
@@ -21,14 +21,14 @@ const OrderItem = ({ order }: TProps) => {
     setTotalPrice(calculateTotalPrice(order.items))
   }, [order.items])
   return (
-    <div className="justify-between h-full">
-      <div className="h-1/6">
+    <div className="h-full">
+      <div className="">
         <OrderHeader title={`Table ${order.tableNumber}`} />
       </div>
-      <div className="h-3/6 px-5">
+      <div className="px-5 h-[290px]">
         <ItemList itemList={order.items} />
       </div>
-      <div className="h-3/6">
+      <div className="[200px]">
         <TotalOrder totalPrice={totalPrice} />
         <PayButton />
       </div>
