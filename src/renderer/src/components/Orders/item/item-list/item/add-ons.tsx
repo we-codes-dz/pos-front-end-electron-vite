@@ -13,20 +13,20 @@ const AddOns =
             //? to not apply  parent style on child
             e.stopPropagation()
             clickHandler()
+            setShow(!isShowed)
         }
         const addonsDoesExist = addOns && addOns?.length > 0
         return (
             <div
                 className={cn(
-                    'ps-1 mb-2',
-                    { 'hover:cursor-pointer': addonsDoesExist }
+                    'ps-1 mb-2'
                 )}
-                onClick={onIndicatorClick}>
+            >
                 <div className='indicator text-sm flex'>
                     {addonsDoesExist && <span className='indicator-item badge badge-error text-white'>{addOns?.length}</span>}
                     <div className="flex gap-2">
                         <span>Add Ons:</span>
-                        {addonsDoesExist && <span className="text-blue-600 text-sm" onClick={() => setShow(!isShowed)}>{isShowed ? 'hide' : 'show'}</span>}
+                        {addonsDoesExist && <span className={cn("text-blue-600 text-sm", { 'hover:cursor-pointer': addonsDoesExist })} onClick={onIndicatorClick}>{isShowed ? 'hide' : 'show'}</span>}
                     </div>
                 </div>
                 {addonsDoesExist && display && <div className="flex flex-wrap gap-1 text-xs text-slate-600 ">
