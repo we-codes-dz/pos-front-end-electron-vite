@@ -89,7 +89,7 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
   const handleDeleteButtonClick = () => {
     if (deletedItemId) {
       deleteCategory.mutate(deletedItemId!)
-      setIsItemDeleted(prev => !prev)
+      setIsItemDeleted((prev) => !prev)
     }
   }
 
@@ -118,8 +118,13 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
   }
 
   const handleEditSubmit = (data: any, avatar: any) => {
-    //? add parent id  data.parent
-    editCategory.mutate({ id: selectedCategoryForEdit!.id, name: data.name, parent: data.parent, avatar })
+    //? add parent id  data.parents
+    editCategory.mutate({
+      id: selectedCategoryForEdit!.id,
+      name: data.name,
+      parent: data.parent,
+      avatar
+    })
   }
 
   return (

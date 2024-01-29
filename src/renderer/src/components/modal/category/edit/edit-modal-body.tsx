@@ -15,8 +15,6 @@ import { z } from 'zod'
 
 type Inputs = z.infer<typeof categorySchema>
 
-
-
 interface Props {
   btnClassName?: string
   modalHandler: () => void
@@ -35,7 +33,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     return <span className="loading loading-spinner loading-lg"></span>
   }
   if (error) return <div>{error.message}</div>
-  const categoryList: TCategory[] = getSafeCategoryList(categories);
+  const categoryList: TCategory[] = getSafeCategoryList(categories)
 
   //? form control logic
   const {
@@ -59,7 +57,7 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
     if (data) {
       const { name, parent } = data
       setValue('name', name)
-      if (parent) setValue('parent', parent?.id.toString())
+      if (parent) setValue('parent', parent?.id?.toString())
     }
   }, [data, setValue])
   //?
@@ -98,15 +96,13 @@ const ModalBody = ({ modalHandler, onClickHandler, data }: Props) => {
       {/* <!-- name Input end --> */}
 
       <ReusableSelect label="Category">
-        <select
-          {...register('parent')}
-          className="select select-bordered"
-        >
+        <select {...register('parent')} className="select select-bordered">
           <option></option>
-          {categoryList.map((item) =>
-            <option key={item.id} value={item.id} >{item.name}</option>
-          )
-          }
+          {categoryList.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          ))}
         </select>
       </ReusableSelect>
 
