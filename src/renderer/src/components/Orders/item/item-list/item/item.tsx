@@ -1,10 +1,11 @@
 import { useBoundStore } from '@renderer/stores/store'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TOrderItem } from '../../../../../data/tableCommandData'
 import Controller from './controller/controller'
 import ProductInformation from './product-information'
 import Total from './total'
-import { cn } from '@renderer/utils/helper'
+import { cn, getAddOnsFromCurrentOrders } from '@renderer/utils/helper'
+import AddOns from './add-ons'
 
 type TProps = {
   item: TOrderItem
@@ -12,8 +13,8 @@ type TProps = {
 const Item = ({ item }: TProps) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
   const [className, setClassName] = useState<string>('flex flex-col rounded-md relative border-2');
-
-  const { deleteItemFromCurrentOrder, updateItemQuantity, setSelectProductId, selectProductId, setIsItemChosen, isItemChosen } = useBoundStore((state) => state)
+  const [isShowed, setShow] = useState<boolean>(false);
+  const { deleteItemFromCurrentOrder, updateItemQuantity, setSelectProductId, currentOrder, selectProductId, setIsItemChosen, isItemChosen } = useBoundStore((state) => state)
 
   const handleQuantityChange =
     useCallback((newQuantity: number) => {
@@ -39,24 +40,24 @@ const Item = ({ item }: TProps) => {
     }
   }
 
-  const itemClickHandler = () => {
+  const itemClickHandler = useCallback(() => {
     setSelectProductId(item.product.id);
     setIsItemChosen(item.product.id !== selectProductId || !isItemChosen);
-  }
-
+  }, [item.product.id, selectProductId, isItemChosen]);
+  const cnMemoized = useMemo(() => cn, []);
   useEffect(() => {
-    // The color change logic can be placed here
-    // after the state updates are complete
-    // Check if the current item is selected and chosen
     const isSelectedAndChosen = item.product.id === selectProductId && isItemChosen;
-    // Apply the corresponding class based on the condition
-    const newClassName = cn('flex flex-col rounded-md relative border-2', {
-      'bg-slate-300 scale-105  ': isSelectedAndChosen,
+    const newClassName = cnMemoized('flex flex-col rounded-md relative border-2', {
+      'bg-slate-300 scale-105': isSelectedAndChosen,
     });
-    // Update the component state with the new class name
     setClassName(newClassName);
-  }, [selectProductId, isItemChosen, item.product.id]);
+  }, [selectProductId, isItemChosen, item.product.id, itemClickHandler]);
+
+
   const shouldRenderDeleteButton = isItemChosen && item.product.id === selectProductId
+
+  //add ons logic
+  const addOns = currentOrder ? getAddOnsFromCurrentOrders(currentOrder, item.product.id) : []
   return (
     <div
       className={className}
@@ -76,8 +77,9 @@ const Item = ({ item }: TProps) => {
         </div>)
       }
       <ProductInformation item={item} />
+      <AddOns addOns={addOns} clickHandler={() => setShow(!isShowed)} display={isShowed} />
       {/* //? total of the item **/}
-      <div className="w-ful  flex justify-between pl-2 pb-2">
+      <div className="w-ful  flex justify-between pl-2 pb-2" onClick={(e: any) => e.stopPropagation()}>
         <Controller addQuantity={addQuantity} minusQuantity={minusQuantity} quantity={quantity} />
         <Total price={item.price} quantity={quantity} />
       </div>

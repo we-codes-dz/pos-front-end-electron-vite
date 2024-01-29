@@ -1,10 +1,12 @@
+
 interface Props {
   item: any
 }
 const ProductInformation = ({ item }: Props) => {
   const baseUrl = 'http://localhost:3000/'
+
   return (
-    <div className="flex flex-row justify-between items-center mb-4 w-full rounded-md ">
+    <div className="flex flex-row justify-between items-center mb-1 w-full rounded-md ">
       <img
         src={baseUrl + item.product.avatar.url}
         className="w-12 h-12 object-cover rounded-tl-md"
