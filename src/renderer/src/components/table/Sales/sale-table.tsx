@@ -1,5 +1,5 @@
 import SaleInformationModal from '@renderer/components/modal/sales/information/crud-modal'
-import { TProduct } from '@renderer/types/type-schema'
+import { SaleInt } from '@renderer/types/type-schema'
 import { useEffect, useState } from 'react'
 import { Table, Tbody } from '../common'
 import Header from '../common/header'
@@ -17,7 +17,7 @@ export interface ColumnHeaderInt {
 interface Props {
   title?: string
   headers: ColumnHeaderInt[]
-  sales: TProduct[]
+  sales: SaleInt[]
 }
 const SalesTable = ({ title, headers, sales }: Props) => {
   const [salesData, setSalesData] = useState<any[]>(sales)
@@ -51,7 +51,7 @@ const SalesTable = ({ title, headers, sales }: Props) => {
   return (
     <div className="mt-4 pb-2">
       <div className="flex justify-between items-center w-full ">
-        <Header title={title ? title : 'Table'} />
+        <Header title={title ? title : 'Sales'} />
       </div>
       {
         //? ************Table
