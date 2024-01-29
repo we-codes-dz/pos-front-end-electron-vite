@@ -2,7 +2,7 @@ import {} from 'tailwindcss/lib/util/color'
 
 import { clsx, ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { TCategory, TOrder, TSupply } from '@renderer/types/type-schema'
+import { TCategory, TItem, TOrder, TSupply } from '@renderer/types/type-schema'
 
 const cn = (...inputs: ClassValue[]): string => {
   return twMerge(clsx(inputs))
@@ -192,6 +192,11 @@ const supplyExistInOrder = (productId: number, supplyName: string, currentOrders
 
 const getAddOnsFromCurrentOrders = (updatedOrder: TOrder, productId: number) =>
   updatedOrder.items.find((item) => item.product.id === productId)?.addOns
+
+// Function to calculate the total price
+const calculateTotalPrice = (items: TItem[]) => {
+  return items.reduce((total, item) => total + item.price * item.quantity, 0)
+}
 export {
   cn,
   cutText,
@@ -210,5 +215,6 @@ export {
   getSafeCategoryList,
   supplyExists,
   supplyExistInOrder,
-  getAddOnsFromCurrentOrders
+  getAddOnsFromCurrentOrders,
+  calculateTotalPrice
 }

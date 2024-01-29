@@ -6,6 +6,10 @@ import { AuthState, createAuthSlice } from './slices/authSlice'
 import { OrderSlice, createOrderSlice } from './slices/orderSlice'
 import { noteModalSlice, createNoteModalSlice } from './slices/noteModalSlice'
 import { adsOnModalSlice, createAdsOnModalSlice } from './slices/adsOnModalSlice'
+import {
+  processToPaymentModalSlice,
+  createProcessToPaymentModalSlice
+} from './slices/processToPaymentModalSlice'
 
 type RootState = ProductSlice &
   CategorySlice &
@@ -13,7 +17,8 @@ type RootState = ProductSlice &
   AuthState &
   OrderSlice &
   noteModalSlice &
-  adsOnModalSlice
+  adsOnModalSlice &
+  processToPaymentModalSlice
 
 export const useBoundStore = create<RootState>()((...a) => ({
   ...createCategorySlice(...a),
@@ -22,5 +27,6 @@ export const useBoundStore = create<RootState>()((...a) => ({
   ...createAuthSlice(...a),
   ...createOrderSlice(...a),
   ...createNoteModalSlice(...a),
-  ...createAdsOnModalSlice(...a)
+  ...createAdsOnModalSlice(...a),
+  ...createProcessToPaymentModalSlice(...a)
 }))

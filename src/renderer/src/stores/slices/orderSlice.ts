@@ -12,6 +12,8 @@ export interface OrderSlice {
   selectProductId: number
   isItemChosen: boolean
   currentAddOns: string[] | null
+  //? payment management var
+  total: number
   addProductToCurrentOrder: (product: TItem) => void
   deleteItemFromCurrentOrder: (itemId: number) => void
   setOrders: (products: TOrder[]) => void
@@ -26,6 +28,7 @@ export interface OrderSlice {
   clearSpecificAddon: (productId: number, newAddOn: string) => void
   getSpecificProductAddOns: (productId: number) => void
   clearSpecificProductSupplies: (productId: number) => void
+  setTotal: (total: number) => void
 }
 
 export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
@@ -37,6 +40,7 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
   selectProductId: 0,
   isItemChosen: false,
   currentAddOns: [],
+  total: 0,
   addProductToCurrentOrder: (item: TItem) =>
     set((state: OrderSlice) => {
       if (state.currentOrder) {
@@ -327,5 +331,6 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
 
       // If no item is found or there is no current order, set specificProductAddOns to null
       return { currentAddOns: null }
-    })
+    }),
+  setTotal: (total: number) => set({ total: total })
 })

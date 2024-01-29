@@ -2,6 +2,7 @@ import Categories from "@renderer/components/Categories";
 import Products from "@renderer/components/Products";
 import AdsOnOrderModal from "@renderer/components/modal/work-space/ads-on/ads-on-modal";
 import NoteOrderModal from "@renderer/components/modal/work-space/note/note-modal";
+import ProcessToPaymentOrderModal from "@renderer/components/modal/work-space/process-to-payment/process-to-payment-modal";
 import { useBoundStore } from "@renderer/stores/store";
 
 const SellerWorkSpace = () => {
@@ -12,7 +13,10 @@ const SellerWorkSpace = () => {
         noteModalHandler,
         noteModalIsOpened,
         adsOnModalHandler,
-        adsOnModalIsOpened
+        adsOnModalIsOpened,
+        processToPaymentModalHandler,
+        processToPaymentModalIsOpened,
+        currentOrder
     } = useBoundStore((state) => state)
 
 
@@ -31,6 +35,7 @@ const SellerWorkSpace = () => {
             </div>
             <NoteOrderModal handleAddNoteButton={(data) => handleAddNoteButton(data)} modalHandler={noteModalHandler} modalIsOpened={noteModalIsOpened} title='Add note' />
             <AdsOnOrderModal handleAddNoteButton={(data) => handleAddNoteButton(data)} modalHandler={adsOnModalHandler} modalIsOpened={adsOnModalIsOpened} title='Add supply' />
+            {currentOrder && <ProcessToPaymentOrderModal handleAddNoteButton={(data) => handleAddNoteButton(data)} modalHandler={processToPaymentModalHandler} modalIsOpened={processToPaymentModalIsOpened} title='Payment Process' />}
         </div>
 
     )

@@ -1,4 +1,4 @@
-import { TItem } from '@renderer/types/type-schema'
+import { calculateTotalPrice } from '@renderer/utils/helper'
 import { useEffect, useState } from 'react'
 import { TOrderList } from '../../../data/tableCommandData'
 import ItemListFooter from './footer/footer'
@@ -11,15 +11,13 @@ type TProps = {
 const OrderItem = ({ order }: TProps) => {
   const [totalPrice, setTotalPrice] = useState<number>(0)
 
-  // Function to calculate the total price
-  const calculateTotalPrice = (items: TItem[]) => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
+
 
   // Update total price when items change
   useEffect(() => {
     setTotalPrice(calculateTotalPrice(order.items))
   }, [order.items])
+
   return (
     <div className="h-full">
       <div className="">
