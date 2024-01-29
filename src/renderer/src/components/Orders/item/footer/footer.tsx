@@ -1,6 +1,6 @@
 import PayPendingButton from "./button/pending-button"
 
-const PayButton = () => {
+const ItemListFooter = () => {
     return (
         <div className="flex justify-between h-2/3 px-2 mt-2 gap-2">
             <PayPendingButton title="Pay" className="btn-secondary" />
@@ -10,4 +10,4 @@ const PayButton = () => {
     )
 }
 
-export default PayButton
+export default ItemListFooter
