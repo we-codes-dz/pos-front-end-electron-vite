@@ -1,11 +1,11 @@
-import SaleInformationModal from '@renderer/components/modal/sales/information/crud-modal'
+import OrderInformationModal from '@renderer/components/modal/orders/information/crud-modal'
 import { TProduct } from '@renderer/types/type-schema'
 import { useEffect, useState } from 'react'
 import { Table, Tbody } from '../common'
 import Header from '../common/header'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader from '../common/table/category-table-header'
-import SaleTableRow from './order-table-row'
+import OrderTableRow from './order-table-row'
 
 //TODO: add pagination logic
 
@@ -61,7 +61,7 @@ const OrdersTable = ({ headers, orders }: Props) => {
           <TableHeader headers={headers} />
           <Tbody>
             {currentItems?.map((item, fakerKey) => (
-              <SaleTableRow
+              <OrderTableRow
                 key={fakerKey}
                 order={item}
                 handleInfoButtonClick={() => handleInfoButtonClick(item)}
@@ -78,7 +78,7 @@ const OrdersTable = ({ headers, orders }: Props) => {
         </div>
       </div>
       {SelectedSale && (
-        <SaleInformationModal
+        <OrderInformationModal
           title={'Information'}
           modalHandler={modalHandler}
           modalIsOpened={isDeleteModalOpen}
