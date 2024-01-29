@@ -8,9 +8,10 @@ const SalesPage = () => {
   const { data: sales, isLoading } = useSales(axiosInstance)
 
   if (isLoading) return null
-
+  console.log(sales)
   const structuringData = (sales: any) => {
-    return sales.data.data
+    const salesData = sales?.data?.data ? sales?.data?.data : sales
+    return salesData
   }
   const structuredSales = structuringData(sales)
   return (
