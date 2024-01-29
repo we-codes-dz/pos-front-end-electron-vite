@@ -190,7 +190,7 @@ const supplyExistInOrder = (productId: number, supplyName: string, currentOrders
     )
 }
 
-const getAddOns = (updatedOrder: TOrder, productId: number) =>
+const getAddOnsFromCurrentOrders = (updatedOrder: TOrder, productId: number) =>
   updatedOrder.items.find((item) => item.product.id === productId)?.addOns
 export {
   cn,
@@ -210,5 +210,5 @@ export {
   getSafeCategoryList,
   supplyExists,
   supplyExistInOrder,
-  getAddOns
+  getAddOnsFromCurrentOrders
 }
