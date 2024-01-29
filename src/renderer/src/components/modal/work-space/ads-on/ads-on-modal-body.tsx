@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
-import { useBoundStore } from "@renderer/stores/store";
 import { noteSchema } from "@renderer/types/form-schema";
 import { cn } from "@renderer/utils/helper";
 import { useForm } from "react-hook-form";
@@ -17,8 +16,7 @@ interface Props {
 type Inputs = z.infer<typeof noteSchema>
 
 const ModalBody =
-    ({ modalHandler, btnClassName }: Props) => {
-        const { currentOrder } = useBoundStore(set => set)
+    ({ modalHandler }: Props) => {
         //? 1st select ur specific supplies of the product
         const {
             register,
@@ -30,9 +28,6 @@ const ModalBody =
             resolver: zodResolver(noteSchema)
         })
 
-        const handlerSubmit = () => {
-            console.log('currentOrder : ', currentOrder)
-        }
         const cancelHandler = () => {
             reset();
             modalHandler();
