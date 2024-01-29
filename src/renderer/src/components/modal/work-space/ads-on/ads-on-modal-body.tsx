@@ -44,18 +44,11 @@ const ModalBody =
                     <Button
                         type='button'
                         className={cn(
-                            "text-accent btn bg-neutral border-none",
+                            "text-neutral btn bg-accent border-none",
+                            "hover:text-black"
                         )}
                         onClick={cancelHandler}
-                    >Cancel</Button>
-                    <Button
-                        className={cn(
-                            "text-white btn",
-                            btnClassName
-                        )}
-                        type="button"
-                        onClick={handlerSubmit}
-                    >Send</Button>
+                    >Return</Button>
                 </div>
             </div>
         )
