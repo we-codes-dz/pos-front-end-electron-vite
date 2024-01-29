@@ -24,8 +24,9 @@ const ItemListFooter = () => {
             id: item.id,
             quantity: item.quantity,
             price: item.price,
-            product: item.product,
-            addons: item.addOns?.join(' ').trim()
+            addOns: item.addOns?.join(', ').trim(),
+            note: item.note,
+            product: item.product
           }
         }),
         total: currentOrder?.total
