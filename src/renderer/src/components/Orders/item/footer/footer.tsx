@@ -81,11 +81,10 @@ const ItemListFooter = () => {
           delete data.table
         }
       }
-      if (data.status) {
-        //TODO Add object to pending array cache
-        //? add it to state
-        data.status = 'pending'
-      }
+
+      //TODO Add object to pending array cache
+      //? add it to state
+      data.status = 'PENDING'
 
       addOrder.mutate(data)
     }
