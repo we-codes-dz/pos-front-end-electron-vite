@@ -22,12 +22,29 @@ const useOrders = (axiosInstance: AxiosInstanceOriginal) => {
 }
 export const useAddOrder = (axiosInstance: AxiosInstanceOriginal, reset: () => void) => {
   const queryClient = useQueryClient()
+  const orderService = new APIService<TOrder, any>('/orders', axiosInstance)
   return useMutation<TOrder, Error, any, AddOrderContext>({
     mutationFn: async (data) => {
       return await axiosInstance.post(baseUrl + 'orders', data, {})
     },
-    onMutate: (newOrder: any) => {
+    onMutate: async (newOrder: any) => {
       const previousOrders = queryClient.getQueryData<any>([ORDERS]) || []
+
+      if (previousOrders?.length === 0) {
+        try {
+          const ordersFromDB: any = await orderService.findAll()
+
+          const orders = ordersFromDB?.data?.data
+
+          if (orders.length) {
+            queryClient.setQueryData([ORDERS], orders)
+          } else {
+            queryClient.setQueryData([ORDERS], [])
+          }
+        } catch (err) {
+          queryClient.setQueryData([ORDERS], [])
+        }
+      }
 
       queryClient.setQueryData<any>([ORDERS], (orders: any) => {
         const ordersData = orders?.data?.data ? orders?.data?.data : orders
@@ -35,19 +52,23 @@ export const useAddOrder = (axiosInstance: AxiosInstanceOriginal, reset: () => v
         const newProducts = Array.isArray(orders) ? [newOrder, ...ordersData] : [newOrder]
         return newProducts
       })
-
-      return { previousOrders: previousOrders || [] }
+      const previousOrdersReturned = queryClient.getQueryData<any>([ORDERS])
+      return { previousOrders: previousOrdersReturned || [] }
     },
     onSuccess: (savedOrders: any, _, context: any) => {
       reset()
 
-      queryClient.setQueryData<any>([ORDERS], (orders) => {
+      queryClient.setQueryData<any>([ORDERS], async (orders) => {
         const previousOrders = context?.previousOrders || []
         const prevData = previousOrders?.data?.data ? previousOrders?.data?.data : previousOrders
 
+        const savedOrderFullData = await axiosInstance.get(
+          baseUrl + `orders/${savedOrders.data.data.id}`
+        )
+
         const updatedOrders = Array.isArray(orders)
-          ? [savedOrders.data.data, ...prevData]
-          : [savedOrders.data.data, ...prevData]
+          ? [savedOrderFullData.data.data, ...prevData]
+          : [savedOrderFullData.data.data, ...prevData]
         return updatedOrders
       })
     },
