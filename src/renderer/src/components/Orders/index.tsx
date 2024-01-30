@@ -6,6 +6,8 @@ import { TSlider } from '../Categories'
 import CarouselWrapper from '../carousel/carousel-wrapper'
 import OrderItem from './item/item'
 import NoData from '../no-data/orders/no-data'
+import useOrders from '@renderer/api/hooks/useOrders'
+import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
 
 const organizeDataIntoSlider = (data: any): TSlider[] => {
   const chunkSize = 6
@@ -15,18 +17,43 @@ const organizeDataIntoSlider = (data: any): TSlider[] => {
     items: chunk[0].items
   }))
 }
+function filterObjectsByTodayDate(array) {
+  // Get today's date
+  const today = new Date()
+  const todayDate = today.toISOString().split('T')[0]
+  const filteredArray = array.filter((obj) => {
+    const objDate = obj.createdAt.split('T')[0]
+    return objDate === todayDate
+  })
+
+  return filteredArray
+}
+function filterObjectsByStatus(array, status) {
+  const filteredArray = array.filter((obj) => {
+    return obj.status === status
+  })
+
+  return filteredArray
+}
 
 const Orders = () => {
+  const axiosInstance = useAxiosPrivate()
   const { currentOrder } = useBoundStore((state) => state)
   let data: TOrder[] = []
   if (currentOrder !== null) {
     data = [currentOrder!]
   }
-
+  const { data: orderData } = useOrders(axiosInstance)
+  const orders = orderData?.data?.data
+  console.log('-----orders-----', orders)
+  const todayOrders = filterObjectsByTodayDate(orders)
+  console.log('-----TodayOrders-----', todayOrders)
+  const pendingOrders = filterObjectsByStatus(todayOrders, 'PENDING')
+  console.log('-----pendingOrders-----', pendingOrders)
   const sliderData: TSlider[] = organizeDataIntoSlider(data)
   return (
     <div className="h-full w-full ">
-      {sliderData.length > 0 ?
+      {sliderData.length > 0 ? (
         <CarouselWrapper className="">
           {sliderData.map((item: any) => (
             <SwiperSlide key={item.tableNumber}>
@@ -36,9 +63,9 @@ const Orders = () => {
             </SwiperSlide>
           ))}
         </CarouselWrapper>
-        : <NoData content='No Orders' />
-
-      }
+      ) : (
+        <NoData content="No Orders" />
+      )}
     </div>
   )
 }
