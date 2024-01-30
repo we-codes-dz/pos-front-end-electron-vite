@@ -19,7 +19,7 @@ type Inputs = z.infer<typeof noteSchema>
 
 const ModalBody =
     ({ modalHandler, confirmDeletingHandler, btnClassName }: Props) => {
-        const { currentOrder } = useBoundStore(set => set)
+        const currentOrder = useBoundStore(set => set.currentOrder)
 
         //if (!currentOrder) 
         const total = calculateTotalPrice(currentOrder?.items!);
@@ -29,7 +29,6 @@ const ModalBody =
         const [calculatedTotal, setCalculatedTotal] = useState<number>(calculateTotalPrice(currentOrder?.items!));
         const [isErrorShowed, setError] = useState<boolean>(false);
         const {
-            register,
             handleSubmit,
             reset,
             formState: { errors }

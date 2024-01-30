@@ -2,7 +2,7 @@ import { useBoundStore } from "@renderer/stores/store"
 import PayPendingButton from "./button/pending-button"
 
 const ItemListFooter = () => {
-    const { processToPaymentModalHandler } = useBoundStore((state) => state)
+    const processToPaymentModalHandler = useBoundStore((state) => state.processToPaymentModalHandler)
     return (
         <div className="flex justify-between h-2/3 px-2 mt-2 gap-2" >
             <PayPendingButton title="Pay" className="btn-secondary" onClick={processToPaymentModalHandler} />

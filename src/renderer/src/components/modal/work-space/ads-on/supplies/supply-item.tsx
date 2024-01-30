@@ -1,19 +1,24 @@
 import { useBoundStore } from "@renderer/stores/store";
 import { cn, supplyExistInOrder } from "@renderer/utils/helper";
 import { TSuppliesData } from "./data";
-
+import { shallow } from 'zustand/shallow'
 type TProps = {
     item: TSuppliesData
 }
 
 const SupplyItem =
     ({ item }: TProps) => {
-        const {
+        const [
             selectProductId,
             currentOrder,
             clearSpecificAddon,
             addAddOns,
-        } = useBoundStore(set => set)
+        ] = useBoundStore((state) => [
+            state.selectProductId,
+            state.currentOrder,
+            state.clearSpecificAddon,
+            state.addAddOns
+        ], shallow)
 
 
         //console.log('currentOrder :', currentOrder)

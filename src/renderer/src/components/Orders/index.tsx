@@ -17,7 +17,7 @@ const organizeDataIntoSlider = (data: any): TSlider[] => {
 }
 
 const Orders = () => {
-  const { currentOrder } = useBoundStore((state) => state)
+  const currentOrder = useBoundStore((state) => state.currentOrder)
   let data: TOrder[] = []
   if (currentOrder !== null) {
     data = [currentOrder!]

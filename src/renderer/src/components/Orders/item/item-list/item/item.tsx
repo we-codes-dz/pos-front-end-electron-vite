@@ -1,32 +1,20 @@
 import { useBoundStore } from '@renderer/stores/store'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { cn, getAddOnsFromCurrentOrders } from '@renderer/utils/helper'
+import { useCallback, useState } from 'react'
+import { shallow } from 'zustand/shallow'
 import { TOrderItem } from '../../../../../data/tableCommandData'
+import AddOns from './add-ons'
 import Controller from './controller/controller'
+import DeleteItemButton from './delete-item-button'
 import ProductInformation from './product-information'
 import Total from './total'
-import { cn, getAddOnsFromCurrentOrders } from '@renderer/utils/helper'
-import AddOns from './add-ons'
-import { shallow } from 'zustand/shallow'
-import DeleteItemButton from './delete-item-button'
 
 type TProps = {
   item: TOrderItem
 }
 const Item = ({ item }: TProps) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
-  // const [className, setClassName] = useState<string>('flex flex-col rounded-md relative border-2');
   const [isShowed, setShow] = useState<boolean>(false);
-  // const { 
-  //   deleteItemFromCurrentOrder, 
-  //   updateItemQuantity, 
-  //   setSelectProductId, 
-  //   currentOrder, 
-  //   selectProductId, 
-  //   setIsItemChosen, 
-  //   isItemChosen 
-  // } = 
-  // useBoundStore((state) => state)
-
 
   const [
     currentOrder,

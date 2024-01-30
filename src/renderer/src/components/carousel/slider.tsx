@@ -12,7 +12,7 @@ type TProps = {
   element: TCategory
 }
 const SliderElement = ({ element, tabNumber }: TProps) => {
-  const { setProductFilterKey } = useBoundStore((state) => state)
+  const setProductFilterKey = useBoundStore((state) => state.setProductFilterKey)
   const handleProductList = () => {
     const productFilter: TProductFilter = {
       'filter.categoryId': element.id

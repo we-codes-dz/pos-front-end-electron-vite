@@ -18,6 +18,7 @@ import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader, { ColumnHeaderInt } from '../common/table/category-table-header'
 import CategoryTableRow from './category-table-row'
+import { shallow } from 'zustand/shallow'
 interface Props {
   title?: string
   categoryColumns: ColumnHeaderInt[]
@@ -34,7 +35,16 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
     FilterParameter.Empty
   )
 
-  const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
+  const [
+    dataInputs,
+    setInputs,
+    reset
+  ] = useBoundStore((state) => [
+    state.dataInputs,
+    state.setInputs,
+    state.reset
+  ], shallow)
+
   const addCategory = useAddCategories(axiosInstance, reset)
   const deleteCategory = useDeleteCategory(axiosInstance)
   const editCategory = useUpdateCategory(axiosInstance, reset)

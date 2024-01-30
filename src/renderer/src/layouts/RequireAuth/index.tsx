@@ -13,8 +13,6 @@ export function decodeToken(token: any) {
 }
 
 const RequireAuth = ({ children }: { children: any }) => {
-  //const { accessToken } = useBoundStore((state) => state);
-
   const accessToken = localStorage.getItem("accessToken");
 
   // Decode token
