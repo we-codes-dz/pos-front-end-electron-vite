@@ -82,6 +82,7 @@ const ItemListFooter = () => {
         }
       }
       if (data.status) {
+        //TODO Add object to pending array cache
         //? add it to state
         data.status = 'pending'
       }
