@@ -10,7 +10,6 @@ const ItemListFooter = () => {
   const addOrder = useAddOrder(axiosInstance, clearCurrentOrder)
 
   const submitOrder = () => {
-    console.log('in submit', currentOrder)
     if (currentOrder) {
       let data: any = {
         server: {
@@ -43,7 +42,50 @@ const ItemListFooter = () => {
           delete data.table
         }
       }
-      console.log('data before inserting into database', data)
+      //? add it to state
+
+      addOrder.mutate(data)
+    }
+  }
+
+  const submitPendingOrder = () => {
+    if (currentOrder) {
+      let data: any = {
+        server: {
+          id: 1
+        },
+        table: {
+          id: null
+        },
+        items: currentOrder?.items.map((item) => {
+          return {
+            id: item.id,
+            quantity: item.quantity,
+            price: item.price,
+            addOns: item.addOns?.join(', ').trim(),
+            note: item.note,
+            product: item.product
+          }
+        }),
+        total: currentOrder?.total
+      }
+
+      if (currentOrder.table !== null) {
+        const dataTableId: number | undefined = currentOrder.table?.id
+
+        if (dataTableId !== 0 && dataTableId !== null) {
+          data.table = {
+            id: dataTableId
+          }
+        } else {
+          delete data.table
+        }
+      }
+      if (data.status) {
+        //? add it to state
+        data.status = 'pending'
+      }
+
       addOrder.mutate(data)
     }
   }
@@ -55,7 +97,7 @@ const ItemListFooter = () => {
         onClick={processToPaymentModalHandler}
       />
       <PayPendingButton title="To Kitchen" className="btn-info" onClick={submitOrder} />
-      <PayPendingButton title="pending" className="btn-warning" />
+      <PayPendingButton title="pending" className="btn-warning" onClick={submitPendingOrder} />
     </div>
   )
 }
