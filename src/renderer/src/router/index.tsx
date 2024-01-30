@@ -34,7 +34,7 @@ export type TRoute = {
 function Router() {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
-  const { accessToken } = useBoundStore((state) => state);
+  const accessToken = useBoundStore((state) => state.accessToken);
   const isAccessTokenValid = () => {
     if (!accessToken) {
       return false;

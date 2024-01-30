@@ -7,7 +7,7 @@ import { useBoundStore } from '@renderer/stores/store'
 
 const Products = () => {
   const axiosInstance = useAxiosPrivate()
-  const { productFilterKey } = useBoundStore((state) => state)
+  const productFilterKey = useBoundStore((state) => state.productFilterKey)
   const { data: products, error, isLoading } = useProducts(axiosInstance, productFilterKey)
 
   const getSafeProductList = (data: any): TProduct[] => {

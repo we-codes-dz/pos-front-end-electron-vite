@@ -1,9 +1,23 @@
 import { useBoundStore } from "@renderer/stores/store"
 import ClearAllButton from "./buttons/clear-all-button"
 import AddsOnOrNoteButton from "./buttons/adds-on-button"
+import { shallow } from 'zustand/shallow'
 
 const OrderItemButtonSection = () => {
-    const { clearCurrentOrder, selectProductId, isItemChosen, noteModalHandler, adsOnModalHandler } = useBoundStore((state) => state)
+    const [
+        selectProductId,
+        isItemChosen,
+        clearCurrentOrder,
+        noteModalHandler,
+        adsOnModalHandler
+    ] = useBoundStore((state) => [
+        state.selectProductId,
+        state.isItemChosen,
+        state.clearCurrentOrder,
+        state.noteModalHandler,
+        state.adsOnModalHandler
+    ], shallow)
+
     const removeItems = () => {
         clearCurrentOrder()
     }

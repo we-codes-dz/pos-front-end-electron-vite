@@ -4,20 +4,33 @@ import AdsOnOrderModal from "@renderer/components/modal/work-space/ads-on/ads-on
 import NoteOrderModal from "@renderer/components/modal/work-space/note/note-modal";
 import ProcessToPaymentOrderModal from "@renderer/components/modal/work-space/process-to-payment/process-to-payment-modal";
 import { useBoundStore } from "@renderer/stores/store";
+import { shallow } from 'zustand/shallow'
 
 const SellerWorkSpace = () => {
 
-    const {
-        addNoteToProduct,
-        selectProductId,
-        noteModalHandler,
-        noteModalIsOpened,
-        adsOnModalHandler,
-        adsOnModalIsOpened,
-        processToPaymentModalHandler,
-        processToPaymentModalIsOpened,
-        currentOrder
-    } = useBoundStore((state) => state)
+    const
+        [
+            addNoteToProduct,
+            selectProductId,
+            noteModalHandler,
+            noteModalIsOpened,
+            adsOnModalHandler,
+            adsOnModalIsOpened,
+            processToPaymentModalHandler,
+            processToPaymentModalIsOpened,
+            currentOrder
+        ]
+            = useBoundStore((state) => [
+                state.addNoteToProduct,
+                state.selectProductId,
+                state.noteModalHandler,
+                state.noteModalIsOpened,
+                state.adsOnModalHandler,
+                state.adsOnModalIsOpened,
+                state.processToPaymentModalHandler,
+                state.processToPaymentModalIsOpened,
+                state.currentOrder
+            ], shallow)
 
 
 

@@ -37,8 +37,7 @@ function filterObjectsByStatus(array, status) {
 }
 
 const Orders = () => {
-  const axiosInstance = useAxiosPrivate()
-  const { currentOrder } = useBoundStore((state) => state)
+  const currentOrder = useBoundStore((state) => state.currentOrder)
   let data: TOrder[] = []
   if (currentOrder !== null) {
     data = [currentOrder!]

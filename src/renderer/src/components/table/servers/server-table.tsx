@@ -12,6 +12,8 @@ import HeaderSection from '../common/header-section'
 import { Pagination } from '../common/pagination/pagination'
 import TableHeader from '../common/table/category-table-header'
 import ServerTableRow from './server-table-row'
+import { shallow } from 'zustand/shallow'
+
 //TODO: add pagination logic
 
 export interface ColumnHeaderInt {
@@ -41,7 +43,16 @@ const ServerTable = ({ title, headers, servers, axiosInstance }: Props) => {
   const [isEditModalOpen, setOpenedEditModal] = useState<boolean>(false)
   const [isItemDeleted, setIsItemDeleted] = useState<boolean>(false)
 
-  const { dataInputs, setInputs, reset } = useBoundStore((state) => state)
+  const [
+    dataInputs,
+    setInputs,
+    reset
+  ] = useBoundStore((state) => [
+    state.dataInputs,
+    state.setInputs,
+    state.reset
+  ], shallow)
+
   const addServer = useAddServer(axiosInstance, reset)
   const deleteServer = useDeleteServer(axiosInstance)
   const editServer = useUpdateServer(axiosInstance, reset)

@@ -5,9 +5,10 @@ type TProps = {
   item: TProduct
 }
 const ProductItem = ({ item }: TProps) => {
-  const { addProductToCurrentOrder } = useBoundStore((state) => state)
+  const addProductToCurrentOrder = useBoundStore((state) => state.addProductToCurrentOrder)
   const handleClick = () => {
     const product: TItem = {
+      id: item.id.toString(),
       product: item,
       price: item.price,
       quantity: 1

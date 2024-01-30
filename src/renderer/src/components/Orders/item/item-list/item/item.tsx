@@ -1,20 +1,39 @@
 import { useBoundStore } from '@renderer/stores/store'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { cn, getAddOnsFromCurrentOrders } from '@renderer/utils/helper'
+import { useCallback, useState } from 'react'
+import { shallow } from 'zustand/shallow'
 import { TOrderItem } from '../../../../../data/tableCommandData'
+import AddOns from './add-ons'
 import Controller from './controller/controller'
+import DeleteItemButton from './delete-item-button'
 import ProductInformation from './product-information'
 import Total from './total'
-import { cn, getAddOnsFromCurrentOrders } from '@renderer/utils/helper'
-import AddOns from './add-ons'
 
 type TProps = {
   item: TOrderItem
 }
 const Item = ({ item }: TProps) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
-  const [className, setClassName] = useState<string>('flex flex-col rounded-md relative border-2');
   const [isShowed, setShow] = useState<boolean>(false);
-  const { deleteItemFromCurrentOrder, updateItemQuantity, setSelectProductId, currentOrder, selectProductId, setIsItemChosen, isItemChosen } = useBoundStore((state) => state)
+
+  const [
+    currentOrder,
+    selectProductId,
+    isItemChosen,
+    deleteItemFromCurrentOrder,
+    updateItemQuantity,
+    setSelectProductId,
+    setIsItemChosen
+  ] =
+    useBoundStore((state) => [
+      state.currentOrder,
+      state.selectProductId,
+      state.isItemChosen,
+      state.deleteItemFromCurrentOrder,
+      state.updateItemQuantity,
+      state.setSelectProductId,
+      state.setIsItemChosen,
+    ], shallow)
 
   const handleQuantityChange =
     useCallback((newQuantity: number) => {
@@ -44,38 +63,20 @@ const Item = ({ item }: TProps) => {
     setSelectProductId(item.product.id);
     setIsItemChosen(item.product.id !== selectProductId || !isItemChosen);
   }, [item.product.id, selectProductId, isItemChosen]);
-  const cnMemoized = useMemo(() => cn, []);
-  useEffect(() => {
-    const isSelectedAndChosen = item.product.id === selectProductId && isItemChosen;
-    const newClassName = cnMemoized('flex flex-col rounded-md relative border-2', {
-      'bg-slate-300 scale-105': isSelectedAndChosen,
-    });
-    setClassName(newClassName);
-  }, [selectProductId, isItemChosen, item.product.id, itemClickHandler]);
 
-
+  const isSelectedAndChosen = item.product.id === selectProductId && isItemChosen;
   const shouldRenderDeleteButton = isItemChosen && item.product.id === selectProductId
 
   //add ons logic
   const addOns = currentOrder ? getAddOnsFromCurrentOrders(currentOrder, item.product.id) : []
   return (
     <div
-      className={className}
+      className={cn('flex flex-col rounded-md relative border-2', {
+        'bg-slate-300 scale-105': isSelectedAndChosen,
+      })}
       onClick={itemClickHandler}
     >
-      {/*/  //? delete command button*/}
-      {shouldRenderDeleteButton &&
-        (<div className="absolute top-1 right-1">
-          <div
-            className="flex  rounded-full btn-sm btn btn-circle text-white bg-red-500"
-            onClick={deleteItem}
-          >
-            <span className='text-lg pb-1.5'>
-              x
-            </span>
-          </div>
-        </div>)
-      }
+      {shouldRenderDeleteButton && <DeleteItemButton onClick={deleteItem} />}
       <ProductInformation item={item} />
       <AddOns addOns={addOns} clickHandler={() => setShow(!isShowed)} display={isShowed} />
       {/* //? total of the item **/}

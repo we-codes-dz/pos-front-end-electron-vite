@@ -5,7 +5,7 @@ import { useBoundStore } from '../stores/store'
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken()
-  const { accessToken } = useBoundStore((state) => state)
+  const accessToken = useBoundStore((state) => state.accessToken)
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
