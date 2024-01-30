@@ -38,17 +38,22 @@ function filterObjectsByStatus(array, status) {
 
 const Orders = () => {
   const currentOrder = useBoundStore((state) => state.currentOrder)
+  const axiosInstance = useAxiosPrivate()
   let data: TOrder[] = []
   if (currentOrder !== null) {
     data = [currentOrder!]
   }
   const { data: orderData } = useOrders(axiosInstance)
-  const orders = orderData?.data?.data
-  console.log('-----orders-----', orders)
-  const todayOrders = filterObjectsByTodayDate(orders)
-  console.log('-----TodayOrders-----', todayOrders)
-  const pendingOrders = filterObjectsByStatus(todayOrders, 'PENDING')
-  console.log('-----pendingOrders-----', pendingOrders)
+
+  const orders = orderData?.data.data
+  if (orders) {
+    console.log('-----orders-----', orders)
+    const todayOrders = filterObjectsByTodayDate(orders)
+    console.log('-----TodayOrders-----', todayOrders)
+    const pendingOrders = filterObjectsByStatus(todayOrders, 'PENDING')
+    console.log('-----pendingOrders-----', pendingOrders)
+  }
+
   const sliderData: TSlider[] = organizeDataIntoSlider(data)
   return (
     <div className="h-full w-full ">
