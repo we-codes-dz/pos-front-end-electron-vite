@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { createWithEqualityFn } from 'zustand/traditional'
 import { ProductSlice, createProductSlice } from './slices/productSlice'
 import { CategorySlice, createCategorySlice } from './slices/categorySlice'
 import { TableSlice, createTableSlice } from './slices/tableStore'
@@ -20,7 +20,7 @@ type RootState = ProductSlice &
   adsOnModalSlice &
   processToPaymentModalSlice
 
-export const useBoundStore = create<RootState>()((...a) => ({
+export const useBoundStore = createWithEqualityFn<RootState>()((...a) => ({
   ...createCategorySlice(...a),
   ...createProductSlice(...a),
   ...createTableSlice(...a),
