@@ -19,17 +19,21 @@ const organizeDataIntoSlider = (data: any): TSlider[] => {
 }
 function filterObjectsByTodayDate(array) {
   // Get today's date
+  const orders = array?.data?.data
+
   const today = new Date()
   const todayDate = today.toISOString().split('T')[0]
-  const filteredArray = array.filter((obj) => {
+  const filteredArray = orders?.filter((obj) => {
     const objDate = obj.createdAt.split('T')[0]
     return objDate === todayDate
   })
 
   return filteredArray
 }
-function filterObjectsByStatus(array, status) {
-  const filteredArray = array.filter((obj) => {
+function filterObjectsByStatus(data, status) {
+  const orders = data?.data?.data
+
+  const filteredArray = orders?.filter((obj) => {
     return obj.status === status
   })
 
@@ -43,16 +47,13 @@ const Orders = () => {
   if (currentOrder !== null) {
     data = [currentOrder!]
   }
-  const { data: orderData } = useOrders(axiosInstance)
+  const { data: orders } = useOrders(axiosInstance)
 
-  const orders = orderData?.data.data
-  if (orders) {
-    console.log('-----orders-----', orders)
-    const todayOrders = filterObjectsByTodayDate(orders)
-    console.log('-----TodayOrders-----', todayOrders)
-    const pendingOrders = filterObjectsByStatus(todayOrders, 'PENDING')
-    console.log('-----pendingOrders-----', pendingOrders)
-  }
+  console.log('-----orders-----', orders)
+  const todayOrders = filterObjectsByTodayDate(orders)
+  console.log('-----TodayOrders-----', todayOrders)
+  const pendingOrders = filterObjectsByStatus(todayOrders, 'PENDING')
+  console.log('-----pendingOrders-----', pendingOrders)
 
   const sliderData: TSlider[] = organizeDataIntoSlider(data)
   return (
