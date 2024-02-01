@@ -1,75 +1,75 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
-import SpinnerComponent from "@renderer/components/Spinner/Spinner";
 import ErrorMessage from "@renderer/components/inputs/ErrorMessage/ErrorMessage";
 import ReusableInput from "@renderer/components/inputs/input/custom-input";
 import { useBoundStore } from "@renderer/stores/store";
-import { noteSchema } from "@renderer/types/form-schema";
 import { calculateTotalPrice, cn } from "@renderer/utils/helper";
 import { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 interface Props {
     btnClassName?: string;
     modalHandler: () => void;
     confirmDeletingHandler: (data: { note: string }) => void;
 }
-type Inputs = z.infer<typeof noteSchema>
 
 const ModalBody =
-    ({ modalHandler, confirmDeletingHandler, btnClassName }: Props) => {
+    ({ modalHandler, btnClassName }: Props) => {
         const currentOrder = useBoundStore(set => set.currentOrder)
 
         //if (!currentOrder) 
         const total = calculateTotalPrice(currentOrder?.items!);
         console.log(currentOrder, total)
 
-        const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-        const [calculatedTotal, setCalculatedTotal] = useState<number>(calculateTotalPrice(currentOrder?.items!));
+        //const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+        const [calculatedTotal, setCalculatedTotal] = useState<number>(0);
+        const [amountReceived, setAmountReceived] = useState<number>(0);
         const [isErrorShowed, setError] = useState<boolean>(false);
-        const {
-            handleSubmit,
-            reset,
-            formState: { errors }
-        } = useForm<Inputs>({
-            mode: 'onSubmit',
-            resolver: zodResolver(noteSchema)
-        })
+        // const {
+        //     handleSubmit,
+        //     reset,
+        //     formState: { errors }
+        // } = useForm<Inputs>({
+        //     mode: 'onSubmit',
+        //     resolver: zodResolver(noteSchema)
+        // })
 
-        const handlerSubmit =
-            (data: Inputs) => {
-                setIsSubmitting(true)
-                confirmDeletingHandler(data);
-                reset();
-                modalHandler();
-                setIsSubmitting(false)
-            }
+        // const handlerSubmit =
+        //     (data: Inputs) => {
+        //         setIsSubmitting(true)
+        //         confirmDeletingHandler(data);
+        //         reset();
+        //         modalHandler();
+        //         setIsSubmitting(false)
+        //     }
         const cancelHandler = () => {
-            reset();
+            setCalculatedTotal(0);
+            setAmountReceived(0);
             modalHandler();
         }
 
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            const receivedMoney = parseInt(e.target.value)
+            const inputValue = e.target.value;
+
+            // Remove leading zeros from the input value
+            const dataWithoutZero = inputValue.startsWith('0') ? inputValue.slice(1) : inputValue;
+            const receivedMoney = parseInt(dataWithoutZero);
+
+            setAmountReceived(receivedMoney)
             setCalculatedTotal(receivedMoney - total)
             if (receivedMoney - total < 0) setError(true)
             else setError(false)
         }
         return (
             <div className="font-medium text-lg">
-                <form onSubmit={handleSubmit((data) => handlerSubmit(data))} className="p-2 space-y-4">
-                    <ReusableInput label='Montant reçu' >
-                        <input onChange={onChangeHandler} type="number" className="textarea input-bordered w-full" />
+                <form className="p-2 space-y-4">
+                    <ReusableInput label='Amount received' >
+                        <input onChange={onChangeHandler} value={amountReceived} type="number" className="textarea input-bordered w-full" />
                         {isErrorShowed && <ErrorMessage>Veuillez introduire plus d'argent !  </ErrorMessage>}
                     </ReusableInput>
                     <ReusableInput label='Change returned' >
                         <input value={total} type="number" className="textarea input-bordered w-full" disabled />
-                        {errors.note && <ErrorMessage>{errors.note.message}</ErrorMessage>}
                     </ReusableInput>
                     <ReusableInput label='Change returned' >
                         <input value={calculatedTotal} type="number" className="textarea input-bordered w-full" />
-                        {errors.note && <ErrorMessage>{errors.note.message}</ErrorMessage>}
                     </ReusableInput>
                     <div className="modal-action">
                         <Button
@@ -85,7 +85,8 @@ const ModalBody =
                                 btnClassName
                             )}
                             type="submit"
-                        >Send{isSubmitting && <SpinnerComponent />}</Button>
+                        // >Send{isSubmitting && <SpinnerComponent />}</Button>
+                        >Send</Button>
                     </div>
                 </form>
             </div>
