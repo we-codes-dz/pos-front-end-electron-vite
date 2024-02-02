@@ -55,7 +55,7 @@ const ItemListFooter = () => {
             const data = constructOrderData(currentOrder);
             //? add it to state
 
-            addOrder.mutate(data)
+            // addOrder.mutate(data)
         }
     }
     //? add it to state
@@ -69,7 +69,7 @@ const ItemListFooter = () => {
             data.status = 'PENDING'
             console.log('pending order data : ', data)
 
-            addOrder.mutate(data)
+            //addOrder.mutate(data)
 
             //TODO Add object to pending array cache
             //? add it to state

@@ -1,5 +1,6 @@
 import { cn } from "@nextui-org/react"
 import { useState } from "react"
+import Indicator from "../../../../../indicator/indicator"
 
 type TProps = {
     clickHandler: () => void
@@ -23,7 +24,7 @@ const AddOns =
                 )}
             >
                 <div className='indicator text-sm flex'>
-                    {addonsDoesExist && <span className='indicator-item badge badge-error text-white'>{addOns?.length}</span>}
+                    {addonsDoesExist && <Indicator indicatorNumber={addOns.length} />}
                     <div className="flex gap-2">
                         <span>Add Ons:</span>
                         {addonsDoesExist && <span className={cn("text-blue-600 text-sm", { 'hover:cursor-pointer': addonsDoesExist })} onClick={onIndicatorClick}>{isShowed ? 'hide' : 'show'}</span>}

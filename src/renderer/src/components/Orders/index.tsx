@@ -30,15 +30,6 @@ function filterObjectsByTodayDate(array) {
 
   return filteredArray
 }
-function filterObjectsByStatus(data, status) {
-  const orders = data?.data?.data
-
-  const filteredArray = orders?.filter((obj) => {
-    return obj.status === status
-  })
-
-  return filteredArray
-}
 
 const Orders = () => {
   const currentOrder = useBoundStore((state) => state.currentOrder)
