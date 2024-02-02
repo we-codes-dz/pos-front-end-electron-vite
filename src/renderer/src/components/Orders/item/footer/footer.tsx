@@ -44,6 +44,7 @@ const constructOrderData =
 
 const ItemListFooter = () => {
     const processToPaymentModalHandler = useBoundStore((state) => state.processToPaymentModalHandler)
+    const addProductToPendingOrders = useBoundStore((state) => state.addProductToPendingOrders)
     const axiosInstance = useAxiosPrivate()
     const { currentOrder, clearCurrentOrder } = useBoundStore((state) => state)
     const addOrder = useAddOrder(axiosInstance, clearCurrentOrder)
@@ -57,6 +58,8 @@ const ItemListFooter = () => {
             addOrder.mutate(data)
         }
     }
+    //? add it to state
+
 
     const submitPendingOrder = () => {
         if (currentOrder) {
@@ -67,6 +70,13 @@ const ItemListFooter = () => {
             console.log('pending order data : ', data)
 
             addOrder.mutate(data)
+
+            //TODO Add object to pending array cache
+            //? add it to state
+            data.status = 'PENDING'
+            addProductToPendingOrders(data)
+            clearCurrentOrder()
+            // addOrder.mutate(data)
         }
     }
     return (
