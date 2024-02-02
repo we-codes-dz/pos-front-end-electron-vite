@@ -47,7 +47,7 @@ export type TCategory = {
   parent?: { id: number }
 }
 export type TItem = {
-  id: string
+  id?: string
   note?: string
   addOns?: string[]
   product: TProduct
