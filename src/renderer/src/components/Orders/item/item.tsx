@@ -23,7 +23,7 @@ const OrderItem = ({ order }: TProps) => {
       <div className="">
         <OrderHeader title={`Table ${order.tableNumber}`} />
       </div>
-      <div className="px-5 h-[290px]">
+      <div className="px-5 h-[270px]">
         <ItemList itemList={order.items} />
       </div>
       <div className="[200px]">

@@ -4,6 +4,7 @@ import useAxiosPrivate from '../../hooks/useAxiosPrivate'
 import Orders from '../Orders'
 import ProductItem from './item-list'
 import { useBoundStore } from '@renderer/stores/store'
+import { Card, CardBody, Tab, Tabs } from '@nextui-org/react'
 
 const Products = () => {
   const axiosInstance = useAxiosPrivate()
@@ -27,11 +28,23 @@ const Products = () => {
   if (!products) return null
   return (
     <div className="flex h-full">
-      <div className="w-2/3 grow grid grid-cols-12 gap-5 pt-5 mt-5 border-t overflow-y-scroll h-full ">
+      <div className="w-7/12 grow grid grid-cols-12 gap-5 pt-5 mt-5 border-t overflow-y-scroll h-full ">
         {productList?.map((item, fakerKey) => <ProductItem key={fakerKey} item={item} />)}
       </div>
-      <div className="w-1/3 h-[680px]  overflow-y-scroll ">
-        <Orders />
+      <div className="w-5/12 h-[680px] text-center">
+        <Tabs color="warning" >
+          <Tab key="current-order" title="Current Order">
+            <div className='text-left h-[650px] '>
+              <Orders />
+            </div>
+          </Tab>
+          <Tab key="to-kitchen" title="To Kitchen">
+            <Orders />
+          </Tab>
+          <Tab key="pending" title="Pending">
+            <Orders />
+          </Tab>
+        </Tabs>
       </div>
     </div>
   )

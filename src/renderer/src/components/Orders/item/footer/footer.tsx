@@ -2,6 +2,45 @@ import { useBoundStore } from '@renderer/stores/store'
 import PayPendingButton from './button/pending-button'
 import { useAddOrder } from '@renderer/api/hooks/useOrders'
 import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
+import { TItem, TOrder } from '@renderer/types/type-schema';
+
+
+
+const mapItems =
+    (items: TItem[]) => {
+        return items.map((item) => ({
+            id: item.id,
+            quantity: item.quantity,
+            price: item.price,
+            addOns: item.addOns?.join(', ').trim(),
+            note: item.note,
+            product: item.product,
+        }));
+    };
+
+const constructOrderData =
+    (currentOrder: TOrder) => {
+        const data: any = {
+            server: { id: 1 },
+            table: { id: null },
+            items: mapItems(currentOrder.items),
+            total: currentOrder.total,
+        };
+
+        if (currentOrder.table !== null) {
+            const dataTableId: number | undefined = currentOrder.table?.id;
+
+            if (dataTableId !== 0 && dataTableId !== null) {
+                data.table = { id: dataTableId };
+            } else {
+                delete data.table;
+            }
+        }
+
+        return data;
+
+    };
+
 
 const ItemListFooter = () => {
     const processToPaymentModalHandler = useBoundStore((state) => state.processToPaymentModalHandler)
@@ -9,39 +48,10 @@ const ItemListFooter = () => {
     const { currentOrder, clearCurrentOrder } = useBoundStore((state) => state)
     const addOrder = useAddOrder(axiosInstance, clearCurrentOrder)
 
+
     const submitOrder = () => {
         if (currentOrder) {
-            let data: any = {
-                server: {
-                    id: 1
-                },
-                table: {
-                    id: null
-                },
-                items: currentOrder?.items.map((item) => {
-                    return {
-                        id: item.id,
-                        quantity: item.quantity,
-                        price: item.price,
-                        addOns: item.addOns?.join(', ').trim(),
-                        note: item.note,
-                        product: item.product
-                    }
-                }),
-                total: currentOrder?.total
-            }
-
-            if (currentOrder.table !== null) {
-                const dataTableId: number | undefined = currentOrder.table?.id
-
-                if (dataTableId !== 0 && dataTableId !== null) {
-                    data.table = {
-                        id: dataTableId
-                    }
-                } else {
-                    delete data.table
-                }
-            }
+            const data = constructOrderData(currentOrder);
             //? add it to state
 
             addOrder.mutate(data)
@@ -50,41 +60,11 @@ const ItemListFooter = () => {
 
     const submitPendingOrder = () => {
         if (currentOrder) {
-            let data: any = {
-                server: {
-                    id: 1
-                },
-                table: {
-                    id: null
-                },
-                items: currentOrder?.items.map((item) => {
-                    return {
-                        id: item.id,
-                        quantity: item.quantity,
-                        price: item.price,
-                        addOns: item.addOns?.join(', ').trim(),
-                        note: item.note,
-                        product: item.product
-                    }
-                }),
-                total: currentOrder?.total
-            }
-
-            if (currentOrder.table !== null) {
-                const dataTableId: number | undefined = currentOrder.table?.id
-
-                if (dataTableId !== 0 && dataTableId !== null) {
-                    data.table = {
-                        id: dataTableId
-                    }
-                } else {
-                    delete data.table
-                }
-            }
-
+            const data = constructOrderData(currentOrder);
             //TODO Add object to pending array cache
             //? add it to state
             data.status = 'PENDING'
+            console.log('pending order data : ', data)
 
             addOrder.mutate(data)
         }
