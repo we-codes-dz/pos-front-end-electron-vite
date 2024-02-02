@@ -1,8 +1,6 @@
-import { useBoundStore } from '@renderer/stores/store'
-import PayPendingButton from './button/pending-button'
-import { useAddOrder } from '@renderer/api/hooks/useOrders'
-import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
+import { useBoundStore } from '@renderer/stores/store';
 import { TItem, TOrder } from '@renderer/types/type-schema';
+import PayPendingButton from './button/pending-button';
 
 
 
@@ -45,14 +43,12 @@ const constructOrderData =
 const ItemListFooter = () => {
     const processToPaymentModalHandler = useBoundStore((state) => state.processToPaymentModalHandler)
     const addProductToPendingOrders = useBoundStore((state) => state.addProductToPendingOrders)
-    const axiosInstance = useAxiosPrivate()
     const { currentOrder, clearCurrentOrder } = useBoundStore((state) => state)
-    const addOrder = useAddOrder(axiosInstance, clearCurrentOrder)
 
 
     const submitOrder = () => {
         if (currentOrder) {
-            const data = constructOrderData(currentOrder);
+            //const data = constructOrderData(currentOrder);
             //? add it to state
 
             // addOrder.mutate(data)
