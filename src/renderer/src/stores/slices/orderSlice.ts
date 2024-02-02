@@ -6,6 +6,7 @@ import { StateCreator } from 'zustand'
 export interface OrderSlice {
   currentOrder: TOrder | null
   orders: TOrder[]
+  pendingOrders: TOrder[]
   isOrderMounted: boolean
   todayOrders: TOrder[]
   //? note & adds on management var
@@ -15,6 +16,7 @@ export interface OrderSlice {
   //? payment management var
   total: number
   addProductToCurrentOrder: (product: TItem) => void
+  addProductToPendingOrders: (order: TOrder) => void
   deleteItemFromCurrentOrder: (itemId: number) => void
   setOrders: (products: TOrder[]) => void
   clearCurrentOrder: () => void
@@ -35,12 +37,14 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
   currentOrder: null,
   orders: [],
   todayOrders: [],
+  pendingOrders: [],
   isOrderMounted: false,
   //? note & adds on management var
   selectProductId: 0,
   isItemChosen: false,
   currentAddOns: [],
   total: 0,
+
   addProductToCurrentOrder: (item: TItem) =>
     set((state: OrderSlice) => {
       if (state.currentOrder) {
@@ -87,7 +91,10 @@ export const createOrderSlice: StateCreator<OrderSlice> = (set) => ({
         }
       }
     }),
-
+  addProductToPendingOrders: (order: TOrder) =>
+    set((state: OrderSlice) => ({
+      pendingOrders: [...state.pendingOrders, order]
+    })),
   setOrders: (orders: TOrder[]) => set({ orders }),
 
   deleteItemFromCurrentOrder: (itemId: number) =>
