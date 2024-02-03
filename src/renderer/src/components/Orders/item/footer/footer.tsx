@@ -10,7 +10,7 @@ const mapItems =
             id: item.id,
             quantity: item.quantity,
             price: item.price,
-            addOns: item.addOns?.join(', ').trim(),
+            addOns: Array.isArray(item.addOns) ? item.addOns : [],
             note: item.note,
             product: item.product,
         }));
@@ -45,7 +45,7 @@ const ItemListFooter = () => {
     const addProductToPendingOrders = useBoundStore((state) => state.addProductToPendingOrders)
     const { currentOrder, clearCurrentOrder } = useBoundStore((state) => state)
 
-
+    if (currentOrder) console.log(currentOrder)
     const submitOrder = () => {
         if (currentOrder) {
             //const data = constructOrderData(currentOrder);
