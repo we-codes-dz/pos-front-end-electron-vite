@@ -110,7 +110,6 @@ const CategoryTable = ({ title, categoryColumns, categories, axiosInstance }: Pr
 
   const handleAddButtonSubmit = async () => {
     if (dataInputs) {
-      console.log(dataInputs)
       addCategory.mutate(dataInputs)
     }
   }

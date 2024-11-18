@@ -1,27 +1,30 @@
+import { TSlider } from '@renderer/components/Categories'
+import CarouselWrapper from '@renderer/components/carousel/carousel-wrapper'
 import { useBoundStore } from '@renderer/stores/store'
 import { TOrder } from '@renderer/types/type-schema'
 import _ from 'lodash'
 import { SwiperSlide } from 'swiper/react'
-import { TSlider } from '../Categories'
-import CarouselWrapper from '../carousel/carousel-wrapper'
-import NoData from '../no-data/orders/no-data'
-import OrderItem from '../Orders/item/item'
+import OrderItem from '../item/item'
+import NoData from '@renderer/components/no-data/orders/no-data'
+
 
 const organizeDataIntoSlider = (data: any): TSlider[] => {
-  const chunkedOrders: TOrder[] = _.chunk(data)
+  const chunkSize = 6
+  const chunkedOrders: TOrder[] = _.chunk(data, chunkSize)
   return _.map(chunkedOrders, (chunk, index) => ({
     tabNumber: index + 1,
     items: chunk[0].items
   }))
 }
 
-const PendingOrders = () => {
-  const pendingOrder = useBoundStore((state) => state.pendingOrders)
-  const data = pendingOrder
+const CurrentOrders = () => {
+  const currentOrder = useBoundStore((state) => state.currentOrder)
+  let data: TOrder[] = []
+  if (currentOrder !== null) {
+    data = [currentOrder!]
+  }
 
   const sliderData: TSlider[] = organizeDataIntoSlider(data)
-  if (!sliderData) return null
-  console.log('slider Data :', sliderData)
   return (
     <div className="h-full w-full ">
       {sliderData.length > 0 ? (
@@ -35,10 +38,10 @@ const PendingOrders = () => {
           ))}
         </CarouselWrapper>
       ) : (
-        <NoData content="No Pending Orders" />
+        <NoData content="No Orders" />
       )}
     </div>
   )
 }
 
-export default PendingOrders
+export default CurrentOrders

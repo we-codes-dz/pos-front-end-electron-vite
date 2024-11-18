@@ -55,13 +55,11 @@ const ModalBody = ({ modalHandler, setDataInputs, handleAddButtonSubmit }: Props
 
   const handlerSubmit = async (data: Inputs) => {
     try {
-      console.log('entering to handler submit func')
       const dataForm = new FormData()
       if (!image || image.length === 0) {
         setHasImage(true)
         return
       }
-      console.log('data : ', data)
       if (image) {
         dataForm.append('name', data.name)
         dataForm.append('avatar', image)

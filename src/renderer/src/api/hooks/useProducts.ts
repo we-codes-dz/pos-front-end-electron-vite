@@ -89,7 +89,6 @@ export const useAddProduct = (axiosInstance: AxiosInstanceOriginal, reset: () =>
         const updatedProducts = Array.isArray(products)
           ? [savedProduct.data.data, ...prevData]
           : [savedProduct.data.data, ...prevData]
-        console.log(updatedProducts)
         return updatedProducts
       })
     },

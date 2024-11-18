@@ -56,6 +56,7 @@ export type TItem = {
 }
 export type TOrder = {
   id?: number
+  orderItemsCarousel?: any
   total?: number
   status?: string
   creator?: {

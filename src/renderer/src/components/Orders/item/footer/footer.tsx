@@ -45,7 +45,7 @@ const ItemListFooter = () => {
     const addProductToPendingOrders = useBoundStore((state) => state.addProductToPendingOrders)
     const { currentOrder, clearCurrentOrder } = useBoundStore((state) => state)
 
-    if (currentOrder) console.log(currentOrder)
+    // if (currentOrder) console.log(currentOrder)
     const submitOrder = () => {
         if (currentOrder) {
             //const data = constructOrderData(currentOrder);
@@ -63,7 +63,7 @@ const ItemListFooter = () => {
             //TODO Add object to pending array cache
             //? add it to state
             data.status = 'PENDING'
-            console.log('pending order data : ', data)
+            // console.log('pending order data : ', data)
 
             //addOrder.mutate(data)
 

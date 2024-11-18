@@ -8,7 +8,6 @@ type TProps = {
 }
 
 const OrderTableRow = ({ order, handleInfoButtonClick }: TProps) => {
-  console.log('ORDER RECEIVED', order)
   return (
     <Tr className="intro-x">
       {order.table ? (

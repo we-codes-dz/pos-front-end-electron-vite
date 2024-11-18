@@ -27,7 +27,6 @@ const OrdersPage = () => {
   const { data: orders, isLoading } = useOrders(axiosInstance)
 
   if (isLoading) return null
-  console.log(orders)
 
   if (!isLoading && !orders) return <>no data</>
   const structuringData = (orders: any) => {

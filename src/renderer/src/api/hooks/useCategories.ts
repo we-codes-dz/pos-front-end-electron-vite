@@ -158,7 +158,6 @@ export const useDeleteCategory = (axiosInstance: AxiosInstanceOriginal) => {
 
       queryClient.setQueryData<any>([CATEGORIES], (categories: any) => {
         const dataCategories = categories?.data?.data ? categories.data.data : categories
-        console.log('dataCategories', dataCategories)
         const updatedCategories = Array.isArray(categories)
           ? dataCategories?.data?.data?.filter((category) => category.id !== categoryId)
           : previousCategories.data.data.filter((category) => category.id !== categoryId)

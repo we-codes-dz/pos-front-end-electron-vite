@@ -197,6 +197,16 @@ const getAddOnsFromCurrentOrders = (updatedOrder: TOrder, productId: number) =>
 const calculateTotalPrice = (items: TItem[]) => {
   return items.reduce((total, item) => total + item.price * item.quantity, 0)
 }
+
+const generatePendingOrderId = (productId: number, serverFullName: string, carouselId: string) => {
+  const randomNumber = Math.floor(Math.random() * 1000) // Adjust as needed
+  return `${productId}_${randomNumber}_${serverFullName}_${carouselId}`
+}
+const extractProductIdFromPendingOrderId = (pendingOrderId: string) => {
+  const parts = pendingOrderId.split('_')
+  return parts.length > 0 ? parseInt(parts[0], 10) : 0
+}
+
 export {
   cn,
   cutText,
@@ -216,5 +226,7 @@ export {
   supplyExists,
   supplyExistInOrder,
   getAddOnsFromCurrentOrders,
-  calculateTotalPrice
+  calculateTotalPrice,
+  generatePendingOrderId,
+  extractProductIdFromPendingOrderId
 }

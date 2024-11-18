@@ -17,7 +17,6 @@ const ModalBody =
 
         //if (!currentOrder) 
         const total = calculateTotalPrice(currentOrder?.items!);
-        console.log(currentOrder, total)
 
         //const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
         const [calculatedTotal, setCalculatedTotal] = useState<number>(0);

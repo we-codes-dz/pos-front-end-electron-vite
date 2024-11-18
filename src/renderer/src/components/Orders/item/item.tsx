@@ -12,7 +12,6 @@ const OrderItem = ({ order }: TProps) => {
   const [totalPrice, setTotalPrice] = useState<number>(0)
 
 
-
   // Update total price when items change
   useEffect(() => {
     setTotalPrice(calculateTotalPrice(order.items))

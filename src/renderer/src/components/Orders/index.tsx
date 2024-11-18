@@ -4,10 +4,8 @@ import _ from 'lodash'
 import { SwiperSlide } from 'swiper/react'
 import { TSlider } from '../Categories'
 import CarouselWrapper from '../carousel/carousel-wrapper'
-import OrderItem from './item/item'
 import NoData from '../no-data/orders/no-data'
-import useOrders from '@renderer/api/hooks/useOrders'
-import useAxiosPrivate from '@renderer/hooks/useAxiosPrivate'
+import OrderItem from './item/item'
 
 const organizeDataIntoSlider = (data: any): TSlider[] => {
   const chunkSize = 6
@@ -17,34 +15,34 @@ const organizeDataIntoSlider = (data: any): TSlider[] => {
     items: chunk[0].items
   }))
 }
-function filterObjectsByTodayDate(array) {
-  // Get today's date
-  const orders = array?.data?.data
+// function filterObjectsByTodayDate(array) {
+//   // Get today's date
+//   const orders = array?.data?.data
 
-  const today = new Date()
-  const todayDate = today.toISOString().split('T')[0]
-  const filteredArray = orders?.filter((obj) => {
-    const objDate = obj.createdAt.split('T')[0]
-    return objDate === todayDate
-  })
+//   const today = new Date()
+//   const todayDate = today.toISOString().split('T')[0]
+//   const filteredArray = orders?.filter((obj) => {
+//     const objDate = obj.createdAt.split('T')[0]
+//     return objDate === todayDate
+//   })
 
-  return filteredArray
-}
+//   return filteredArray
+// }
 
 const Orders = () => {
   const currentOrder = useBoundStore((state) => state.currentOrder)
-  const pendingOrder = useBoundStore((state) => state.pendingOrders)
-  const axiosInstance = useAxiosPrivate()
+  // const pendingOrder = useBoundStore((state) => state.pendingOrders)
+  // const axiosInstance = useAxiosPrivate()
   let data: TOrder[] = []
   if (currentOrder !== null) {
     data = [currentOrder!]
   }
-  const { data: orders } = useOrders(axiosInstance)
+  // const { data: orders } = useOrders(axiosInstance)
 
-  console.log('-----orders-----', orders)
-  const todayOrders = filterObjectsByTodayDate(orders)
-  console.log('-----TodayOrders-----', todayOrders)
-  console.log('-----pendingOrders-----', pendingOrder)
+  // console.log('-----orders-----', orders)
+  // const todayOrders = filterObjectsByTodayDate(orders)
+  // console.log('-----TodayOrders-----', todayOrders)
+  // console.log('-----pendingOrders-----', pendingOrder)
 
   const sliderData: TSlider[] = organizeDataIntoSlider(data)
   return (

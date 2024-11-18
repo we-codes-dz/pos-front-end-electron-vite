@@ -1,13 +1,14 @@
+import { Tab, Tabs } from '@nextui-org/react'
+import { useBoundStore } from '@renderer/stores/store'
 import { TProduct } from '@renderer/types/type-schema'
+import { shallow } from 'zustand/shallow'
 import useProducts from '../../api/hooks/useProducts'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate'
-import ProductItem from './item-list'
-import { useBoundStore } from '@renderer/stores/store'
-import { Tab, Tabs } from '@nextui-org/react'
-import { shallow } from 'zustand/shallow'
-import Indicator from '../indicator/indicator'
 import Orders from '../Orders'
-import PendingOrders from '../pending-order'
+import CurrentOrders from '../Orders/current-order'
+import PendingOrders from '../Orders/pending-order'
+import Indicator from '../indicator/indicator'
+import ProductItem from './item-list'
 
 const Products = () => {
   const axiosInstance = useAxiosPrivate()
@@ -45,7 +46,7 @@ const Products = () => {
             <div className='font-semibold'>Current Order</div>
           }>
             <div className='text-left h-[650px] '>
-              <Orders />
+              <CurrentOrders />
             </div>
           </Tab>
           <Tab key="pending" title={
